@@ -1,15 +1,6 @@
 import React from "react";
 import CIcon from "@coreui/icons-react";
-import {
-    cilBook,
-    cilCart,
-    cilFolder,
-    cilList,
-    cilMoney,
-    cilSpeedometer,
-    cilTruck,
-    cilUser,
-} from "@coreui/icons";
+import { cilBook, cilCart, cilList, cilSpeedometer, cilTruck, cilUser } from "@coreui/icons";
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _nav = [
@@ -22,12 +13,6 @@ const _nav = [
     {
         component: CNavTitle,
         name: "Transaksi",
-    },
-    {
-        component: CNavItem,
-        name: "Akun",
-        to: "/akun",
-        icon: <CIcon icon={cilFolder} customClassName="nav-icon" />,
     },
     {
         component: CNavGroup,
@@ -74,17 +59,12 @@ const _nav = [
             {
                 component: CNavItem,
                 name: "Daftar Inventaris",
-                to: "/inventaris/daftar",
+                to: "/inventaris",
             },
             {
                 component: CNavItem,
                 name: "Tambah Inventaris",
                 to: "/inventaris/tambah",
-            },
-            {
-                component: CNavItem,
-                name: "Daftar Kategori",
-                to: "/inventaris/kategori",
             },
         ],
     },
