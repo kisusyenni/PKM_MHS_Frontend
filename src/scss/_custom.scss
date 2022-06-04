@@ -1,0 +1,16 @@
+// 01 STATUS ALERT
+@include media-breakpoint-up(md) {
+    .status-alert {
+        position: fixed;
+        z-index: 1050;
+        top: 120px;
+        left: 50%;
+        transform: translate(calc(-50% + 8rem), 0px);
+    }
+}
+
+// 02 CUSTOM BACKGROUND
+.bg-custom {
+    background: url("../assets/images/bg.jpg") no-repeat center;
+    background-size: cover;
+}
