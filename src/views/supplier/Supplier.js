@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MUIDataTable from "mui-datatables";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { cilPlus } from "@coreui/icons";
+import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import SupplierForm from "./SupplierForm";
 
@@ -10,19 +10,24 @@ const Supplier = () => {
     const [state, setState] = useState({
         openForm: false,
         action: null,
-        suppliers: [],
+        suppliers: [
+            {
+                supplierId: 1,
+                name: "Toko ABC",
+                address: "Batam",
+                telephone: "+62 812 3456 78",
+                email: "abc@email.com",
+            },
+            {
+                supplierId: 2,
+                name: "Toko CCC",
+                address: "Tanjung Pinang",
+                telephone: "+62 811 2233 4455",
+                email: "ccc@email.com",
+            },
+        ],
     });
     const navigate = useNavigate();
-
-    const handleEdit = (supplier) => {
-        console.log(supplier);
-        setState((prevState) => ({
-            ...prevState,
-            openForm: true,
-            action: "edit",
-            selectedSupplier: supplier,
-        }));
-    };
 
     const handleAdd = () => {
         setState((prevState) => ({
@@ -32,7 +37,23 @@ const Supplier = () => {
         }));
     };
 
-    const handleClose = () => {};
+    const handleEdit = (supplier) => {
+        setState((prevState) => ({
+            ...prevState,
+            openForm: true,
+            action: "edit",
+            selectedSupplier: supplier,
+        }));
+    };
+
+    const handleDelete = (id) => {};
+
+    const handleClose = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openForm: false,
+        }));
+    };
 
     const supplierTableCols = [
         {
@@ -76,6 +97,40 @@ const Supplier = () => {
                 sort: false,
             },
         },
+        {
+            name: "action",
+            label: "Aksi",
+            options: {
+                sort: false,
+                filter: false,
+                filterList: [],
+                customBodyRender: (value, tablemeta) => {
+                    return (
+                        <>
+                            <CButton
+                                color="primary"
+                                variant="outline"
+                                className="me-2"
+                                onClick={() => {
+                                    handleEdit(tablemeta.rowData);
+                                }}
+                            >
+                                <CIcon icon={cilPen}></CIcon>
+                            </CButton>
+                            <CButton
+                                color="primary"
+                                variant="outline"
+                                onClick={() => {
+                                    handleDelete(tablemeta.rowData[0]);
+                                }}
+                            >
+                                <CIcon icon={cilTrash}></CIcon>
+                            </CButton>
+                        </>
+                    );
+                },
+            },
+        },
     ];
 
     const supplierTableOptions = {
@@ -104,7 +159,14 @@ const Supplier = () => {
                 options={supplierTableOptions}
             />
 
-            <SupplierForm openForm={state.openForm} action={state.action} />
+            {state.openForm && (
+                <SupplierForm
+                    openForm={state.openForm}
+                    action={state.action}
+                    handleClose={handleClose}
+                    data={state.selectedSupplier}
+                />
+            )}
         </>
     );
 };
