@@ -23,7 +23,7 @@ const _nav = [
             {
                 component: CNavItem,
                 name: "Daftar Penjualan",
-                to: "/penjualan/daftar",
+                to: "/penjualan",
             },
             {
                 component: CNavItem,
@@ -41,7 +41,7 @@ const _nav = [
             {
                 component: CNavItem,
                 name: "Daftar Pembelian",
-                to: "/pembelian/daftar",
+                to: "/pembelian",
             },
             {
                 component: CNavItem,

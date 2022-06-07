@@ -6,6 +6,7 @@ const Inventory = React.lazy(() => import("./views/inventory/Inventory"));
 const AddInventory = React.lazy(() => import("./views/inventory/AddInventory"));
 const EditInventory = React.lazy(() => import("./views/inventory/EditInventory"));
 const Supplier = React.lazy(() => import("./views/supplier/Supplier"));
+const Purchase = React.lazy(() => import("./views/purchase/Purchase"));
 
 const routes = [
     { path: "/", exact: true, name: "Home" },
@@ -16,6 +17,7 @@ const routes = [
     { path: "/inventaris/tambah", name: "Tambah Inventaris", element: AddInventory },
     { path: "/inventaris/ubah/:id", name: "Ubah Inventaris", element: EditInventory },
     { path: "/supplier", name: "Supplier", element: Supplier },
+    { path: "/penjualan", name: "Penjualan", element: Purchase },
 ];
 
 export default routes;
