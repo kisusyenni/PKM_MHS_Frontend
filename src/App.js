@@ -30,9 +30,9 @@ class App extends Component {
                         <Route exact path="/404" name="Page 404" element={<Page404 />} />
                         <Route exact path="/500" name="Page 500" element={<Page500 />} />
                         <Route exact path="/atur-toko" name="Atur Toko" element={<SetupStore />} />
-                        <Route path="*" name="Home" element={<DefaultLayout />} />
-                        {/* <Route path="*" element={<RequireAuth />}>
-                        </Route> */}
+                        <Route path="*" element={<RequireAuth />}>
+                            <Route path="*" name="Home" element={<DefaultLayout />} />
+                        </Route>
                     </Routes>
                 </Suspense>
             </BrowserRouter>
