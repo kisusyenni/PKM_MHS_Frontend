@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: "https://pkmuibmhs.tugaskuliah.web.id",
+    baseURL: "https://pkmuibmhs.tugaskuliah.web.id/",
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -48,7 +48,16 @@ const getData = async (path) => {
             if (error.response.status === 403 || error.response.status === 401) {
                 window.location.href = "/";
                 localStorage.removeItem("token");
+                return {
+                    status: error.response.status,
+                    data: error.response.data,
+                };
             } else {
+                console.error(error);
+                return {
+                    status: error.response.status,
+                    data: error.response.data,
+                };
             }
         }
     }
