@@ -23,8 +23,8 @@ const SupplierForm = ({ action, openForm, handleClose, data, handleAlert }) => {
         setValue,
     } = useForm({
         defaultValues: {
-            // storeId: localStorage.getItem("storeId"),
-            storeId: 1,
+            storeId: localStorage.getItem("storeId"),
+            // storeId: 1,
             name: "",
             address: "",
             telephone: "",
