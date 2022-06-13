@@ -1,61 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import SupplierForm from "./SupplierForm";
+import { get } from "src/network/api/network";
 
 const Supplier = () => {
-    const [state, setState] = useState({
-        openForm: false,
-        action: null,
-        suppliers: [
-            {
-                supplierId: 1,
-                name: "Toko ABC",
-                address: "Batam",
-                telephone: "+62 812 3456 78",
-                email: "abc@email.com",
-            },
-            {
-                supplierId: 2,
-                name: "Toko CCC",
-                address: "Tanjung Pinang",
-                telephone: "+62 811 2233 4455",
-                email: "ccc@email.com",
-            },
-        ],
-    });
-    const navigate = useNavigate();
-
-    const handleAdd = () => {
-        setState((prevState) => ({
-            ...prevState,
-            openForm: true,
-            action: "add",
-        }));
-    };
-
-    const handleEdit = (supplier) => {
-        setState((prevState) => ({
-            ...prevState,
-            openForm: true,
-            action: "edit",
-            selectedSupplier: supplier,
-        }));
-    };
-
-    const handleDelete = (id) => {};
-
-    const handleClose = () => {
-        setState((prevState) => ({
-            ...prevState,
-            openForm: false,
-        }));
-    };
-
-    const supplierTableCols = [
+    const tableCols = [
         {
             name: "supplierId",
             label: "",
@@ -117,7 +70,7 @@ const Supplier = () => {
                             >
                                 <CIcon icon={cilPen}></CIcon>
                             </CButton>
-                            <CButton
+                            {/* <CButton
                                 color="primary"
                                 variant="outline"
                                 onClick={() => {
@@ -125,7 +78,7 @@ const Supplier = () => {
                                 }}
                             >
                                 <CIcon icon={cilTrash}></CIcon>
-                            </CButton>
+                            </CButton> */}
                         </>
                     );
                 },
@@ -133,7 +86,7 @@ const Supplier = () => {
         },
     ];
 
-    const supplierTableOptions = {
+    const tableOptions = {
         selectableRows: "single",
         selectableRowsHideCheckboxes: true,
         elevation: 1,
@@ -150,13 +103,66 @@ const Supplier = () => {
         ),
     };
 
+    const [state, setState] = useState({
+        openForm: false,
+        action: null,
+        data: [],
+        tableCols: tableCols,
+        tableOptions: tableOptions,
+        isReload: false,
+    });
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        getSupplierList();
+    }, [state.isReload]);
+
+    const getSupplierList = async () => {
+        const result = await get("/supplier");
+        if (result.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: result.data,
+            }));
+        }
+        console.log(result);
+    };
+
+    // handle add supplier
+    const handleAdd = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openForm: true,
+            action: "add",
+        }));
+    };
+
+    const handleEdit = (supplier) => {
+        setState((prevState) => ({
+            ...prevState,
+            openForm: true,
+            action: "edit",
+            selectedSupplier: supplier,
+        }));
+    };
+
+    const handleDelete = (id) => {};
+
+    const handleClose = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openForm: false,
+        }));
+    };
+
     return (
         <>
             <MUIDataTable
                 title={"Daftar Supplier"}
-                data={state.suppliers}
-                columns={supplierTableCols}
-                options={supplierTableOptions}
+                data={state.data}
+                columns={state.tableCols}
+                options={state.tableOptions}
             />
 
             {state.openForm && (
