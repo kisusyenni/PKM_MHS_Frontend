@@ -31,6 +31,7 @@ const PurchaseForm = () => {
         handleSubmit,
         formState: { errors },
         watch,
+        setValue,
     } = useForm({
         defaultValues: {
             transNo: "PU0001",
@@ -39,7 +40,8 @@ const PurchaseForm = () => {
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
             description: "",
-            item: [{ name: "", quantity: 0, pricePerUnit: 0 }],
+            item: [{ name: "", quantity: 0, pricePerUnit: 0, amount: 0 }],
+            total: 0,
         },
         mode: "all",
     });
@@ -197,7 +199,12 @@ const PurchaseForm = () => {
                                 </CCol>
                             </CRow>
                             <hr />
-                            <PurchaseDetailForm control={control} watch={watch} errors={errors} />
+                            <PurchaseDetailForm
+                                control={control}
+                                watch={watch}
+                                errors={errors}
+                                setValue={setValue}
+                            />
                         </CCardBody>
                         <CCardFooter>
                             <CButton type="submit">Submit</CButton>
