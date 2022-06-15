@@ -130,6 +130,7 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
+                                        disabled
                                     />
                                 )}
                             />
@@ -177,6 +178,7 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                                 onBlur={onBlur}
                                 value={value}
                                 ref={ref}
+                                disabled
                             />
                         )}
                     />
