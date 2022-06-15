@@ -1,5 +1,3 @@
-import { cilSearch, cilTrash } from "@coreui/icons";
-import CIcon from "@coreui/icons-react";
 import {
     CButton,
     CCard,
@@ -12,15 +10,10 @@ import {
     CFormLabel,
     CFormSelect,
     CFormTextarea,
-    CInputGroup,
     CRow,
-    CTable,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
 } from "@coreui/react";
-import React, { useState } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
 import PurchaseDetailForm from "./PurchaseDetailForm";
 
 const PurchaseForm = () => {
