@@ -17,7 +17,7 @@ const EditInventory = () => {
                             <CIcon className="me-2" icon={cilArrowCircleLeft} />
                             Kembali
                         </CButton>
-                        <InventoryForm title={"Ubah Inventaris"} isEdit={true} />
+                        <InventoryForm title={"Ubah Inventaris"} editMode={true} />
                     </CCol>
                 </CRow>
             </CContainer>
