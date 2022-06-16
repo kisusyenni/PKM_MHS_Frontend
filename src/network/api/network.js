@@ -50,14 +50,11 @@ const getData = async (path) => {
                 localStorage.removeItem("token");
                 return {
                     status: error.response.status,
-                    data: error.response.data,
+                    data: error.response.data.error,
                 };
             } else {
                 console.error(error);
-                return {
-                    status: error.response.status,
-                    data: error.response.data,
-                };
+                return { data: error.response.data || error.message };
             }
         }
     }
