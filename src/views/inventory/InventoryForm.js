@@ -9,6 +9,7 @@ import {
     CForm,
     CFormInput,
     CFormLabel,
+    CSpinner,
 } from "@coreui/react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
@@ -33,7 +34,7 @@ const InventoryForm = ({ title, editMode }) => {
     const {
         control,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isDirty },
         setValue,
         reset,
     } = useForm({
@@ -67,6 +68,15 @@ const InventoryForm = ({ title, editMode }) => {
             getInventoryDetail();
         }
     }, [state.isReload]);
+
+    useEffect(() => {
+        if (isDirty) {
+            setState((prevState) => ({
+                ...prevState,
+                disabled: false,
+            }));
+        }
+    }, [isDirty]);
 
     const closeAlert = () => {
         setState((prevState) => ({
@@ -231,8 +241,9 @@ const InventoryForm = ({ title, editMode }) => {
                             />
                             <span className="invalid-feedback">{errors.sellingPrice?.message}</span>
                         </div>
-                        <CButton type="submit" color="primary">
-                            Save changes
+                        <CButton type="submit" color="primary" disabled={state.disabled}>
+                            <CSpinner className="me-2" size="sm" hidden={!state.loading}></CSpinner>
+                            {editMode ? "Simpan Perubahan" : "Tambah Produk"}
                         </CButton>
                     </CCardBody>
                 </CCard>
