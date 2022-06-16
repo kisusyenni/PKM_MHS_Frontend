@@ -70,17 +70,15 @@ const postData = async (path, data) => {
     } catch (error) {
         if (error.response) {
             if (error.response.status === 403 || error.response.status === 401) {
+                window.location.href = "/";
                 localStorage.removeItem("token");
                 return {
                     status: error.response.status,
-                    data: error.response.data,
+                    data: error.response.data.error,
                 };
             } else {
                 console.error(error);
-                return {
-                    status: error.response.status,
-                    data: error.response.data,
-                };
+                return { data: error.response.data || error.message };
             }
         }
     }
@@ -98,9 +96,13 @@ const putData = async (path, id, data) => {
             if (error.response.status === 403 || error.response.status === 401) {
                 window.location.href = "/";
                 localStorage.removeItem("token");
+                return {
+                    status: error.response.status,
+                    data: error.response.data.error,
+                };
             } else {
                 console.error(error);
-                return error;
+                return { data: error.response.data || error.message };
             }
         }
     }
@@ -118,9 +120,13 @@ const deleteData = async (path, id) => {
             if (error.response.status === 403 || error.response.status === 401) {
                 window.location.href = "/";
                 localStorage.removeItem("token");
+                return {
+                    status: error.response.status,
+                    data: error.response.data.error,
+                };
             } else {
                 console.error(error);
-                return error;
+                return { data: error.response.data || error.message };
             }
         }
     }
