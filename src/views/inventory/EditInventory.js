@@ -2,11 +2,10 @@ import { cilArrowCircleLeft } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CButton, CCol, CContainer, CRow } from "@coreui/react";
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import InventoryForm from "./InventoryForm";
 
 const EditInventory = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
     return (
         <>

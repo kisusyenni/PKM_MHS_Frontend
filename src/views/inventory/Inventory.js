@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { CButton, CCard, CCardBody, CCol, CContainer, CImage, CRow } from "@coreui/react";
+import { CButton, CCol, CContainer, CImage, CRow } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
@@ -141,7 +141,7 @@ const Inventory = () => {
         isReload: null,
         columns: tableCols,
         options: tableOptions,
-        selectedProduct: null,
+        selectedInventory: null,
         openModal: false,
         showAlert: false,
     });
@@ -206,7 +206,7 @@ const Inventory = () => {
         setState((prevState) => ({
             ...prevState,
             openModal: true,
-            selectedProduct: product,
+            selectedInventory: product,
         }));
     };
 
@@ -215,7 +215,7 @@ const Inventory = () => {
             ...prevState,
             openModal: false,
             action: null,
-            selectedProduct: null,
+            selectedInventory: null,
         }));
     };
 
@@ -262,12 +262,12 @@ const Inventory = () => {
                 <ConfirmationModal
                     openModal={state.openModal}
                     title={"Hapus Produk"}
-                    content={`Apakah Anda yakin ingin menghapus ${state.selectedProduct[2]} ?`}
+                    content={`Apakah Anda yakin ingin menghapus ${state.selectedInventory[2]} ?`}
                     type={"delete"}
                     buttonLeft={"Batal"}
                     buttonRight={"Hapus"}
                     proceed={() => {
-                        deleteInventory(state.selectedProduct[0]);
+                        deleteInventory(state.selectedInventory[0]);
                     }}
                     handleClose={handleCloseConfirmation}
                 />
