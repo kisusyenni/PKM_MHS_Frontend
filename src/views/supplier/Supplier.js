@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
 import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
-import { useNavigate } from "react-router-dom";
+import { cilPen, cilPlus } from "@coreui/icons";
 import SupplierForm from "./SupplierForm";
 import { get } from "src/network/api/network";
 
@@ -112,8 +111,6 @@ const Supplier = () => {
         isReload: false,
     });
 
-    const navigate = useNavigate();
-
     useEffect(() => {
         getSupplierList();
     }, [state.isReload]);
@@ -126,7 +123,6 @@ const Supplier = () => {
                 data: result.data,
             }));
         }
-        console.log(result);
     };
 
     // handle add supplier
