@@ -7,6 +7,7 @@ const AddInventory = React.lazy(() => import("./views/inventory/AddInventory"));
 const EditInventory = React.lazy(() => import("./views/inventory/EditInventory"));
 const Supplier = React.lazy(() => import("./views/supplier/Supplier"));
 const Purchase = React.lazy(() => import("./views/purchase/purchase-list/Purchase"));
+const PurchaseDetail = React.lazy(() => import("./views/purchase/purchase-detail/PurchaseDetail"));
 const AddPurchase = React.lazy(() => import("./views/purchase/purchase-form/AddPurchase"));
 
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
     { path: "/inventaris/ubah/:id", name: "Ubah Inventaris", element: EditInventory },
     { path: "/supplier", name: "Supplier", element: Supplier },
     { path: "/pembelian", name: "Pembelian", element: Purchase },
+    { path: "/pembelian/:id", name: "Detail Pembelian", element: PurchaseDetail },
     { path: "/pembelian/tambah", name: "Tambah Pembelian", element: AddPurchase },
 ];
 
