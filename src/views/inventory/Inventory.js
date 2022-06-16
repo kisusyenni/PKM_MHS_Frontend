@@ -1,35 +1,31 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { CButton } from "@coreui/react";
+import { CButton, CCard, CCardBody, CCol, CContainer, CImage, CRow } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import NumberFormat from "react-number-format";
+import { deleteData, get } from "src/network/api/network";
+import StatusAlert from "src/helper/StatusAlert";
+import ConfirmationModal from "src/helper/ConfirmationModal";
+
+import emptyGraphic from "./../../assets/images/empty.svg";
 
 const Inventory = () => {
-    const [state, setState] = useState({
-        data: [
-            {
-                id: 1,
-                name: "Nama Inventaris",
-                quantity: 10,
-                sellingPrice: 15000,
-            },
-            {
-                id: 2,
-                name: "Nama Inventaris",
-                quantity: 20,
-                sellingPrice: 10000,
-            },
-        ],
-    });
-
     const navigate = useNavigate();
 
     const tableCols = [
         {
-            name: "id",
-            label: "id",
+            name: "inventoryId",
+            options: {
+                display: false,
+                filter: false,
+                sort: false,
+            },
+        },
+        {
+            name: "storeId",
             options: {
                 display: false,
                 filter: false,
@@ -54,6 +50,7 @@ const Inventory = () => {
                 filterList: [],
             },
         },
+
         {
             name: "sellingPrice",
             label: "Harga Jual",
@@ -74,6 +71,14 @@ const Inventory = () => {
             },
         },
         {
+            name: "isDeleted",
+            options: {
+                display: false,
+                sort: false,
+                filter: false,
+            },
+        },
+        {
             name: "action",
             label: "Aksi",
             options: {
@@ -88,7 +93,7 @@ const Inventory = () => {
                                 variant="outline"
                                 className="me-2"
                                 onClick={() => {
-                                    handleEdit(tablemeta.rowData[0]);
+                                    navigate(`/inventaris/ubah/${tablemeta.rowData[0]}`);
                                 }}
                             >
                                 <CIcon icon={cilPen}></CIcon>
@@ -97,7 +102,7 @@ const Inventory = () => {
                                 color="primary"
                                 variant="outline"
                                 onClick={() => {
-                                    handleDelete(tablemeta.rowData[0]);
+                                    handleShowConfirmation(tablemeta.rowData);
                                 }}
                             >
                                 <CIcon icon={cilTrash}></CIcon>
@@ -131,21 +136,143 @@ const Inventory = () => {
         ),
     };
 
-    const handleEdit = (id) => {
-        navigate(`/inventaris/ubah/${id}`);
+    const [state, setState] = useState({
+        data: [],
+        isReload: null,
+        columns: tableCols,
+        options: tableOptions,
+        selectedProduct: null,
+        openModal: false,
+        showAlert: false,
+    });
+
+    useEffect(() => {
+        getInventoryList();
+    }, [state.isReload]);
+
+    const getInventoryList = async () => {
+        const response = await get("/inventory");
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+            }));
+        }
     };
 
-    const handleDelete = (id) => {
-        console.log(`Delete ${id}`);
+    // Delete
+
+    const deleteInventory = async (id) => {
+        const response = await deleteData("/inventory", id);
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                isReload: Math.random(),
+            }));
+            handleShowAlert("success", response.data);
+        } else {
+            handleShowAlert("danger", response.data);
+        }
+    };
+
+    // Handle alert
+
+    const handleShowAlert = (type, content) => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: false,
+            showAlert: true,
+            alertContent: content,
+            alertType: type,
+            selectedAccount: null,
+            isReload: Math.random(),
+        }));
+
+        setTimeout(() => handleCloseAlert(), 3000);
+    };
+
+    const handleCloseAlert = () => {
+        setState((prevState) => ({
+            ...prevState,
+            showAlert: false,
+            alertContent: null,
+            selectedAccount: null,
+        }));
+    };
+
+    // Handle confirmation
+
+    const handleShowConfirmation = (product) => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: true,
+            selectedProduct: product,
+        }));
+    };
+
+    const handleCloseConfirmation = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: false,
+            action: null,
+            selectedProduct: null,
+        }));
     };
 
     return (
-        <MUIDataTable
-            title={"Daftar Inventaris"}
-            data={state.data}
-            columns={tableCols}
-            options={tableOptions}
-        />
+        <>
+            {state.showAlert && (
+                <StatusAlert
+                    showAlert={state.showAlert}
+                    type={state.alertType}
+                    content={state.alertContent}
+                    closeAlert={handleCloseAlert}
+                />
+            )}
+            {state.data?.length > 0 ? (
+                <MUIDataTable
+                    title={"Daftar Inventaris"}
+                    data={state.data}
+                    columns={tableCols}
+                    options={tableOptions}
+                />
+            ) : (
+                <CContainer>
+                    <CRow className="align-items-center justify-content-center">
+                        <CCol md={7} className="text-center">
+                            <h1 className="h3">Inventory Tidak Ditemukan</h1>
+                            <div>
+                                <CButton
+                                    className="mb-5 mt-3"
+                                    onClick={() => {
+                                        navigate("/inventaris/tambah");
+                                    }}
+                                >
+                                    <CIcon className="me-2" icon={cilPlus} /> Tambah Inventaris
+                                </CButton>
+                            </div>
+
+                            <CImage src={emptyGraphic} width={400} />
+                        </CCol>
+                    </CRow>
+                </CContainer>
+            )}
+
+            {state.openModal && (
+                <ConfirmationModal
+                    openModal={state.openModal}
+                    title={"Hapus Produk"}
+                    content={`Apakah Anda yakin ingin menghapus ${state.selectedProduct[2]} ?`}
+                    type={"delete"}
+                    buttonLeft={"Batal"}
+                    buttonRight={"Hapus"}
+                    proceed={() => {
+                        deleteInventory(state.selectedProduct[0]);
+                    }}
+                    handleClose={handleCloseConfirmation}
+                />
+            )}
+        </>
     );
 };
 
