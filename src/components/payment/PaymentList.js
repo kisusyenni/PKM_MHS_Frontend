@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
 import NumberFormat from "react-number-format";
 
-const PaymentList = ({ type }) => {
+const PaymentList = ({ type, status }) => {
     const tableCols = [
         {
             name: "purchasePaymentId",
