@@ -12,8 +12,7 @@ const PurchaseTable = ({ data }) => {
 
     const tableCols = [
         {
-            name: "id",
-            label: "id",
+            name: "purchaseId",
             options: {
                 display: false,
                 filter: false,
@@ -21,7 +20,7 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "ref_number",
+            name: "refNumber",
             label: "Nomor",
             options: {
                 sort: true,
@@ -30,19 +29,19 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "supplier_id",
+            name: "supplierId",
             label: "Supplier",
             options: {
                 sort: true,
                 filter: false,
                 filterList: [],
                 customBodyRender: (value, tablemeta) => {
-                    return tablemeta.rowData[11]?.name;
+                    return tablemeta.rowData[9]?.name;
                 },
             },
         },
         {
-            name: "trans_date",
+            name: "transDate",
             label: "Tanggal",
             options: {
                 sort: true,
@@ -51,7 +50,7 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "due_date",
+            name: "dueDate",
             label: "Jatuh Tempo",
             options: {
                 sort: true,
@@ -60,7 +59,7 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "status_id",
+            name: "status",
             label: "Status",
             options: {
                 sort: true,
@@ -81,7 +80,7 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "due",
+            name: "paidNominal",
             label: "Sisa Tagihan",
             options: {
                 sort: true,
@@ -90,7 +89,7 @@ const PurchaseTable = ({ data }) => {
                 customBodyRender: (value, tablemeta) => {
                     return (
                         <NumberFormat
-                            value={value}
+                            value={tablemeta.rowData[7] - tablemeta.rowData[6]}
                             displayType={"text"}
                             thousandSeparator={true}
                             prefix={"Rp"}
@@ -100,7 +99,7 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "amount_after_tax",
+            name: "totalPayment",
             label: "Total",
             options: {
                 sort: true,
@@ -119,26 +118,7 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "memo",
-            label: "",
-            options: {
-                display: false,
-                filter: false,
-                filterList: [],
-            },
-        },
-        {
-            name: "currency_rate",
-            label: "",
-            options: {
-                display: false,
-                filter: false,
-                filterList: [],
-            },
-        },
-        {
-            name: "currency_id",
-            label: "",
+            name: "description",
             options: {
                 display: false,
                 filter: false,
@@ -147,7 +127,6 @@ const PurchaseTable = ({ data }) => {
         },
         {
             name: "supplier",
-            label: "",
             options: {
                 display: false,
                 filter: false,
