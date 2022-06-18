@@ -9,7 +9,6 @@ import NumberFormat from "react-number-format";
 import { deleteData, get } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
 import ConfirmationModal from "src/helper/ConfirmationModal";
-
 import emptyGraphic from "./../../assets/images/empty.svg";
 
 const Inventory = () => {

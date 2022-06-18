@@ -243,7 +243,7 @@ const InventoryForm = ({ title, editMode }) => {
                         </div>
                         <CButton type="submit" color="primary" disabled={state.disabled}>
                             <CSpinner className="me-2" size="sm" hidden={!state.loading}></CSpinner>
-                            {editMode ? "Simpan Perubahan" : "Tambah Produk"}
+                            {editMode ? "Simpan Perubahan" : "Tambah Inventaris"}
                         </CButton>
                     </CCardBody>
                 </CCard>

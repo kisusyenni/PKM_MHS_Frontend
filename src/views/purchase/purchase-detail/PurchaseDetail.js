@@ -25,7 +25,6 @@ const PurchaseDetail = () => {
                 status: 1,
                 transDate: "16/6/2022",
                 dueDate: "23/6/2022",
-                paymentMethod: "1",
                 paidNominal: 0,
                 totalPayment: 200000,
                 isDelete: 0,
@@ -36,10 +35,6 @@ const PurchaseDetail = () => {
                     address: "Jalan Mangga No 24",
                     telephone: "0812345678",
                     email: "abc@gmail.com",
-                },
-                method: {
-                    methodId: "1",
-                    name: "cash",
                 },
                 detail: [
                     {
