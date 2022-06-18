@@ -1,6 +1,14 @@
 import React from "react";
 import CIcon from "@coreui/icons-react";
-import { cilBook, cilCart, cilList, cilSpeedometer, cilTruck, cilUser } from "@coreui/icons";
+import {
+    cilBook,
+    cilCart,
+    cilList,
+    cilMoney,
+    cilSpeedometer,
+    cilTruck,
+    cilUser,
+} from "@coreui/icons";
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _nav = [
@@ -13,6 +21,24 @@ const _nav = [
     {
         component: CNavTitle,
         name: "Transaksi",
+    },
+    {
+        component: CNavGroup,
+        name: "Inventaris",
+        to: "/inventaris",
+        icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+        items: [
+            {
+                component: CNavItem,
+                name: "Daftar Inventaris",
+                to: "/inventaris",
+            },
+            {
+                component: CNavItem,
+                name: "Tambah Inventaris",
+                to: "/inventaris/tambah",
+            },
+        ],
     },
     {
         component: CNavGroup,
@@ -52,19 +78,19 @@ const _nav = [
     },
     {
         component: CNavGroup,
-        name: "Inventaris",
-        to: "/inventaris",
-        icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+        name: "Pengeluaran",
+        to: "/pengeluaran",
+        icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
         items: [
             {
                 component: CNavItem,
-                name: "Daftar Inventaris",
-                to: "/inventaris",
+                name: "Daftar Pengeluaran",
+                to: "/pengeluaran",
             },
             {
                 component: CNavItem,
-                name: "Tambah Inventaris",
-                to: "/inventaris/tambah",
+                name: "Tambah Pengeluaran",
+                to: "/pengeluaran/tambah",
             },
         ],
     },

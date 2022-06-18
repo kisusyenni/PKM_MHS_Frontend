@@ -9,6 +9,8 @@ const Supplier = React.lazy(() => import("./views/supplier/Supplier"));
 const Purchase = React.lazy(() => import("./views/purchase/purchase-list/Purchase"));
 const PurchaseDetail = React.lazy(() => import("./views/purchase/purchase-detail/PurchaseDetail"));
 const AddPurchase = React.lazy(() => import("./views/purchase/purchase-form/AddPurchase"));
+const Expense = React.lazy(() => import("./views/expense/Expense"));
+const AddExpense = React.lazy(() => import("./views/expense/AddExpense"));
 
 const routes = [
     { path: "/", exact: true, name: "Home" },
@@ -22,6 +24,8 @@ const routes = [
     { path: "/pembelian", name: "Pembelian", element: Purchase },
     { path: "/pembelian/:id", name: "Detail Pembelian", element: PurchaseDetail },
     { path: "/pembelian/tambah", name: "Tambah Pembelian", element: AddPurchase },
+    { path: "/pengeluaran", name: "Pengeluaran", element: Expense },
+    { path: "/pengeluaran/tambah", name: "Tambah Pengeluaran", element: AddExpense },
 ];
 
 export default routes;
