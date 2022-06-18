@@ -27,7 +27,7 @@ const PurchaseDetail = () => {
                 dueDate: "23/6/2022",
                 paymentMethod: "1",
                 paidNominal: 0,
-                totalPayment: 100000,
+                totalPayment: 200000,
                 isDelete: 0,
                 supplier: {
                     supplierId: "1",
@@ -96,7 +96,11 @@ const PurchaseDetail = () => {
             {state.data && (
                 <>
                     <PurchaseContent data={state.data} />
-                    <PurchasePayment id={id} total={100000} />
+                    <PurchasePayment
+                        id={id}
+                        total={state.data.totalPayment - state.data.paidNominal}
+                        status={state.data.status}
+                    />
                 </>
             )}
         </>
