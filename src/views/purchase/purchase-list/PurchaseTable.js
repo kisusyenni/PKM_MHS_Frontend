@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React from "react";
 import MUIDataTable from "mui-datatables";
 import { CBadge, CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";

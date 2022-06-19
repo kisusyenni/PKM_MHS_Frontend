@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import React from "react";
 import {
     CBadge,
     CCard,
@@ -13,7 +14,6 @@ import {
     CTableHeaderCell,
     CTableRow,
 } from "@coreui/react";
-import React from "react";
 import NumberFormat from "react-number-format";
 
 const PurchaseContent = ({ data }) => {
@@ -44,7 +44,7 @@ const PurchaseContent = ({ data }) => {
                                 <p>{data?.refNumber}</p>
                             </CCol>
                             <CCol md={4}>
-                                <h6>Total Payment</h6>
+                                <h6>Total</h6>
                                 <p>
                                     <NumberFormat
                                         value={data?.totalPayment}
@@ -91,14 +91,51 @@ const PurchaseContent = ({ data }) => {
                                         <CTableDataCell scope="row">
                                             {detail.quantityBuy}
                                         </CTableDataCell>
-                                        <CTableDataCell>{detail.discount}</CTableDataCell>
-                                        <CTableDataCell>{detail.pricePerUnit}</CTableDataCell>
                                         <CTableDataCell>
-                                            {(detail.pricePerUnit - detail.discount) *
-                                                detail.quantityBuy}
+                                            <NumberFormat
+                                                value={detail.discount}
+                                                displayType="text"
+                                                allowLeadingZeros={false}
+                                                thousandSeparator={true}
+                                                prefix={"Rp"}
+                                            />
+                                        </CTableDataCell>
+                                        <CTableDataCell>
+                                            <NumberFormat
+                                                value={detail.pricePerUnit}
+                                                displayType="text"
+                                                allowLeadingZeros={false}
+                                                thousandSeparator={true}
+                                                prefix={"Rp"}
+                                            />
+                                        </CTableDataCell>
+                                        <CTableDataCell>
+                                            <NumberFormat
+                                                value={
+                                                    (detail.pricePerUnit - detail.discount) *
+                                                    detail.quantityBuy
+                                                }
+                                                displayType="text"
+                                                allowLeadingZeros={false}
+                                                thousandSeparator={true}
+                                                prefix={"Rp"}
+                                            />
                                         </CTableDataCell>
                                     </CTableRow>
                                 ))}
+
+                                <CTableRow>
+                                    <CTableHeaderCell colSpan={4}>Total</CTableHeaderCell>
+                                    <CTableDataCell>
+                                        <NumberFormat
+                                            value={data?.totalPayment}
+                                            displayType="text"
+                                            allowLeadingZeros={false}
+                                            thousandSeparator={true}
+                                            prefix={"Rp"}
+                                        />
+                                    </CTableDataCell>
+                                </CTableRow>
                             </CTableBody>
                         </CTable>
                     </CCardBody>

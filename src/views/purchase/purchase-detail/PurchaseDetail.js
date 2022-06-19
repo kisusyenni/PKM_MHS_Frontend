@@ -1,5 +1,5 @@
-import { CButton, CContainer } from "@coreui/react";
 import React, { useEffect, useState } from "react";
+import { CButton } from "@coreui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import PurchaseContent from "./PurchaseContent";
 import PurchasePayment from "./PurchasePayment";
@@ -25,8 +25,8 @@ const PurchaseDetail = () => {
                 status: 1,
                 transDate: "16/6/2022",
                 dueDate: "23/6/2022",
-                paidNominal: 0,
-                totalPayment: 200000,
+                dueNominal: 100000,
+                totalPayment: 255000,
                 isDelete: 0,
                 supplier: {
                     supplierId: "1",
@@ -93,7 +93,7 @@ const PurchaseDetail = () => {
                     <PurchaseContent data={state.data} />
                     <PurchasePayment
                         id={id}
-                        total={state.data.totalPayment - state.data.paidNominal}
+                        total={state.data.dueNominal}
                         status={state.data.status}
                     />
                 </>

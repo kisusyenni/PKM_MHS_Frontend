@@ -1,4 +1,4 @@
-import { CCard, CCardBody, CNav, CNavItem, CNavLink, CTabContent, CTabPane } from "@coreui/react";
+import { CNav, CNavItem, CNavLink, CTabContent } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import PurchaseTable from "./PurchaseTable";
 
@@ -95,6 +95,7 @@ const Purchase = () => {
                 break;
         }
     }, [activeKey]);
+
     return (
         <>
             <CNav variant="pills" role="tablist">
