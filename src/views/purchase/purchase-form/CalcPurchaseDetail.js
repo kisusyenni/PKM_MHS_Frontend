@@ -9,7 +9,7 @@ const CalcPurchaseDetail = ({ control, setValue }) => {
         let totalValue = 0;
 
         for (let i = 0; i < results.length; i++) {
-            let count = results[i].quantity * results[i].pricePerUnit;
+            let count = (results[i].pricePerUnit - results[i].discount) * results[i].quantity;
             totalValue += count;
             // setValue(`item.${i}.amount`, count);
         }

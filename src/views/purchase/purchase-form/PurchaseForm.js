@@ -33,7 +33,7 @@ const PurchaseForm = () => {
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
             description: "",
-            item: [{ name: "", quantity: 0, pricePerUnit: 0, amount: 0 }],
+            item: [{ name: "", quantity: 0, pricePerUnit: 0, discount: 0, amount: 0 }],
             total: 0,
         },
         mode: "all",
@@ -54,7 +54,9 @@ const PurchaseForm = () => {
                         <CCardBody>
                             <CRow>
                                 <CCol md={4} className="mb-3">
-                                    <CFormLabel>Supplier</CFormLabel>
+                                    <CFormLabel className="fw-bold text-grey">
+                                        <small>Supplier</small>
+                                    </CFormLabel>
                                     <Controller
                                         name="supplierId"
                                         control={control}
@@ -83,7 +85,9 @@ const PurchaseForm = () => {
                                 </CCol>
 
                                 <CCol md={4} className="mb-3">
-                                    <CFormLabel>Nomor Pembelian</CFormLabel>
+                                    <CFormLabel className="fw-bold text-grey">
+                                        <small>Nomor Pembelian</small>
+                                    </CFormLabel>
                                     <Controller
                                         name="transNo"
                                         control={control}
@@ -105,7 +109,9 @@ const PurchaseForm = () => {
                                     </span>
                                 </CCol>
                                 <CCol md={4} className="mb-3">
-                                    <CFormLabel>Metode Pembayaran</CFormLabel>
+                                    <CFormLabel className="fw-bold text-grey">
+                                        <small>Metode Pembayaran</small>
+                                    </CFormLabel>
                                     <Controller
                                         name="methodId"
                                         control={control}
@@ -135,7 +141,9 @@ const PurchaseForm = () => {
                                     </span>
                                 </CCol>
                                 <CCol md={4} className="mb-3">
-                                    <CFormLabel>Tanggal</CFormLabel>
+                                    <CFormLabel className="fw-bold text-grey">
+                                        <small>Tanggal</small>
+                                    </CFormLabel>
                                     <Controller
                                         name="transDate"
                                         control={control}
@@ -155,7 +163,9 @@ const PurchaseForm = () => {
                                     </span>
                                 </CCol>
                                 <CCol md={4} className="mb-3">
-                                    <CFormLabel>Tanggal Jatuh Tempo</CFormLabel>
+                                    <CFormLabel className="fw-bold text-grey">
+                                        <small>Jatuh Tempo</small>
+                                    </CFormLabel>
                                     <Controller
                                         name="dueDate"
                                         control={control}
@@ -175,7 +185,9 @@ const PurchaseForm = () => {
                                     </span>
                                 </CCol>
                                 <CCol md={12} className="mb-3">
-                                    <CFormLabel>Deskripsi</CFormLabel>
+                                    <CFormLabel className="fw-bold text-grey">
+                                        <small>Deskripsi</small>
+                                    </CFormLabel>
                                     <Controller
                                         name="description"
                                         control={control}

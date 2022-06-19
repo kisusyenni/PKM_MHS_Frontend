@@ -5,12 +5,15 @@ import { CButton, CCol, CFormInput, CFormSelect, CInputGroup, CRow } from "@core
 import React, { useEffect, useState } from "react";
 import { Controller, useFieldArray, useWatch } from "react-hook-form";
 import CalcPurchaseDetail from "./CalcPurchaseDetail";
+import { get } from "src/network/api/network";
 
 const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
     const [state, setState] = useState({
         openModal: false,
         selectedInventory: null,
         total: 0,
+        inventory: [],
+        isReload: null,
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -18,37 +21,48 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
         name: "item",
     });
 
-    // const itemFields = watch("item");
+    useEffect(() => {
+        getInventoryList();
+    }, [state.isReload]);
 
-    // const item = useWatch({
-    //     control,
-    //     name: "item",
-    //     defaultValue: fields,
-    // });
+    const getInventoryList = async () => {
+        const response = await get("/inventory");
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                inventory: response.data,
+            }));
+        }
+    };
 
-    // const total = fields.map((field, index) => {
-    //     return itemFields[index].amount;
-    // });
-
-    // useEffect(() => {
-    //     console.log(item);
-    //     // setValue();
-    // }, [item]);
+    const checkData = (id, price) => {
+        const watchItem = watch("item");
+        const check = watchItem.some((value, index) => {
+            console.log(index);
+            // setValue(`item.${index}.quantity`, 1);
+            // setValue(`item.${index}.pricePerUnit`, price);
+            return value.inventoryId === id;
+        });
+        return check;
+    };
 
     return (
         <>
             <CRow className="mb-3">
                 <CCol md={3}>
-                    <h6 className="fw-bold">Inventaris</h6>
+                    <small className="fw-bold">Inventaris</small>
                 </CCol>
                 <CCol md={2}>
-                    <h6 className="fw-bold">Kuantitas</h6>
+                    <small className="fw-bold">Kuantitas</small>
                 </CCol>
-                <CCol md={3}>
-                    <h6 className="fw-bold">Harga Per Unit</h6>
+                <CCol md={2}>
+                    <small className="fw-bold">Harga Per Unit</small>
                 </CCol>
-                <CCol md={3}>
-                    <h6 className="fw-bold">Jumlah</h6>
+                <CCol md={2}>
+                    <small className="fw-bold">Diskon</small>
+                </CCol>
+                <CCol md={2}>
+                    <small className="fw-bold">Jumlah</small>
                 </CCol>
             </CRow>
             {fields.map((item, index) => {
@@ -67,24 +81,25 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                                             value={value}
                                             ref={ref}
                                             aria-label="Inventaris"
-                                            options={[
-                                                "Inventaris",
-                                                { label: "Kalung A", value: "1" },
-                                                { label: "Kalung B", value: "2" },
-                                            ]}
-                                        />
+                                        >
+                                            <option>Pilih Inventory</option>
+                                            {state.inventory.map((inventory, index) => {
+                                                return (
+                                                    <option
+                                                        key={index}
+                                                        value={inventory.inventoryId}
+                                                        disabled={checkData(
+                                                            inventory.inventoryId,
+                                                            inventory.pricePerUnit,
+                                                        )}
+                                                    >
+                                                        {inventory.name}
+                                                    </option>
+                                                );
+                                            })}
+                                        </CFormSelect>
                                     )}
                                 />
-                                {/* <CButton
-                                    onClick={() => {
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            openModal: true,
-                                        }));
-                                    }}
-                                >
-                                    <CIcon icon={cilSearch} />
-                                </CButton> */}
                             </CInputGroup>
                         </CCol>
                         <CCol md={2} className="mb-3">
@@ -104,9 +119,25 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                             />
                         </CCol>
 
-                        <CCol md={3} className="mb-3">
+                        <CCol md={2} className="mb-3">
                             <Controller
                                 name={`item.${index}.pricePerUnit`}
+                                control={control}
+                                render={({ field: { onChange, onBlur, value, ref } }) => (
+                                    <CFormInput
+                                        size="sm"
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        value={value}
+                                        ref={ref}
+                                        disabled
+                                    />
+                                )}
+                            />
+                        </CCol>
+                        <CCol md={2} className="mb-3">
+                            <Controller
+                                name={`item.${index}.discount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -119,7 +150,7 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                                 )}
                             />
                         </CCol>
-                        <CCol md={3} className="mb-3">
+                        <CCol md={2} className="mb-3">
                             <Controller
                                 name={`item.${index}.amount`}
                                 control={control}
@@ -150,7 +181,7 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                 type="button"
                 color="secondary"
                 onClick={() => {
-                    append({ name: "", quantity: 0, pricePerUnit: 0, amount: 0 });
+                    append({ name: "", quantity: 0, pricePerUnit: 0, discount: 0, amount: 0 });
                 }}
             >
                 Tambah
