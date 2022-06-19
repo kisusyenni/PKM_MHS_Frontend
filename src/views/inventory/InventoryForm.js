@@ -7,6 +7,7 @@ import {
     CCardBody,
     CCardHeader,
     CForm,
+    CFormCheck,
     CFormInput,
     CFormLabel,
     CSpinner,
@@ -43,6 +44,7 @@ const InventoryForm = ({ title, editMode }) => {
             name: "",
             quantity: 0,
             sellingPrice: 0,
+            isService: false,
         },
         mode: "all",
     });
@@ -190,28 +192,22 @@ const InventoryForm = ({ title, editMode }) => {
                                 )}
                             />
                             <span className="invalid-feedback">{errors.name?.message}</span>
-                        </div>
-                        <div className="mb-3">
-                            <CFormLabel htmlFor="quantity">Jumlah</CFormLabel>
                             <Controller
-                                name="quantity"
+                                name="isService"
                                 control={control}
-                                rules={{
-                                    required: "Jumlah tidak boleh kosong",
-                                }}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
-                                        type="number"
+                                    <CFormCheck
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
-                                        invalid={errors.hasOwnProperty("quantity")}
+                                        id="isService"
+                                        label="Inventori jasa"
                                     />
                                 )}
                             />
-                            <span className="invalid-feedback">{errors.quantity?.message}</span>
                         </div>
+
                         <div className="mb-3">
                             <CFormLabel htmlFor="sellingPrice">Harga Jual</CFormLabel>
                             <Controller
