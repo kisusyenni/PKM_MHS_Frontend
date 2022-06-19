@@ -3,8 +3,10 @@ import CIcon from "@coreui/icons-react";
 import {
     cilBook,
     cilCart,
+    cilFaceDead,
     cilList,
     cilMoney,
+    cilShareBoxed,
     cilSpeedometer,
     cilTruck,
     cilUser,
@@ -93,6 +95,12 @@ const _nav = [
                 to: "/pengeluaran/tambah",
             },
         ],
+    },
+    {
+        component: CNavItem,
+        name: "Stock Opname",
+        to: "/stock-opname",
+        icon: <CIcon icon={cilFaceDead} customClassName="nav-icon" />,
     },
     {
         component: CNavTitle,
