@@ -7,17 +7,15 @@ const AddPurchase = () => {
     const navigate = useNavigate();
     return (
         <>
-            <CContainer>
-                <CButton
-                    className="mb-3"
-                    onClick={() => {
-                        navigate(-1);
-                    }}
-                >
-                    Back
-                </CButton>
-                <PurchaseForm />
-            </CContainer>
+            <CButton
+                className="mb-3"
+                onClick={() => {
+                    navigate(-1);
+                }}
+            >
+                Back
+            </CButton>
+            <PurchaseForm />
         </>
     );
 };
