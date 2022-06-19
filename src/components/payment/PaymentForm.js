@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import StatusAlert from "src/helper/StatusAlert";
 
-const PaymentForm = ({ type, purchaseId, total }) => {
+const PaymentForm = ({ type, id, total }) => {
     const date = new Date();
 
     const [state, setState] = useState({
@@ -24,7 +24,6 @@ const PaymentForm = ({ type, purchaseId, total }) => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            purchaseId: purchaseId,
             methodId: "1",
             date: date.toJSON().slice(0, 10),
             nominal: total,
@@ -41,12 +40,14 @@ const PaymentForm = ({ type, purchaseId, total }) => {
     };
 
     const onSubmit = (data) => {
-        console.log(data);
         if (type === "purchase") {
+            data.purchaseId = id;
             console.log("purchase payment");
         } else if (type === "sales") {
+            data.salesId = id;
             console.log("sales payment");
         }
+        console.log(data);
     };
 
     return (
