@@ -13,8 +13,9 @@ import {
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
+import { post, put } from "src/network/api/network";
 
-const SupplierForm = ({ action, openForm, handleClose, data, handleAlert }) => {
+const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) => {
     const {
         control,
         handleSubmit,
@@ -34,17 +35,37 @@ const SupplierForm = ({ action, openForm, handleClose, data, handleAlert }) => {
     });
 
     useEffect(() => {
-        if (action === "edit" && data) {
+        if (action === "edit" && supplier) {
             const inputs = ["name", "address", "telephone", "email"];
 
             inputs.forEach((value, index) => {
-                setValue(value, data[index + 1]);
+                setValue(value, supplier[index + 1]);
             });
         }
-    }, [action, data, setValue]);
+    }, [action, supplier, setValue]);
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        let response = null;
+        switch (action) {
+            case "add":
+                response = await post("/supplier", data);
+                break;
+
+            case "edit":
+                response = await put("/supplier", supplier[0], data);
+                break;
+
+            default:
+                break;
+        }
+
+        if (response.status === 200) {
+            handleAlert("success", response.data);
+        } else {
+            handleAlert("danger", response.data);
+        }
+
+        handleClose();
     };
 
     const closeForm = () => {
@@ -107,15 +128,20 @@ const SupplierForm = ({ action, openForm, handleClose, data, handleAlert }) => {
                             <Controller
                                 name="address"
                                 control={control}
+                                rules={{
+                                    required: "Alamat tidak boleh kosong",
+                                }}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
+                                        invalid={errors.hasOwnProperty("address")}
                                     />
                                 )}
                             />
+                            <span className="invalid-feedback">{errors.address?.message}</span>
                         </div>
 
                         <div className="mb-3">
@@ -123,6 +149,9 @@ const SupplierForm = ({ action, openForm, handleClose, data, handleAlert }) => {
                             <Controller
                                 name="telephone"
                                 control={control}
+                                rules={{
+                                    required: "Telepon tidak boleh kosong",
+                                }}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <NumberFormat
                                         customInput={CFormInput}
@@ -130,12 +159,11 @@ const SupplierForm = ({ action, openForm, handleClose, data, handleAlert }) => {
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
-                                        format="+62 ### #### ####"
-                                        allowEmptyFormatting
-                                        mask=""
+                                        invalid={errors.hasOwnProperty("telephone")}
                                     />
                                 )}
                             />
+                            <span className="invalid-feedback">{errors.telephone?.message}</span>
                         </div>
 
                         <div className="mb-3">
@@ -144,6 +172,7 @@ const SupplierForm = ({ action, openForm, handleClose, data, handleAlert }) => {
                                 name="email"
                                 control={control}
                                 rules={{
+                                    required: "Email tidak boleh kosong",
                                     pattern: {
                                         value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
                                         message: "Format email salah",

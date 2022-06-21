@@ -5,6 +5,7 @@ import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus } from "@coreui/icons";
 import SupplierForm from "./SupplierForm";
 import { get } from "src/network/api/network";
+import StatusAlert from "src/helper/StatusAlert";
 
 const Supplier = () => {
     const tableCols = [
@@ -104,6 +105,9 @@ const Supplier = () => {
 
     const [state, setState] = useState({
         openForm: false,
+        showAlert: false,
+        alertContent: null,
+        alertType: null,
         action: null,
         data: [],
         tableCols: tableCols,
@@ -152,8 +156,43 @@ const Supplier = () => {
         }));
     };
 
+    // Handle alert
+
+    const handleShowAlert = (type, content) => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: false,
+            showAlert: true,
+            alertContent: content,
+            alertType: type,
+            selectedAccount: null,
+            isReload: Math.random(),
+        }));
+
+        setTimeout(() => handleCloseAlert(), 3000);
+    };
+
+    const handleCloseAlert = () => {
+        setState((prevState) => ({
+            ...prevState,
+            showAlert: false,
+            alertContent: null,
+            selectedAccount: null,
+        }));
+    };
+
     return (
         <>
+            {state.showAlert ? (
+                <StatusAlert
+                    showAlert={state.showAlert}
+                    type={state.alertType}
+                    content={state.alertContent}
+                    closeAlert={handleCloseAlert}
+                />
+            ) : (
+                <></>
+            )}
             <MUIDataTable
                 title={"Daftar Supplier"}
                 data={state.data}
@@ -166,7 +205,8 @@ const Supplier = () => {
                     openForm={state.openForm}
                     action={state.action}
                     handleClose={handleClose}
-                    data={state.selectedSupplier}
+                    supplier={state.selectedSupplier}
+                    handleAlert={handleShowAlert}
                 />
             )}
         </>
