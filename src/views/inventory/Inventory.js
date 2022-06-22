@@ -183,7 +183,7 @@ const Inventory = () => {
             showAlert: true,
             alertContent: content,
             alertType: type,
-            selectedAccount: null,
+            selectedInventory: null,
             isReload: Math.random(),
         }));
 
@@ -195,7 +195,7 @@ const Inventory = () => {
             ...prevState,
             showAlert: false,
             alertContent: null,
-            selectedAccount: null,
+            selectedInventory: null,
         }));
     };
 
