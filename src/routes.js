@@ -21,6 +21,10 @@ const AddSales = React.lazy(() => import("./views/sales/sales-form/AddSales"));
 const Expense = React.lazy(() => import("./views/expense/Expense"));
 const AddExpense = React.lazy(() => import("./views/expense/AddExpense"));
 
+const StockOpname = React.lazy(() => import("./views/stock-opname/StockOpname"));
+const StockOpnameDetail = React.lazy(() => import("./views/stock-opname/StockOpnameDetail"));
+const AddStockOpname = React.lazy(() => import("./views/stock-opname/AddStockOpname"));
+
 const routes = [
     { path: "/", exact: true, name: "Home" },
     { path: "/dashboard", name: "Dashboard", element: Dashboard },
@@ -43,6 +47,10 @@ const routes = [
 
     { path: "/pengeluaran", name: "Pengeluaran", element: Expense },
     { path: "/pengeluaran/tambah", name: "Tambah Pengeluaran", element: AddExpense },
+
+    { path: "/stock-opname", name: "Stock Opname", element: StockOpname },
+    { path: "/stock-opname/:id", name: "Detail Stock Opname", element: StockOpnameDetail },
+    { path: "/stock-opname/tambah", name: "Tambah Stock Opname", element: AddStockOpname },
 ];
 
 export default routes;
