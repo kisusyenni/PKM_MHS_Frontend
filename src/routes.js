@@ -2,6 +2,7 @@ import React from "react";
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const EditStore = React.lazy(() => import("./views/store/EditStore"));
 const Report = React.lazy(() => import("./views/reports/Report"));
+const BalanceSheet = React.lazy(() => import("./views/reports/balancesheet/BalanceSheet"));
 
 const Supplier = React.lazy(() => import("./views/supplier/Supplier"));
 
@@ -25,6 +26,7 @@ const routes = [
     { path: "/dashboard", name: "Dashboard", element: Dashboard },
     { path: "/edit-toko", name: "Edit Toko", element: EditStore },
     { path: "/laporan", name: "Laporan", element: Report },
+    { path: "/laporan/neraca", name: "Neraca Keuangan", element: BalanceSheet },
     { path: "/supplier", name: "Supplier", element: Supplier },
 
     { path: "/inventaris", name: "Inventaris", element: Inventory },

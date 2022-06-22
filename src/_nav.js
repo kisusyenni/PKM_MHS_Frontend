@@ -102,15 +102,11 @@ const _nav = [
         to: "/stock-opname",
         icon: <CIcon icon={cilFaceDead} customClassName="nav-icon" />,
     },
-    {
-        component: CNavTitle,
-        name: "Laporan",
-    },
 
     {
         component: CNavItem,
         name: "Laporan",
-        to: "/laporan",
+        to: "/laporan/neraca",
         icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
     },
     {
