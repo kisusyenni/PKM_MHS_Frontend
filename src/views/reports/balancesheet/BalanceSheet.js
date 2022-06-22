@@ -1,332 +1,243 @@
-import React from "react";
-import MUIDataTable from "mui-datatables";
-import { CButton } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { cilPlus } from "@coreui/icons";
+import {
+    CButton,
+    CCard,
+    CCardBody,
+    CCardHeader,
+    CCol,
+    CForm,
+    CFormInput,
+    CFormLabel,
+    CInputGroup,
+    CInputGroupText,
+    CRow,
+    CTable,
+    CTableBody,
+    CTableDataCell,
+    CTableHead,
+    CTableHeaderCell,
+    CTableRow,
+} from "@coreui/react";
+import { cilSearch } from "@coreui/icons";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
+import BalanceSheetExcel from "./BalanceSheetExcel";
 
 const BalanceSheet = () => {
-    const title = "Jurnal Umum";
+    const date = new Date();
     const navigate = useNavigate();
-    const balanceSheetList = {
-        startDate: "",
-        endDate: "",
-        assets: {
-            name: "Assets",
-            total: 75853045.14192998,
-            data: {
-                bank: {
-                    name: "Kas & Bank",
-                    total: 2347307.837839998,
-                    data: [
-                        {
-                            account_id: 1,
-                            net: -19838854.14414,
-                            account: {
-                                id: 1,
-                                name: "Kas",
-                                ref_code: "1-10001",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 2,
-                            net: 20268628.91892,
-                            account: {
-                                id: 2,
-                                name: "Rekening Bank",
-                                ref_code: "1-10002",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 3,
-                            net: 1917533.06306,
-                            account: {
-                                id: 3,
-                                name: "Giro",
-                                ref_code: "1-10003",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                    ],
-                },
-                current_assets: {
-                    name: "Aset Lancar",
-                    total: 73387719.28605999,
-                    data: [
-                        {
-                            account_id: 21,
-                            net: 37367228.55857,
-                            account: {
-                                id: 21,
-                                name: "Piutang Usaha",
-                                ref_code: "1-10100",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 23,
-                            net: 15303201.53154,
-                            account: {
-                                id: 23,
-                                name: "Cadangan Kerugian Piutang",
-                                ref_code: "1-10102",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 31,
-                            net: 18253913.61035,
-                            account: {
-                                id: 31,
-                                name: "Persediaan Barang",
-                                ref_code: "1-10200",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 43,
-                            net: 20720.72072,
-                            account: {
-                                id: 43,
-                                name: "Dana Belum Disetor",
-                                ref_code: "1-10400",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 47,
-                            net: 2442654.86488,
-                            account: {
-                                id: 47,
-                                name: "PPN Masukan",
-                                ref_code: "1-10500",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                    ],
-                },
-                fixed_assets: {
-                    name: "Aset Tetap",
-                    total: 0,
-                    data: [],
-                },
-                depreciation: {
-                    name: "Depresiasi & Amortisasi",
-                    total: 118018.01803,
-                    data: [
-                        {
-                            account_id: 61,
-                            net: 55855.85586,
-                            account: {
-                                id: 61,
-                                name: "Akumulasi Penyusutan - Bangunan",
-                                ref_code: "1-10751",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 66,
-                            net: 12612.61262,
-                            account: {
-                                id: 66,
-                                name: "Akumulasi Penyusutan - Aset Sewa Guna Usaha",
-                                ref_code: "1-10756",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 67,
-                            net: 49549.54955,
-                            account: {
-                                id: 67,
-                                name: "Akumulasi Amortisasi",
-                                ref_code: "1-10757",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                    ],
-                },
-                other_assets: {
-                    name: "Lainnya",
-                    total: 0,
-                    data: [],
-                },
-            },
+
+    const [state, setState] = useState({
+        data: null,
+        isReload: null,
+    });
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            startDate: date.toJSON().slice(0, 10),
+            endDate: date.toJSON().slice(0, 10),
         },
-        liabilities_equity: {
-            name: "Liabilitas and Modal",
-            total: 75853045.14192,
+        mode: "all",
+    });
+
+    const onSubmit = () => {};
+
+    const getBalanceSheet = () => {
+        setState((prevState) => ({
+            ...prevState,
             data: {
-                current_liabilities: {
-                    name: "Liabilitas Jangka Pendek",
-                    total: 36169113.51349,
-                    data: [
+                startDate: "20/05/2022",
+                endDate: "20/06/2022",
+                previousBalance: 1000000,
+                profitLoss: 500000,
+                income: {
+                    total: 500000,
+                    list: [
                         {
-                            account_id: 81,
-                            net: 24163745.85584,
-                            account: {
-                                id: 81,
-                                name: "Hutang Usaha",
-                                ref_code: "2-20100",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 82,
-                            net: 6268913.06307,
-                            account: {
-                                id: 82,
-                                name: "Hutang Belum Ditagih",
-                                ref_code: "2-20101",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 94,
-                            net: -28828.82883,
-                            account: {
-                                id: 94,
-                                name: "Pendapatan Diterima Di Muka",
-                                ref_code: "2-20203",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 910,
-                            net: 5713031.17116,
-                            account: {
-                                id: 910,
-                                name: "PPN Keluaran",
-                                ref_code: "2-20500",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
-                        },
-                        {
-                            account_id: 916,
-                            net: 52252.25225,
-                            account: {
-                                id: 916,
-                                name: "Hutang dari Pemegang Saham",
-                                ref_code: "2-20600",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
+                            name: "Penjualan Inventori",
+                            nominal: 500000,
                         },
                     ],
                 },
-                equity: {
-                    name: "Perubahan Modal",
-                    total: 39683931.62843001,
-                    data: [
+                expense: {
+                    total: -1000000,
+                    list: [
                         {
-                            account_id: 111,
-                            net: 50450.45045,
-                            account: {
-                                id: 111,
-                                name: "Modal Saham",
-                                ref_code: "3-30000",
-                                currency_id: null,
-                                parent_id: null,
-                                is_parent: 0,
-                            },
+                            name: "Pembelian Inventori",
+                            nominal: -500000,
                         },
                         {
-                            account_id: 0,
-                            name: "earnings_up_to_last_period",
-                            net: 0,
-                            account: {
-                                id: 0,
-                                name: "Pendapatan sampai periode terakhir",
-                                ref_code: "",
-                            },
-                        },
-                        {
-                            account_id: 0,
-                            name: "current_period_earnings",
-                            net: 39633481.177980006,
-                            account: {
-                                id: 0,
-                                name: "Pendapatan periode ini",
-                                ref_code: "",
-                            },
+                            name: "Pengeluaran lainnya",
+                            nominal: -500000,
                         },
                     ],
                 },
             },
-        },
+        }));
     };
 
-    const balanceSheetTableCols = [
-        {
-            name: "transId",
-            label: "transId",
-            options: {
-                filter: false,
-                sort: false,
-            },
-        },
-    ];
+    useEffect(() => {
+        getBalanceSheet();
+    }, [state.isReload]);
 
-    const balanceSheetTableOptions = {
-        selectableRows: "single",
-        selectableRowsHideCheckboxes: true,
-        elevation: 1,
-        download: false,
-        print: false,
-        viewColumns: false,
-        sort: true,
-        customToolbar: () => (
-            <>
-                <CButton
-                    onClick={() => {
-                        navigate("/jurnal/tambah");
-                    }}
-                >
-                    <CIcon className="me-2" icon={cilPlus} /> Input Jurnal
-                </CButton>
-            </>
-        ),
-    };
     return (
-        <MUIDataTable
-            title={title}
-            data={balanceSheetList.data}
-            columns={balanceSheetTableCols}
-            options={balanceSheetTableOptions}
-        />
+        <>
+            <CCard className="my-3">
+                <CCardHeader>
+                    <CRow className="align-items-center justify-content-between">
+                        <CCol md={6}>
+                            <h1>Neraca</h1>
+                        </CCol>
+                        <CCol>
+                            <BalanceSheetExcel
+                                data={state.data}
+                                filename={`Neraca Keuangan Periode ${state.startDate} - ${state.endDate}`}
+                            />
+                        </CCol>
+                    </CRow>
+                </CCardHeader>
+                <CCardBody>
+                    <CRow className="mb-3">
+                        <CCol md={6}>
+                            <CForm onSubmit={handleSubmit(onSubmit)}>
+                                <CInputGroup>
+                                    <CInputGroupText>Periode</CInputGroupText>
+                                    <Controller
+                                        name="startDate"
+                                        control={control}
+                                        render={({ field: { onChange, onBlur, value, ref } }) => (
+                                            <CFormInput
+                                                type="date"
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                                value={value}
+                                                ref={ref}
+                                            />
+                                        )}
+                                    />
+                                    <Controller
+                                        name="endDate"
+                                        control={control}
+                                        render={({ field: { onChange, onBlur, value, ref } }) => (
+                                            <CFormInput
+                                                type="date"
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                                value={value}
+                                                ref={ref}
+                                            />
+                                        )}
+                                    />
+                                    <CButton type="submit">
+                                        <CIcon icon={cilSearch} />
+                                    </CButton>
+                                </CInputGroup>
+                            </CForm>
+                        </CCol>
+                    </CRow>
+                    <CTable bordered>
+                        <CTableBody>
+                            <CTableRow color="secondary">
+                                <CTableHeaderCell>Saldo Periode Sebelum</CTableHeaderCell>
+                                <CTableDataCell>
+                                    <NumberFormat
+                                        value={state.previousBalance}
+                                        displayType="text"
+                                        allowLeadingZeros={false}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
+                                    />
+                                </CTableDataCell>
+                            </CTableRow>
+
+                            <CTableRow color="secondary">
+                                <CTableHeaderCell colSpan={2}>Pendapatan</CTableHeaderCell>
+                            </CTableRow>
+                            {state.data?.income?.list.map((value, index) => {
+                                return (
+                                    <CTableRow key={index}>
+                                        <CTableDataCell>{value.name}</CTableDataCell>
+                                        <CTableDataCell>
+                                            <NumberFormat
+                                                value={value.nominal}
+                                                displayType="text"
+                                                allowLeadingZeros={false}
+                                                thousandSeparator={true}
+                                                prefix={"Rp"}
+                                            />
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                );
+                            })}
+                            <CTableRow>
+                                <CTableHeaderCell>Total</CTableHeaderCell>
+                                <CTableDataCell className="text-success">
+                                    <NumberFormat
+                                        value={state.data?.income?.total}
+                                        displayType="text"
+                                        allowLeadingZeros={false}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
+                                    />
+                                </CTableDataCell>
+                            </CTableRow>
+
+                            <CTableRow color="secondary">
+                                <CTableHeaderCell colSpan={2}>Pengeluaran</CTableHeaderCell>
+                            </CTableRow>
+
+                            {state.data?.expense?.list.map((value, index) => {
+                                return (
+                                    <CTableRow key={index}>
+                                        <CTableDataCell>{value.name}</CTableDataCell>
+                                        <CTableDataCell>
+                                            <NumberFormat
+                                                value={value.nominal}
+                                                displayType="text"
+                                                allowLeadingZeros={false}
+                                                thousandSeparator={true}
+                                                prefix={"Rp"}
+                                            />
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                );
+                            })}
+
+                            <CTableRow>
+                                <CTableHeaderCell>Total</CTableHeaderCell>
+                                <CTableDataCell className="text-danger">
+                                    <NumberFormat
+                                        value={state.data?.expense?.total}
+                                        displayType="text"
+                                        allowLeadingZeros={false}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
+                                    />
+                                </CTableDataCell>
+                            </CTableRow>
+                            <CTableRow color="dark">
+                                <CTableHeaderCell>Total Laba Rugi</CTableHeaderCell>
+                                <CTableHeaderCell className="text-success">
+                                    <NumberFormat
+                                        value={state.data?.profitLoss}
+                                        displayType="text"
+                                        allowLeadingZeros={false}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
+                                    />
+                                </CTableHeaderCell>
+                            </CTableRow>
+                        </CTableBody>
+                    </CTable>
+                </CCardBody>
+            </CCard>
+        </>
     );
 };
 
