@@ -23,7 +23,9 @@ const AddExpense = React.lazy(() => import("./views/expense/AddExpense"));
 
 const StockOpname = React.lazy(() => import("./views/stock-opname/StockOpname"));
 const StockOpnameDetail = React.lazy(() => import("./views/stock-opname/StockOpnameDetail"));
-const AddStockOpname = React.lazy(() => import("./views/stock-opname/AddStockOpname"));
+const AddStockOpname = React.lazy(() =>
+    import("./views/stock-opname/stock-opname-form/AddStockOpname"),
+);
 
 const routes = [
     { path: "/", exact: true, name: "Home" },
