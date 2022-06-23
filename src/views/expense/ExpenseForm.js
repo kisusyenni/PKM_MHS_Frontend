@@ -98,7 +98,7 @@ const ExpenseForm = ({ title, editMode }) => {
             disabled: true,
         }));
 
-        data.sellingPrice = state.sellingPrice;
+        data.total = state.total;
 
         // edit or add form
         // edit form
@@ -147,6 +147,7 @@ const ExpenseForm = ({ title, editMode }) => {
                     reset();
                 }, 2000);
             } else {
+                console.log(response);
                 // show error
                 setState((prevState) => ({
                     ...prevState,
