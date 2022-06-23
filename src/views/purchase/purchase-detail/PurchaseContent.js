@@ -71,7 +71,7 @@ const PurchaseContent = ({ data }) => {
                             </CCol>
                             <CCol md={4}>
                                 <h6>Supplier</h6>
-                                <p>{data?.supplier?.name}</p>
+                                <p>{data?.tbl_supplier?.name}</p>
                             </CCol>
                         </CRow>
                         <CTable bordered>
@@ -85,9 +85,9 @@ const PurchaseContent = ({ data }) => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {data.detail.map((detail, index) => (
+                                {data.tbl_purchase_details.map((detail, index) => (
                                     <CTableRow key={index}>
-                                        <CTableDataCell>{detail.inventory.name}</CTableDataCell>
+                                        <CTableDataCell>{detail.tbl_inventory.name}</CTableDataCell>
                                         <CTableDataCell scope="row">
                                             {detail.quantityBuy}
                                         </CTableDataCell>
