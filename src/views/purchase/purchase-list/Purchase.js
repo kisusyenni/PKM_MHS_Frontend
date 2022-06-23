@@ -1,78 +1,28 @@
 import { CNav, CNavItem, CNavLink, CTabContent } from "@coreui/react";
 import React, { useEffect, useState } from "react";
+import { get } from "src/network/api/network";
 import PurchaseTable from "./PurchaseTable";
 
 const Purchase = () => {
-    const [activeKey, setActiveKey] = useState(1);
-
-    const all = [];
-
     const [state, setState] = useState({
-        data: {
-            total: 0,
-            data: [
-                {
-                    purchaseId: 371,
-                    refNumber: "PU00045",
-                    supplierId: 44,
-                    transDate: "2022-05-05",
-                    dueDate: "2022-05-16",
-                    status: 1,
-                    totalPayment: 807000,
-                    paidNominal: 0,
-                    description: "",
-                    supplier: {
-                        supplierId: 44,
-                        name: "Laila Lestari Haryanto",
-                        address: "Kpg. Merdeka No. 815, Magelang 97621, Kalbar",
-                        telephone: "624547586824",
-                        email: "lantar04@gmail.com",
-                    },
-                },
-                {
-                    purchaseId: 406,
-                    refNumber: "PI/00056",
-                    supplierId: 7,
-                    transDate: "2022-05-04",
-                    dueDate: "2022-05-17",
-                    status: 3,
-                    totalPayment: 2392000,
-                    paidNominal: 2392000,
-                    description: "",
-                    supplier: {
-                        supplierId: 7,
-                        name: "Hesti Pratiwi Kusumo",
-                        email: "mwahyuni@mandala.web.id",
-                        telephone: "626571030831",
-                        address: "Kpg. Dago No. 729, Yogyakarta 11828, Sumut",
-                    },
-                },
-                {
-                    purchaseId: 348,
-                    refNumber: "PI/00043",
-                    supplierId: 12,
-                    transDate: "2022-05-03",
-                    dueDate: "2022-05-09",
-                    status: 2,
-                    totalPayment: 585780,
-                    paidNominal: 10780,
-                    description: "",
-                    supplier: {
-                        supplierId: 12,
-                        name: "Carla Nurdiyanti Putra",
-                        email: "keisha.wacana@yahoo.com",
-                        telephone: "622111660276",
-                        address: "Ki. Baja No. 452, Semarang 31164, Pabar",
-                    },
-                },
-            ],
-        },
+        activeKey: 1,
+        data: [],
     });
 
+    const getPurchaseList = async () => {
+        const response = await get("/purchase");
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+            }));
+        }
+    };
     useEffect(() => {
-        switch (activeKey) {
+        switch (state.activeKey) {
             case 1:
                 console.log("semua");
+                getPurchaseList();
                 break;
 
             case 2:
@@ -94,7 +44,7 @@ const Purchase = () => {
             default:
                 break;
         }
-    }, [activeKey]);
+    }, [state.activeKey, state.isReload]);
 
     return (
         <>
@@ -102,8 +52,13 @@ const Purchase = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 1}
-                        onClick={() => setActiveKey(1)}
+                        active={state.activeKey === 1}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 1,
+                            }))
+                        }
                     >
                         Semua
                     </CNavLink>
@@ -111,8 +66,13 @@ const Purchase = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 2}
-                        onClick={() => setActiveKey(2)}
+                        active={state.activeKey === 2}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 2,
+                            }))
+                        }
                     >
                         Belum Dibayar
                     </CNavLink>
@@ -120,8 +80,13 @@ const Purchase = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 3}
-                        onClick={() => setActiveKey(3)}
+                        active={state.activeKey === 3}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 3,
+                            }))
+                        }
                     >
                         Dibayar Sebagian
                     </CNavLink>
@@ -129,8 +94,13 @@ const Purchase = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 4}
-                        onClick={() => setActiveKey(4)}
+                        active={state.activeKey === 4}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 4,
+                            }))
+                        }
                     >
                         Jatuh Tempo
                     </CNavLink>
@@ -138,15 +108,20 @@ const Purchase = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 5}
-                        onClick={() => setActiveKey(5)}
+                        active={state.activeKey === 5}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 5,
+                            }))
+                        }
                     >
                         Lunas
                     </CNavLink>
                 </CNavItem>
             </CNav>
             <CTabContent>
-                <PurchaseTable data={state.data.data} />
+                <PurchaseTable data={state.data} />
             </CTabContent>
         </>
     );

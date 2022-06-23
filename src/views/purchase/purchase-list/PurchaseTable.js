@@ -29,14 +29,14 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "supplierId",
+            name: "tbl_supplier",
             label: "Supplier",
             options: {
                 sort: true,
                 filter: false,
                 filterList: [],
                 customBodyRender: (value, tablemeta) => {
-                    return tablemeta.rowData[9]?.name;
+                    return value?.name ? value.name : "-";
                 },
             },
         },
@@ -66,7 +66,7 @@ const PurchaseTable = ({ data }) => {
                 filter: false,
                 filterList: [],
                 customBodyRender: (value, tablemeta) => {
-                    switch (tablemeta.rowData[5]) {
+                    switch (value) {
                         case 1:
                             return <CBadge color="danger">Belum Dibayar</CBadge>;
                         case 2:
@@ -80,7 +80,7 @@ const PurchaseTable = ({ data }) => {
             },
         },
         {
-            name: "paidNominal",
+            name: "dueNominal",
             label: "Sisa Tagihan",
             options: {
                 sort: true,
@@ -89,7 +89,7 @@ const PurchaseTable = ({ data }) => {
                 customBodyRender: (value, tablemeta) => {
                     return (
                         <NumberFormat
-                            value={tablemeta.rowData[7] - tablemeta.rowData[6]}
+                            value={value}
                             displayType={"text"}
                             thousandSeparator={true}
                             prefix={"Rp"}
