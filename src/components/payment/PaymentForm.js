@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import StatusAlert from "src/helper/StatusAlert";
+import { post } from "src/network/api/network";
 
 const PaymentForm = ({ type, id, total }) => {
     const date = new Date();
@@ -22,6 +23,7 @@ const PaymentForm = ({ type, id, total }) => {
         control,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm({
         defaultValues: {
             methodId: "1",
@@ -39,15 +41,43 @@ const PaymentForm = ({ type, id, total }) => {
         }));
     };
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
+        let response = null;
         if (type === "purchase") {
             data.purchaseId = id;
-            console.log("purchase payment");
+            response = await post("/purchase/payment", data);
         } else if (type === "sales") {
             data.salesId = id;
-            console.log("sales payment");
+            response = await post("/sales/payment", data);
         }
-        console.log(data);
+
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "success",
+                alertContent: response.data,
+            }));
+            setTimeout(() => {
+                closeAlert();
+                reset();
+            }, 2000);
+        } else {
+            // show error
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "danger",
+                alertContent: response.data,
+            }));
+            setTimeout(() => {
+                closeAlert();
+            }, 2000);
+        }
     };
 
     return (
