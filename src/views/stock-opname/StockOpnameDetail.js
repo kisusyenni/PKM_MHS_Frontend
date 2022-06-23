@@ -45,7 +45,7 @@ const StockOpnameDetail = () => {
                         quantityStart: 10,
                         quantityEnd: 7,
                         difference: 3,
-                        Description: "Expired",
+                        description: "Expired",
                         inventory: {
                             name: "Barang 01",
                         },
@@ -56,7 +56,7 @@ const StockOpnameDetail = () => {
                         quantityStart: 15,
                         quantityEnd: 8,
                         difference: 7,
-                        Description: "Hilang",
+                        description: "Hilang",
                         inventory: {
                             name: "Barang 02",
                         },
@@ -112,6 +112,7 @@ const StockOpnameDetail = () => {
                                 <CTableHeaderCell scope="col">Persediaan Awal</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Persediaan Akhir</CTableHeaderCell>
                                 <CTableHeaderCell scope="col">Selisih</CTableHeaderCell>
+                                <CTableHeaderCell scope="col">Keterangan</CTableHeaderCell>
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
@@ -121,6 +122,7 @@ const StockOpnameDetail = () => {
                                     <CTableDataCell>{detail.quantityStart}</CTableDataCell>
                                     <CTableDataCell>{detail.quantityEnd}</CTableDataCell>
                                     <CTableDataCell>{detail.difference}</CTableDataCell>
+                                    <CTableDataCell>{detail.description}</CTableDataCell>
                                 </CTableRow>
                             ))}
                         </CTableBody>
