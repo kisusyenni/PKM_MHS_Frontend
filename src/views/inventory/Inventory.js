@@ -129,7 +129,7 @@ const Inventory = () => {
                         navigate("/inventaris/tambah");
                     }}
                 >
-                    <CIcon className="me-2" icon={cilPlus} /> Tambah Inventaris
+                    <CIcon className="me-2" icon={cilPlus} /> Tambah
                 </CButton>
             </>
         ),

@@ -97,7 +97,7 @@ const Supplier = () => {
         customToolbar: () => (
             <>
                 <CButton onClick={handleAdd}>
-                    <CIcon className="me-2" icon={cilPlus} /> Tambah Supplier
+                    <CIcon className="me-2" icon={cilPlus} /> Tambah
                 </CButton>
             </>
         ),
