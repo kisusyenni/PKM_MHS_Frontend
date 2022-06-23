@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
 import NumberFormat from "react-number-format";
+import { get } from "src/network/api/network";
 
-const PaymentList = ({ type, status }) => {
+const PaymentList = ({ type, id }) => {
     const tableCols = [
         {
             name: "purchasePaymentId",
@@ -61,29 +62,14 @@ const PaymentList = ({ type, status }) => {
             },
         },
         {
-            name: "methodId",
+            name: "tbl_payment_method",
             label: "Metode",
             options: {
                 sort: true,
                 filter: false,
                 filterList: [],
                 customBodyRender: (value, tablemeta) => {
-                    switch (value) {
-                        case 1:
-                            return "Cash";
-
-                        case 2:
-                            return "Kartu Debit";
-
-                        case 3:
-                            return "Kartu Kredit";
-
-                        case 4:
-                            return "E-money/Qris";
-
-                        default:
-                            return "Tidak tercatat";
-                    }
+                    return value?.name;
                 },
             },
         },
@@ -101,23 +87,20 @@ const PaymentList = ({ type, status }) => {
     };
 
     const [state, setState] = useState({
-        data: [
-            {
-                purchasePaymentId: "1",
-                purchaseId: "1",
-                methodId: 1,
-                date: "6/16/2022",
-                code: "PY001",
-                nominal: 100000,
-            },
-        ],
+        data: [],
         isReload: null,
         columns: tableCols,
         options: tableOptions,
     });
 
-    const getPaymentList = () => {
-        console.log(type);
+    const getPaymentList = async () => {
+        const response = await get(`/${type}/payment/${id}`);
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+            }));
+        }
     };
 
     useEffect(() => {
