@@ -33,7 +33,7 @@ const PurchaseForm = () => {
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
             description: "",
-            item: [{ name: "", quantity: 0, pricePerUnit: 0, discount: 0, amount: 0 }],
+            item: [{ name: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 }],
             total: 0,
         },
         mode: "all",
@@ -207,7 +207,6 @@ const PurchaseForm = () => {
                             <PurchaseDetailForm
                                 control={control}
                                 watch={watch}
-                                errors={errors}
                                 setValue={setValue}
                             />
                         </CCardBody>
@@ -216,16 +215,6 @@ const PurchaseForm = () => {
                         </CCardFooter>
                     </CForm>
                 </CCard>
-
-                {/* {state.openModal ? (
-                <AccountModal
-                    openModal={state.openModal}
-                    handleClose={handleClose}
-                    selectAccount={selectAccount}
-                />
-            ) : (
-                <></>
-            )} */}
             </>
         </>
     );

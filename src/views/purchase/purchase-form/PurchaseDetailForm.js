@@ -3,11 +3,11 @@ import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CButton, CCol, CFormInput, CFormSelect, CInputGroup, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { Controller, useFieldArray, useWatch } from "react-hook-form";
+import { Controller, useFieldArray } from "react-hook-form";
 import CalcPurchaseDetail from "./CalcPurchaseDetail";
 import { get } from "src/network/api/network";
 
-const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
+const PurchaseDetailForm = ({ control, watch, setValue }) => {
     const [state, setState] = useState({
         openModal: false,
         selectedInventory: null,
@@ -35,15 +35,35 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
         }
     };
 
-    const checkData = (id, price) => {
-        const watchItem = watch("item");
+    const watchItem = watch("item");
+
+    const checkData = (id) => {
         const check = watchItem.some((value, index) => {
-            console.log(index);
-            // setValue(`item.${index}.quantity`, 1);
-            // setValue(`item.${index}.pricePerUnit`, price);
             return value.inventoryId === id;
         });
         return check;
+    };
+
+    const setPricePerUnit = (idx) => {
+        let price = 1000;
+        const check = watchItem.some((value, index) => {
+            price = state?.inventory[index]?.sellingPrice || 0;
+            return index === idx;
+        });
+        return check ? price : 0;
+    };
+
+    const setAmount = (idx) => {
+        let amount = 0;
+        const check = watchItem.some((value, index) => {
+            amount = (value.pricePerUnit - value.discount) * value.quantity;
+            return index === idx;
+        });
+        if (check) {
+            return amount;
+        } else {
+            return 0;
+        }
     };
 
     return (
@@ -88,10 +108,7 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                                                     <option
                                                         key={index}
                                                         value={inventory.inventoryId}
-                                                        disabled={checkData(
-                                                            inventory.inventoryId,
-                                                            inventory.pricePerUnit,
-                                                        )}
+                                                        disabled={checkData(inventory.inventoryId)}
                                                     >
                                                         {inventory.name}
                                                     </option>
@@ -130,7 +147,6 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
-                                        disabled
                                     />
                                 )}
                             />
@@ -159,7 +175,7 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                                         size="sm"
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        value={value}
+                                        value={setAmount(index)}
                                         ref={ref}
                                         disabled
                                     />
@@ -181,7 +197,7 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
                 type="button"
                 color="secondary"
                 onClick={() => {
-                    append({ name: "", quantity: 0, pricePerUnit: 0, discount: 0, amount: 0 });
+                    append({ name: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 });
                 }}
             >
                 Tambah
@@ -190,15 +206,6 @@ const PurchaseDetailForm = ({ control, watch, errors, setValue }) => {
             <CRow className="justify-content-end fw-bold">
                 <CCol xs={3}>Total</CCol>
                 <CCol xs={4}>
-                    {/* {total.reduce((result, item) => {
-                        console.log(typeof result);
-                        console.log(typeof item);
-                        if (item !== "") {
-                            return parseInt(result) + parseInt(item);
-                        }
-                        return parseInt(result) + 0;
-                    })} */}
-
                     <Controller
                         name={`total`}
                         control={control}
