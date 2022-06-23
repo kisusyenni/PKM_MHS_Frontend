@@ -1,5 +1,5 @@
 import React from "react";
-import { CButton, CContainer } from "@coreui/react";
+import { CButton } from "@coreui/react";
 import { useNavigate } from "react-router-dom";
 import PurchaseForm from "./PurchaseForm";
 
