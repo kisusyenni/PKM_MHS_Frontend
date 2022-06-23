@@ -97,7 +97,7 @@ const Inventory = () => {
                             >
                                 <CIcon icon={cilPen}></CIcon>
                             </CButton>
-                            <CButton
+                            {/* <CButton
                                 color="primary"
                                 variant="outline"
                                 onClick={() => {
@@ -105,7 +105,7 @@ const Inventory = () => {
                                 }}
                             >
                                 <CIcon icon={cilTrash}></CIcon>
-                            </CButton>
+                            </CButton> */}
                         </>
                     );
                 },

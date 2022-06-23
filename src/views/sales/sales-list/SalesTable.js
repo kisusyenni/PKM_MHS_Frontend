@@ -156,7 +156,7 @@ const SalesTable = ({ data }) => {
                         navigate("/penjualan/tambah");
                     }}
                 >
-                    <CIcon className="me-2" icon={cilPlus} /> Tambah Penjualan
+                    <CIcon className="me-2" icon={cilPlus} /> Tambah
                 </CButton>
             </>
         ),

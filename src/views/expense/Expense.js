@@ -77,40 +77,40 @@ const Expense = () => {
                 },
             },
         },
-        {
-            name: "action",
-            label: "Aksi",
-            options: {
-                sort: false,
-                filter: false,
-                filterList: [],
-                customBodyRender: (value, tablemeta) => {
-                    return (
-                        <>
-                            <CButton
-                                color="primary"
-                                variant="outline"
-                                className="me-2"
-                                onClick={() => {
-                                    navigate(`/pengeluaran/ubah/${tablemeta.rowData[0]}`);
-                                }}
-                            >
-                                <CIcon icon={cilPen}></CIcon>
-                            </CButton>
-                            <CButton
-                                color="primary"
-                                variant="outline"
-                                onClick={() => {
-                                    handleShowConfirmation(tablemeta.rowData);
-                                }}
-                            >
-                                <CIcon icon={cilTrash}></CIcon>
-                            </CButton>
-                        </>
-                    );
-                },
-            },
-        },
+        // {
+        //     name: "action",
+        //     label: "Aksi",
+        //     options: {
+        //         sort: false,
+        //         filter: false,
+        //         filterList: [],
+        //         customBodyRender: (value, tablemeta) => {
+        //             return (
+        //                 <>
+        //                     <CButton
+        //                         color="primary"
+        //                         variant="outline"
+        //                         className="me-2"
+        //                         onClick={() => {
+        //                             navigate(`/pengeluaran/ubah/${tablemeta.rowData[0]}`);
+        //                         }}
+        //                     >
+        //                         <CIcon icon={cilPen}></CIcon>
+        //                     </CButton>
+        //                     <CButton
+        //                         color="primary"
+        //                         variant="outline"
+        //                         onClick={() => {
+        //                             handleShowConfirmation(tablemeta.rowData);
+        //                         }}
+        //                     >
+        //                         <CIcon icon={cilTrash}></CIcon>
+        //                     </CButton>
+        //                 </>
+        //             );
+        //         },
+        //     },
+        // },
     ];
 
     const tableOptions = {
@@ -129,7 +129,7 @@ const Expense = () => {
                         navigate("/pengeluaran/tambah");
                     }}
                 >
-                    <CIcon className="me-2" icon={cilPlus} /> Tambah Pengeluaran
+                    <CIcon className="me-2" icon={cilPlus} /> Tambah
                 </CButton>
             </>
         ),

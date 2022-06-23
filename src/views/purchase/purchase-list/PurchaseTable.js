@@ -176,7 +176,7 @@ const PurchaseTable = ({ data }) => {
                         navigate("/pembelian/tambah");
                     }}
                 >
-                    <CIcon className="me-2" icon={cilPlus} /> Tambah Pembelian
+                    <CIcon className="me-2" icon={cilPlus} /> Tambah
                 </CButton>
             </>
         ),
