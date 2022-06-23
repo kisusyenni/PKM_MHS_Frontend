@@ -12,12 +12,37 @@ import {
     CFormTextarea,
     CRow,
 } from "@coreui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import StatusAlert from "src/helper/StatusAlert";
+import { get, post } from "src/network/api/network";
 import PurchaseDetailForm from "./PurchaseDetailForm";
 
 const PurchaseForm = () => {
     const date = new Date();
+
+    const [state, setState] = useState({
+        loading: false,
+        disabled: true,
+        showAlert: false,
+        alertType: null,
+        alertContent: "",
+        supplier: [],
+    });
+
+    useEffect(() => {
+        getSupplierList();
+    }, [state.isReload]);
+
+    const getSupplierList = async () => {
+        const response = await get("/supplier");
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                supplier: response.data,
+            }));
+        }
+    };
 
     const {
         control,
@@ -25,27 +50,70 @@ const PurchaseForm = () => {
         formState: { errors },
         watch,
         setValue,
+        reset,
     } = useForm({
         defaultValues: {
-            transNo: "PU0001",
+            storeId: localStorage.getItem("storeId"),
+            refNumber: "PU0001",
             supplierId: "",
-            methodId: "",
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
             description: "",
-            item: [{ name: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 }],
-            total: 0,
+            itemDetail: [{ inventoryId: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 }],
+            totalPayment: 0,
+            dueNominal: 0,
+            status: 1,
         },
         mode: "all",
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        const response = await post("/purchase", data);
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "success",
+                alertContent: response.data,
+            }));
+            setTimeout(() => {
+                closeAlert();
+                reset();
+            }, 2000);
+        } else {
+            // show error
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "danger",
+                alertContent: response.data,
+            }));
+            setTimeout(() => {
+                closeAlert();
+            }, 2000);
+        }
+    };
+
+    const closeAlert = () => {
+        setState((prevState) => ({
+            ...prevState,
+            showAlert: false,
+        }));
     };
 
     return (
         <>
             <>
+                <StatusAlert
+                    showAlert={state.showAlert}
+                    type={state.alertType}
+                    content={state.alertContent}
+                    closeAlert={closeAlert}
+                />
                 <CCard>
                     <CCardHeader>
                         <h1 className="h4 m-3">Tambah Transaksi Pembelian</h1>
@@ -71,12 +139,19 @@ const PurchaseForm = () => {
                                                 ref={ref}
                                                 aria-label="Supplier"
                                                 invalid={errors.hasOwnProperty("supplierId")}
-                                                options={[
-                                                    "Supplier",
-                                                    { label: "Toko ABC", value: "1" },
-                                                    { label: "Toko BCD", value: "2" },
-                                                ]}
-                                            />
+                                            >
+                                                <option>Pilih Supplier</option>
+                                                {state?.supplier.map((supplier, index) => {
+                                                    return (
+                                                        <option
+                                                            key={index}
+                                                            value={supplier.supplierId}
+                                                        >
+                                                            {supplier.name}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </CFormSelect>
                                         )}
                                     />
                                     <span className="invalid-feedback">
@@ -89,7 +164,7 @@ const PurchaseForm = () => {
                                         <small>Nomor Pembelian</small>
                                     </CFormLabel>
                                     <Controller
-                                        name="transNo"
+                                        name="refNumber"
                                         control={control}
                                         rules={{
                                             required: "Nomor transaksi tidak boleh kosong",
@@ -100,46 +175,15 @@ const PurchaseForm = () => {
                                                 onBlur={onBlur}
                                                 value={value}
                                                 ref={ref}
-                                                invalid={errors.hasOwnProperty("transNo")}
+                                                invalid={errors.hasOwnProperty("refNumber")}
                                             />
                                         )}
                                     />
                                     <span className="invalid-feedback">
-                                        {errors.transNo?.message}
+                                        {errors.refNumber?.message}
                                     </span>
                                 </CCol>
-                                <CCol md={4} className="mb-3">
-                                    <CFormLabel className="fw-bold text-grey">
-                                        <small>Metode Pembayaran</small>
-                                    </CFormLabel>
-                                    <Controller
-                                        name="methodId"
-                                        control={control}
-                                        rules={{
-                                            required: "Wajib memilih metode pembayaran",
-                                        }}
-                                        render={({ field: { onChange, onBlur, value, ref } }) => (
-                                            <CFormSelect
-                                                onChange={onChange}
-                                                onBlur={onBlur}
-                                                value={value}
-                                                ref={ref}
-                                                aria-label="Metode Pembayaran"
-                                                invalid={errors.hasOwnProperty("methodId")}
-                                                options={[
-                                                    "Metode",
-                                                    { label: "Cash", value: "1" },
-                                                    { label: "Kartu Debit", value: "2" },
-                                                    { label: "Kartu Kredit", value: "3" },
-                                                    { label: "QRIS/E-Money", value: "4" },
-                                                ]}
-                                            />
-                                        )}
-                                    />
-                                    <span className="invalid-feedback">
-                                        {errors.methodId?.message}
-                                    </span>
-                                </CCol>
+                                <CCol md={4}></CCol>
                                 <CCol md={4} className="mb-3">
                                     <CFormLabel className="fw-bold text-grey">
                                         <small>Tanggal</small>
@@ -204,11 +248,7 @@ const PurchaseForm = () => {
                                 </CCol>
                             </CRow>
                             <hr />
-                            <PurchaseDetailForm
-                                control={control}
-                                watch={watch}
-                                setValue={setValue}
-                            />
+                            <PurchaseDetailForm control={control} setValue={setValue} />
                         </CCardBody>
                         <CCardFooter>
                             <CButton type="submit">Submit</CButton>

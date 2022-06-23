@@ -1,13 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CButton, CCol, CFormInput, CFormSelect, CInputGroup, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { Controller, useFieldArray } from "react-hook-form";
-import CalcPurchaseDetail from "./CalcPurchaseDetail";
+import { Controller, useFieldArray, useWatch } from "react-hook-form";
 import { get } from "src/network/api/network";
 
-const PurchaseDetailForm = ({ control, watch, setValue }) => {
+const PurchaseDetailForm = ({ control, setValue }) => {
     const [state, setState] = useState({
         openModal: false,
         selectedInventory: null,
@@ -18,7 +18,7 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "item",
+        name: "itemDetail",
     });
 
     useEffect(() => {
@@ -35,27 +35,19 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
         }
     };
 
-    const watchItem = watch("item");
+    const results = useWatch({ control, name: "itemDetail" });
+    let total = 0;
 
     const checkData = (id) => {
-        const check = watchItem.some((value, index) => {
+        const check = results.some((value, index) => {
             return value.inventoryId === id;
         });
         return check;
     };
 
-    const setPricePerUnit = (idx) => {
-        let price = 1000;
-        const check = watchItem.some((value, index) => {
-            price = state?.inventory[index]?.sellingPrice || 0;
-            return index === idx;
-        });
-        return check ? price : 0;
-    };
-
     const setAmount = (idx) => {
         let amount = 0;
-        const check = watchItem.some((value, index) => {
+        const check = results.some((value, index) => {
             amount = (value.pricePerUnit - value.discount) * value.quantity;
             return index === idx;
         });
@@ -65,6 +57,23 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
             return 0;
         }
     };
+
+    const output = () => {
+        let totalValue = 0;
+
+        for (let i = 0; i < results.length; i++) {
+            let count = (results[i].pricePerUnit - results[i].discount) * results[i].quantity;
+            totalValue += count;
+        }
+        total = totalValue;
+        return totalValue;
+    };
+
+    useEffect(() => {
+        output();
+        setValue("totalPayment", total);
+        setValue("dueNominal", total);
+    }, [results]);
 
     return (
         <>
@@ -91,7 +100,7 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
                         <CCol md={3} className="mb-3">
                             <CInputGroup>
                                 <Controller
-                                    name={`item.${index}.inventoryId`}
+                                    name={`itemDetail.${index}.inventoryId`}
                                     control={control}
                                     render={({ field: { onChange, onBlur, value, ref } }) => (
                                         <CFormSelect
@@ -121,7 +130,7 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
                         </CCol>
                         <CCol md={2} className="mb-3">
                             <Controller
-                                name={`item.${index}.quantity`}
+                                name={`itemDetail.${index}.quantity`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -138,7 +147,7 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
 
                         <CCol md={2} className="mb-3">
                             <Controller
-                                name={`item.${index}.pricePerUnit`}
+                                name={`itemDetail.${index}.pricePerUnit`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -153,7 +162,7 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
                         </CCol>
                         <CCol md={2} className="mb-3">
                             <Controller
-                                name={`item.${index}.discount`}
+                                name={`itemDetail.${index}.discount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -168,7 +177,7 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
                         </CCol>
                         <CCol md={2} className="mb-3">
                             <Controller
-                                name={`item.${index}.amount`}
+                                name={`itemDetail.${index}.amount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -197,7 +206,13 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
                 type="button"
                 color="secondary"
                 onClick={() => {
-                    append({ name: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 });
+                    append({
+                        inventoryId: "",
+                        quantity: 1,
+                        pricePerUnit: 0,
+                        discount: 0,
+                        amount: 0,
+                    });
                 }}
             >
                 Tambah
@@ -207,7 +222,7 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
                 <CCol xs={3}>Total</CCol>
                 <CCol xs={4}>
                     <Controller
-                        name={`total`}
+                        name={`totalPayment`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => (
                             <CFormInput
@@ -220,8 +235,6 @@ const PurchaseDetailForm = ({ control, watch, setValue }) => {
                             />
                         )}
                     />
-
-                    <CalcPurchaseDetail control={control} setValue={setValue} />
                 </CCol>
             </CRow>
         </>
