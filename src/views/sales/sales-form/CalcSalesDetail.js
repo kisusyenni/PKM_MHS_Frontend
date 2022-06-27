@@ -4,17 +4,15 @@ import React, { useEffect } from "react";
 import { useWatch } from "react-hook-form";
 
 const CalcSalesDetail = ({ control, setValue }) => {
-    const results = useWatch({ control, name: "item" });
+    const results = useWatch({ control, name: "itemDetail" });
     const discount = useWatch({ control, name: "discount" });
     let total = 0 - discount;
-    console.log(discount);
     const output = () => {
         let totalValue = 0;
 
         for (let i = 0; i < results.length; i++) {
             let count = results[i].quantity * results[i].pricePerUnit;
             totalValue += count;
-            // setValue(`item.${i}.amount`, count);
         }
 
         total = totalValue - discount;
