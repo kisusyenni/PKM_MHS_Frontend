@@ -53,7 +53,6 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
     };
 
     const setPrice = (id) => {
-        console.log(id);
         let price = 0;
         const check = state.inventory.some((value) => {
             price = value.sellingPrice;
@@ -92,10 +91,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                     render={({ field: { onChange, onBlur, value, ref } }) => (
                                         <CFormSelect
                                             size="sm"
-                                            onChange={(e) => {
-                                                onChange(e);
-                                                // setFocus(`itemDetail.${index}.quantity`);
-                                            }}
+                                            onChange={onChange}
                                             onBlur={(e) => {
                                                 onBlur(e);
                                                 setValue(
