@@ -32,7 +32,7 @@ const SalesForm = () => {
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
             description: "",
-            item: [{ name: "", quantity: 0, pricePerUnit: 0, amount: 0 }],
+            itemDetail: [{ name: "", quantity: 1, pricePerUnit: 0, amount: 0 }],
             subtotal: 0,
             total: 0,
             discount: 0,

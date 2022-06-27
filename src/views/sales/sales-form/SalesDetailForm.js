@@ -2,8 +2,9 @@
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CButton, CCol, CFormInput, CFormSelect, CInputGroup, CRow } from "@coreui/react";
-import React, { useState } from "react";
-import { Controller, useFieldArray } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, useFieldArray, useWatch } from "react-hook-form";
+import { get } from "src/network/api/network";
 import CalcSalesDetail from "./CalcSalesDetail";
 
 const SalesDetailForm = ({ control, watch, errors, setValue }) => {
@@ -11,12 +12,55 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
         openModal: false,
         selectedInventory: null,
         total: 0,
+        inventory: [],
     });
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "item",
+        name: "itemDetail",
     });
+
+    const getInventoryList = async () => {
+        const response = await get("/inventory");
+        if (response.status === 200) {
+            console.log(response.data);
+            setState((prevState) => ({
+                ...prevState,
+                inventory: response.data,
+            }));
+        }
+    };
+
+    useEffect(() => {
+        getInventoryList();
+    }, [state.isReload]);
+
+    const results = useWatch({ control, name: "itemDetail" });
+
+    const checkData = (id) => {
+        const check = results.some((value, index) => {
+            return value.inventoryId === id;
+        });
+        return check;
+    };
+
+    const setAmount = (idx) => {
+        let amount = 0;
+        const check = results.some((value, index) => {
+            amount = value.pricePerUnit * value.quantity;
+            return index === idx;
+        });
+        return check ? amount : 0;
+    };
+
+    const setPrice = (id) => {
+        let price = 0;
+        const check = state.inventory.some((value) => {
+            price = value.sellingPrice;
+            return value.inventoryId === id;
+        });
+        return check ? price : 0;
+    };
 
     return (
         <>
@@ -40,39 +84,43 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                         <CCol md={3} className="mb-3">
                             <CInputGroup>
                                 <Controller
-                                    name={`item.${index}.inventoryId`}
+                                    name={`itemDetail.${index}.inventoryId`}
                                     control={control}
                                     render={({ field: { onChange, onBlur, value, ref } }) => (
                                         <CFormSelect
                                             size="sm"
-                                            onChange={onChange}
+                                            onChange={(e) => {
+                                                onChange(e);
+                                                setValue(
+                                                    `itemDetail.${index}.pricePerUnit`,
+                                                    setPrice(value),
+                                                );
+                                            }}
                                             onBlur={onBlur}
                                             value={value}
                                             ref={ref}
                                             aria-label="Inventaris"
-                                            options={[
-                                                "Inventaris",
-                                                { label: "Kalung A", value: "1" },
-                                                { label: "Kalung B", value: "2" },
-                                            ]}
-                                        />
+                                        >
+                                            <option>Pilih Inventory</option>
+                                            {state.inventory.map((inventory, index) => {
+                                                return (
+                                                    <option
+                                                        key={index}
+                                                        value={inventory.inventoryId}
+                                                        disabled={checkData(inventory.inventoryId)}
+                                                    >
+                                                        {inventory.name}
+                                                    </option>
+                                                );
+                                            })}
+                                        </CFormSelect>
                                     )}
                                 />
-                                {/* <CButton
-                                    onClick={() => {
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            openModal: true,
-                                        }));
-                                    }}
-                                >
-                                    <CIcon icon={cilSearch} />
-                                </CButton> */}
                             </CInputGroup>
                         </CCol>
                         <CCol md={2} className="mb-3">
                             <Controller
-                                name={`item.${index}.quantity`}
+                                name={`itemDetail.${index}.quantity`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -89,7 +137,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
 
                         <CCol md={3} className="mb-3">
                             <Controller
-                                name={`item.${index}.pricePerUnit`}
+                                name={`itemDetail.${index}.pricePerUnit`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -98,20 +146,21 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
+                                        disabled
                                     />
                                 )}
                             />
                         </CCol>
                         <CCol md={3} className="mb-3">
                             <Controller
-                                name={`item.${index}.amount`}
+                                name={`itemDetail.${index}.amount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
                                         size="sm"
                                         onChange={onChange}
                                         onBlur={onBlur}
-                                        value={value}
+                                        value={setAmount(index)}
                                         ref={ref}
                                         disabled
                                     />
@@ -133,7 +182,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                 type="button"
                 color="secondary"
                 onClick={() => {
-                    append({ name: "", quantity: 0, pricePerUnit: 0, amount: 0 });
+                    append({ name: "", quantity: 1, pricePerUnit: 0, amount: 0 });
                 }}
             >
                 Tambah
