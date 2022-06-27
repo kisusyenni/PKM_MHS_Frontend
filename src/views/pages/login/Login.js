@@ -65,9 +65,11 @@ const Login = () => {
             const accessToken = response?.data?.authToken;
             const storeId = response?.data?.user.storeId;
             const isSetup = response?.data?.user.is_setup;
+            const userId = response?.data?.user.userId;
             localStorage.setItem("token", accessToken);
             localStorage.setItem("storeId", storeId);
             localStorage.setItem("isSetup", isSetup);
+            localStorage.setItem("userId", userId);
             setAuth({ accessToken: accessToken, storeId: storeId, isSetup: isSetup });
 
             // hide loading on button

@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
         accessToken: localStorage.getItem("token"),
         storeId: localStorage.getItem("storeId"),
         isSetup: localStorage.getItem("isSetup"),
+        userId: localStorage.getItem("userId"),
     });
 
     const logout = async () => {
@@ -15,10 +16,12 @@ export const AuthProvider = ({ children }) => {
             accessToken: null,
             storeId: null,
             isSetup: null,
+            userId: null,
         });
         localStorage.removeItem("token");
         localStorage.removeItem("storeId");
         localStorage.removeItem("isSetup");
+        localStorage.removeItem("userId");
     };
 
     return (
