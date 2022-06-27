@@ -74,8 +74,8 @@ const SalesContent = ({ data }) => {
                                 <CTableRow>
                                     <CTableHeaderCell scope="col">Inventaris</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Jumlah</CTableHeaderCell>
-                                    <CTableHeaderCell scope="col">Diskon</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Harga</CTableHeaderCell>
+                                    <CTableHeaderCell scope="col">Diskon</CTableHeaderCell>
                                     <CTableHeaderCell scope="col">Jumlah</CTableHeaderCell>
                                 </CTableRow>
                             </CTableHead>
@@ -88,7 +88,7 @@ const SalesContent = ({ data }) => {
                                         </CTableDataCell>
                                         <CTableDataCell>
                                             <NumberFormat
-                                                value={detail.discount}
+                                                value={detail.pricePerUnit}
                                                 displayType="text"
                                                 allowLeadingZeros={false}
                                                 thousandSeparator={true}
@@ -97,7 +97,7 @@ const SalesContent = ({ data }) => {
                                         </CTableDataCell>
                                         <CTableDataCell>
                                             <NumberFormat
-                                                value={detail.pricePerUnit}
+                                                value={detail.discount}
                                                 displayType="text"
                                                 allowLeadingZeros={false}
                                                 thousandSeparator={true}
@@ -119,6 +119,34 @@ const SalesContent = ({ data }) => {
                                     </CTableRow>
                                 ))}
 
+                                <CTableRow>
+                                    <CTableHeaderCell className="text-end" colSpan={4}>
+                                        Subtotal
+                                    </CTableHeaderCell>
+                                    <CTableDataCell>
+                                        <NumberFormat
+                                            value={data?.subtotal}
+                                            displayType="text"
+                                            allowLeadingZeros={false}
+                                            thousandSeparator={true}
+                                            prefix={"Rp"}
+                                        />
+                                    </CTableDataCell>
+                                </CTableRow>
+                                <CTableRow>
+                                    <CTableHeaderCell className="text-end" colSpan={4}>
+                                        Diskon
+                                    </CTableHeaderCell>
+                                    <CTableDataCell>
+                                        <NumberFormat
+                                            value={data?.discount}
+                                            displayType="text"
+                                            allowLeadingZeros={false}
+                                            thousandSeparator={true}
+                                            prefix={"Rp"}
+                                        />
+                                    </CTableDataCell>
+                                </CTableRow>
                                 <CTableRow>
                                     <CTableHeaderCell className="text-end" colSpan={4}>
                                         Total
