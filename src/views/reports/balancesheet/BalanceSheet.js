@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import CIcon from "@coreui/icons-react";
 import {
     CButton,
@@ -13,6 +14,7 @@ import {
     CRow,
     CTable,
     CTableBody,
+    CTableCaption,
     CTableDataCell,
     CTableHead,
     CTableHeaderCell,
@@ -24,6 +26,7 @@ import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import BalanceSheetExcel from "./BalanceSheetExcel";
+import DownloadPdf from "./DownloadPdf";
 
 const BalanceSheet = () => {
     const date = new Date();
@@ -32,6 +35,7 @@ const BalanceSheet = () => {
     const [state, setState] = useState({
         data: null,
         isReload: null,
+        filename: "Neraca Keuangan",
     });
 
     const {
@@ -54,7 +58,7 @@ const BalanceSheet = () => {
             data: {
                 startDate: "20/05/2022",
                 endDate: "20/06/2022",
-                previousBalance: 1000000,
+                previousBalance: 1000000.9999,
                 profitLoss: 500000,
                 income: {
                     total: 500000,
@@ -79,6 +83,7 @@ const BalanceSheet = () => {
                     ],
                 },
             },
+            filename: "Neraca Keuangan Periode 20/05/2022 - 20/06/2022",
         }));
     };
 
@@ -95,10 +100,8 @@ const BalanceSheet = () => {
                             <h1>Neraca</h1>
                         </CCol>
                         <CCol>
-                            <BalanceSheetExcel
-                                data={state.data}
-                                filename={`Neraca Keuangan Periode ${state.startDate} - ${state.endDate}`}
-                            />
+                            <BalanceSheetExcel data={state.data} filename={state.filename} />
+                            <DownloadPdf filename={state.filename} data={state.data} />
                         </CCol>
                     </CRow>
                 </CCardHeader>
@@ -141,13 +144,18 @@ const BalanceSheet = () => {
                             </CForm>
                         </CCol>
                     </CRow>
-                    <CTable bordered>
+                    <CTable bordered id="balance-sheet">
                         <CTableBody>
+                            <CTableRow>
+                                <CTableHeaderCell colSpan={2} className="h3 text-center">
+                                    {state.filename}
+                                </CTableHeaderCell>
+                            </CTableRow>
                             <CTableRow color="secondary">
                                 <CTableHeaderCell>Saldo Periode Sebelum</CTableHeaderCell>
                                 <CTableDataCell>
                                     <NumberFormat
-                                        value={state.previousBalance}
+                                        value={state?.data?.previousBalance}
                                         displayType="text"
                                         allowLeadingZeros={false}
                                         thousandSeparator={true}
