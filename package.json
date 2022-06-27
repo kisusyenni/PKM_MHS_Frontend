@@ -40,6 +40,8 @@
     "core-js": "^3.21.1",
     "currency.js": "^2.0.4",
     "file-saver": "^2.0.5",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.25",
     "mui-datatables": "^4.2.2",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
