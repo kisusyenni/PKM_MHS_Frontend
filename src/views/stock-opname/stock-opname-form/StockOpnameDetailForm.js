@@ -52,6 +52,15 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
         if (check) setValue(`itemDetail.${idx}.difference`, difference);
     };
 
+    const setQtyStart = (id) => {
+        let qty = 0;
+        const check = state.inventory.some((value) => {
+            qty = value.quantity;
+            return value.inventoryId === id;
+        });
+        return check ? qty : 0;
+    };
+
     return (
         <>
             <CRow className="mb-3 align-items-center">
@@ -83,7 +92,14 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                                     <CFormSelect
                                         size="sm"
                                         onChange={onChange}
-                                        onBlur={onBlur}
+                                        onBlur={(e) => {
+                                            onBlur(e);
+                                            setValue(
+                                                `itemDetail.${index}.qtyStart`,
+                                                setQtyStart(value),
+                                            );
+                                            setDifference(index);
+                                        }}
                                         value={value}
                                         ref={ref}
                                         aria-label="Inventaris"
