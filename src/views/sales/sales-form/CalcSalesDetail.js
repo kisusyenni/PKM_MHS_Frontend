@@ -11,7 +11,7 @@ const CalcSalesDetail = ({ control, setValue }) => {
         let totalValue = 0;
 
         for (let i = 0; i < results.length; i++) {
-            let count = results[i].quantity * results[i].pricePerUnit;
+            let count = results[i].quantity * (results[i].pricePerUnit - results[i].discount);
             totalValue += count;
         }
 
@@ -21,7 +21,8 @@ const CalcSalesDetail = ({ control, setValue }) => {
 
     useEffect(() => {
         setValue("subtotal", output);
-        setValue("total", total);
+        setValue("totalPayment", total);
+        setValue("dueNominal", total);
     }, [results, discount]);
 
     return <></>;
