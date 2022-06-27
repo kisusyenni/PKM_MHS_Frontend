@@ -2,16 +2,7 @@
 /* eslint-disable react/prop-types */
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import {
-    CButton,
-    CCol,
-    CFormInput,
-    CFormLabel,
-    CFormSelect,
-    CFormTextarea,
-    CInputGroup,
-    CRow,
-} from "@coreui/react";
+import { CButton, CCol, CFormInput, CFormSelect, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { Controller, useFieldArray, useWatch } from "react-hook-form";
 import { get } from "src/network/api/network";
@@ -20,6 +11,7 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
     const [state, setState] = useState({
         inventory: [],
         isReload: null,
+        currentIdx: 0,
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -56,11 +48,8 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
             difference = value.qtyStart - value.qtyEnd;
             return index === idx;
         });
-        if (check) {
-            return difference;
-        } else {
-            return 0;
-        }
+
+        if (check) setValue(`itemDetail.${idx}.difference`, difference);
     };
 
     return (
@@ -123,7 +112,10 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                                     <CFormInput
                                         size="sm"
                                         type="number"
-                                        onChange={onChange}
+                                        onChange={(e) => {
+                                            onChange(e);
+                                            setDifference(index);
+                                        }}
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
@@ -139,7 +131,10 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                                     <CFormInput
                                         size="sm"
                                         type="number"
-                                        onChange={onChange}
+                                        onChange={(e) => {
+                                            onChange(e);
+                                            setDifference(index);
+                                        }}
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
@@ -155,9 +150,12 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                                     <CFormInput
                                         size="sm"
                                         type="number"
-                                        onChange={onChange}
+                                        onChange={(e) => {
+                                            onChange(e);
+                                            setValue("difference", value);
+                                        }}
                                         onBlur={onBlur}
-                                        value={setDifference(index)}
+                                        value={value}
                                         ref={ref}
                                         disabled
                                     />
