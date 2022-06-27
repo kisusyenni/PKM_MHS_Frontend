@@ -8,14 +8,13 @@ import {
     CForm,
     CFormInput,
     CFormLabel,
-    CFormSelect,
     CFormTextarea,
     CRow,
 } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import StatusAlert from "src/helper/StatusAlert";
-import { get, post } from "src/network/api/network";
+import { post } from "src/network/api/network";
 import StockOpnameDetailForm from "./StockOpnameDetailForm";
 
 const StockOpnameForm = () => {
@@ -34,7 +33,6 @@ const StockOpnameForm = () => {
         control,
         handleSubmit,
         formState: { errors },
-        watch,
         setValue,
         reset,
     } = useForm({
@@ -57,35 +55,34 @@ const StockOpnameForm = () => {
     });
 
     const onSubmit = async (data) => {
-        console.log(data);
-        // const response = await post("/stock-opname", data);
-        // if (response.status === 200) {
-        //     setState((prevState) => ({
-        //         ...prevState,
-        //         loading: false,
-        //         disabled: false,
-        //         showAlert: true,
-        //         alertType: "success",
-        //         alertContent: response.data,
-        //     }));
-        //     setTimeout(() => {
-        //         closeAlert();
-        //         reset();
-        //     }, 2000);
-        // } else {
-        //     // show error
-        //     setState((prevState) => ({
-        //         ...prevState,
-        //         loading: false,
-        //         disabled: false,
-        //         showAlert: true,
-        //         alertType: "danger",
-        //         alertContent: response.data,
-        //     }));
-        //     setTimeout(() => {
-        //         closeAlert();
-        //     }, 2000);
-        // }
+        const response = await post("/stock-opname", data);
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "success",
+                alertContent: response.data,
+            }));
+            setTimeout(() => {
+                closeAlert();
+                reset();
+            }, 2000);
+        } else {
+            // show error
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "danger",
+                alertContent: response.data,
+            }));
+            setTimeout(() => {
+                closeAlert();
+            }, 2000);
+        }
     };
 
     const closeAlert = () => {
