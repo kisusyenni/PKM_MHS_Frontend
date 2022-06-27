@@ -53,7 +53,7 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
     const setDifference = (idx) => {
         let difference = 0;
         const check = watchItems.some((value, index) => {
-            difference = value.quantityStart - value.quantityEnd;
+            difference = value.qtyStart - value.qtyEnd;
             return index === idx;
         });
         if (check) {
@@ -117,7 +117,7 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                         </CCol>
                         <CCol className="mb-3">
                             <Controller
-                                name={`itemDetail.${index}.quantityStart`}
+                                name={`itemDetail.${index}.qtyStart`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -133,7 +133,7 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                         </CCol>
                         <CCol className="mb-3">
                             <Controller
-                                name={`itemDetail.${index}.quantityEnd`}
+                                name={`itemDetail.${index}.qtyEnd`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
@@ -196,8 +196,8 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                 onClick={() => {
                     append({
                         inventoryId: "",
-                        quantityStart: 1,
-                        quantityEnd: 0,
+                        qtyStart: 1,
+                        qtyEnd: 0,
                         difference: 0,
                         description: "",
                     });

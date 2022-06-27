@@ -140,30 +140,13 @@ const StockOpname = () => {
     }, [state.isReload]);
 
     const getStockOpnameList = async () => {
-        // const response = await get("/stock-opname");
-        // if (response.status === 200) {
-        //     setState((prevState) => ({
-        //         ...prevState,
-        //         data: response.data,
-        //     }));
-        // }
-
-        setState((prevState) => ({
-            ...prevState,
-            data: [
-                {
-                    stockOpnameId: 1,
-                    storeId: 1,
-                    userId: 1,
-                    date: "22/06/2022",
-                    description: "Audit bulan Juni 2022",
-                    user: {
-                        firstName: "Andi",
-                        lastName: "Budi",
-                    },
-                },
-            ],
-        }));
+        const response = await get("/stock-opname");
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+            }));
+        }
     };
 
     // Delete

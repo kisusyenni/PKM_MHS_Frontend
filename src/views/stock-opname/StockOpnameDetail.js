@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
     CButton,
     CCard,
@@ -15,6 +16,7 @@ import {
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
+import { get } from "src/network/api/network";
 
 const StockOpnameDetail = () => {
     const { id } = useParams();
@@ -25,45 +27,15 @@ const StockOpnameDetail = () => {
         isReload: null,
     });
 
-    const getStockOpnameDetail = () => {
-        setState((prevState) => ({
-            ...prevState,
-            data: {
-                stockOpnameId: 1,
-                storeId: 1,
-                userId: 1,
-                date: "22/06/2022",
-                description: "Audit bulan Juni 2022",
-                user: {
-                    firstName: "Andi",
-                    lastName: "Budi",
-                },
-                detail: [
-                    {
-                        stockOpnameDetailID: 1,
-                        inventoryId: 1,
-                        quantityStart: 10,
-                        quantityEnd: 7,
-                        difference: 3,
-                        description: "Expired",
-                        inventory: {
-                            name: "Barang 01",
-                        },
-                    },
-                    {
-                        stockOpnameDetailID: 2,
-                        inventoryId: 2,
-                        quantityStart: 15,
-                        quantityEnd: 8,
-                        difference: 7,
-                        description: "Hilang",
-                        inventory: {
-                            name: "Barang 02",
-                        },
-                    },
-                ],
-            },
-        }));
+    const getStockOpnameDetail = async () => {
+        const response = await get(`/stock-opname/${id}`);
+        if (response.status === 200) {
+            console.log(response.data);
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+            }));
+        }
     };
 
     useEffect(() => {
@@ -93,7 +65,7 @@ const StockOpnameDetail = () => {
                         <CCol md={3}>
                             <h6>Dibuat oleh</h6>
                             <p>
-                                {`${state?.data?.user?.firstName} ${state?.data?.user?.lastName} `}
+                                {`${state?.data?.tbl_user?.firstName} ${state?.data?.user?.lastName} `}
                             </p>
                         </CCol>
                         <CCol md={3}>
@@ -116,11 +88,11 @@ const StockOpnameDetail = () => {
                             </CTableRow>
                         </CTableHead>
                         <CTableBody>
-                            {state?.data?.detail.map((detail, index) => (
+                            {state?.data?.itemDetail.map((detail, index) => (
                                 <CTableRow key={index}>
                                     <CTableDataCell>{detail.inventory.name}</CTableDataCell>
-                                    <CTableDataCell>{detail.quantityStart}</CTableDataCell>
-                                    <CTableDataCell>{detail.quantityEnd}</CTableDataCell>
+                                    <CTableDataCell>{detail.qtyStart}</CTableDataCell>
+                                    <CTableDataCell>{detail.qtyEnd}</CTableDataCell>
                                     <CTableDataCell>{detail.difference}</CTableDataCell>
                                     <CTableDataCell>{detail.description}</CTableDataCell>
                                 </CTableRow>

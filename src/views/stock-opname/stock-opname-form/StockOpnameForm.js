@@ -46,8 +46,8 @@ const StockOpnameForm = () => {
             itemDetail: [
                 {
                     inventoryId: "",
-                    quantityStart: 1,
-                    quantityEnd: 1,
+                    qtyStart: 1,
+                    qtyEnd: 1,
                     difference: 0,
                     description: "",
                 },
