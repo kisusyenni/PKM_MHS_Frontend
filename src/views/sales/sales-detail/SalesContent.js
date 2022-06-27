@@ -80,9 +80,9 @@ const SalesContent = ({ data }) => {
                                 </CTableRow>
                             </CTableHead>
                             <CTableBody>
-                                {data.detail.map((detail, index) => (
+                                {data?.tbl_sales_details.map((detail, index) => (
                                     <CTableRow key={index}>
-                                        <CTableDataCell>{detail.inventory.name}</CTableDataCell>
+                                        <CTableDataCell>{detail.tbl_inventory.name}</CTableDataCell>
                                         <CTableDataCell scope="row">
                                             {detail.quantityBuy}
                                         </CTableDataCell>
