@@ -43,6 +43,7 @@ const PaymentForm = ({ type, id, total }) => {
 
     const onSubmit = async (data) => {
         let response = null;
+        data.nominal = state.nominal;
         if (type === "purchase") {
             data.purchaseId = id;
             response = await post("/purchase/payment", data);
