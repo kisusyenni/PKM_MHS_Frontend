@@ -12,7 +12,7 @@ const SalesTable = ({ data }) => {
 
     const tableCols = [
         {
-            name: "purchaseId",
+            name: "salesId",
             options: {
                 display: false,
                 filter: false,

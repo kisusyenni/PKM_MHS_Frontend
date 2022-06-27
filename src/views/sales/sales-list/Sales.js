@@ -1,54 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { CCard, CCardBody, CNav, CNavItem, CNavLink, CTabContent, CTabPane } from "@coreui/react";
 import SalesTable from "./SalesTable";
+import { get } from "src/network/api/network";
 
 const Sales = () => {
     const [activeKey, setActiveKey] = useState(1);
 
-    const all = [];
-
     const [state, setState] = useState({
-        data: {
-            total: 0,
-            data: [
-                {
-                    purchaseId: 371,
-                    refNumber: "SA00045",
-                    transDate: "2022-05-05",
-                    dueDate: "2022-05-16",
-                    status: 1,
-                    totalPayment: 807000,
-                    dueNominal: 807000,
-                    discount: 0,
-                },
-                {
-                    purchaseId: 406,
-                    refNumber: "SA00056",
-                    transDate: "2022-05-04",
-                    dueDate: "2022-05-17",
-                    status: 3,
-                    totalPayment: 2392000,
-                    dueNominal: 0,
-                    discount: 0,
-                },
-                {
-                    purchaseId: 348,
-                    refNumber: "SA00043",
-                    transDate: "2022-05-03",
-                    dueDate: "2022-05-09",
-                    status: 2,
-                    totalPayment: 585780,
-                    dueNominal: 100780,
-                    discount: 0,
-                },
-            ],
-        },
+        data: [],
+        activeKey: 1,
     });
 
+    const getSalesList = async () => {
+        const response = await get("/sales");
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+            }));
+        }
+    };
     useEffect(() => {
-        switch (activeKey) {
+        switch (state.activeKey) {
             case 1:
                 console.log("semua");
+                getSalesList();
                 break;
 
             case 2:
@@ -70,7 +46,7 @@ const Sales = () => {
             default:
                 break;
         }
-    }, [activeKey]);
+    }, [state.activeKey, state.isReload]);
 
     return (
         <>
@@ -78,8 +54,13 @@ const Sales = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 1}
-                        onClick={() => setActiveKey(1)}
+                        active={state.activeKey === 1}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 1,
+                            }))
+                        }
                     >
                         Semua
                     </CNavLink>
@@ -87,8 +68,13 @@ const Sales = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 2}
-                        onClick={() => setActiveKey(2)}
+                        active={state.activeKey === 2}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 2,
+                            }))
+                        }
                     >
                         Belum Dibayar
                     </CNavLink>
@@ -96,8 +82,13 @@ const Sales = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 3}
-                        onClick={() => setActiveKey(3)}
+                        active={state.activeKey === 3}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 3,
+                            }))
+                        }
                     >
                         Dibayar Sebagian
                     </CNavLink>
@@ -105,8 +96,13 @@ const Sales = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 4}
-                        onClick={() => setActiveKey(4)}
+                        active={state.activeKey === 4}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 4,
+                            }))
+                        }
                     >
                         Jatuh Tempo
                     </CNavLink>
@@ -114,15 +110,20 @@ const Sales = () => {
                 <CNavItem>
                     <CNavLink
                         href={undefined}
-                        active={activeKey === 5}
-                        onClick={() => setActiveKey(5)}
+                        active={state.activeKey === 5}
+                        onClick={() =>
+                            setState((prevState) => ({
+                                ...prevState,
+                                activeKey: 5,
+                            }))
+                        }
                     >
                         Lunas
                     </CNavLink>
                 </CNavItem>
             </CNav>
             <CTabContent>
-                <SalesTable data={state.data.data} />
+                <SalesTable data={state.data} />
             </CTabContent>
         </>
     );
