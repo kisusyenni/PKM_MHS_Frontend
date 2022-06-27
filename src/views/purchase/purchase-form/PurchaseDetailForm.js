@@ -21,10 +21,6 @@ const PurchaseDetailForm = ({ control, setValue }) => {
         name: "itemDetail",
     });
 
-    useEffect(() => {
-        getInventoryList();
-    }, [state.isReload]);
-
     const getInventoryList = async () => {
         const response = await get("/inventory");
         if (response.status === 200) {
@@ -34,6 +30,10 @@ const PurchaseDetailForm = ({ control, setValue }) => {
             }));
         }
     };
+
+    useEffect(() => {
+        getInventoryList();
+    }, [state.isReload]);
 
     const results = useWatch({ control, name: "itemDetail" });
     let total = 0;
