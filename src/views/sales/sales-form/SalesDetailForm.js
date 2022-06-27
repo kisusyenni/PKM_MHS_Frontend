@@ -23,7 +23,6 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
     const getInventoryList = async () => {
         const response = await get("/inventory");
         if (response.status === 200) {
-            console.log(response.data);
             setState((prevState) => ({
                 ...prevState,
                 inventory: response.data,
@@ -47,13 +46,14 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
     const setAmount = (idx) => {
         let amount = 0;
         const check = results.some((value, index) => {
-            amount = value.pricePerUnit * value.quantity;
+            amount = (value.pricePerUnit - value.discount) * value.quantity;
             return index === idx;
         });
         return check ? amount : 0;
     };
 
     const setPrice = (id) => {
+        console.log(id);
         let price = 0;
         const check = state.inventory.some((value) => {
             price = value.sellingPrice;
@@ -71,10 +71,13 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                 <CCol md={2}>
                     <h6 className="fw-bold">Kuantitas</h6>
                 </CCol>
-                <CCol md={3}>
+                <CCol md={2}>
                     <h6 className="fw-bold">Harga Per Unit</h6>
                 </CCol>
-                <CCol md={3}>
+                <CCol md={2}>
+                    <h6 className="fw-bold">Diskon</h6>
+                </CCol>
+                <CCol md={2}>
                     <h6 className="fw-bold">Jumlah</h6>
                 </CCol>
             </CRow>
@@ -91,12 +94,15 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                             size="sm"
                                             onChange={(e) => {
                                                 onChange(e);
+                                                // setFocus(`itemDetail.${index}.quantity`);
+                                            }}
+                                            onBlur={(e) => {
+                                                onBlur(e);
                                                 setValue(
                                                     `itemDetail.${index}.pricePerUnit`,
                                                     setPrice(value),
                                                 );
                                             }}
-                                            onBlur={onBlur}
                                             value={value}
                                             ref={ref}
                                             aria-label="Inventaris"
@@ -135,7 +141,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                             />
                         </CCol>
 
-                        <CCol md={3} className="mb-3">
+                        <CCol md={2} className="mb-3">
                             <Controller
                                 name={`itemDetail.${index}.pricePerUnit`}
                                 control={control}
@@ -151,7 +157,22 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                 )}
                             />
                         </CCol>
-                        <CCol md={3} className="mb-3">
+                        <CCol md={2} className="mb-3">
+                            <Controller
+                                name={`itemDetail.${index}.discount`}
+                                control={control}
+                                render={({ field: { onChange, onBlur, value, ref } }) => (
+                                    <CFormInput
+                                        size="sm"
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        value={value}
+                                        ref={ref}
+                                    />
+                                )}
+                            />
+                        </CCol>
+                        <CCol md={2} className="mb-3">
                             <Controller
                                 name={`itemDetail.${index}.amount`}
                                 control={control}
@@ -182,7 +203,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                 type="button"
                 color="secondary"
                 onClick={() => {
-                    append({ name: "", quantity: 1, pricePerUnit: 0, amount: 0 });
+                    append({ name: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 });
                 }}
             >
                 Tambah
@@ -231,7 +252,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                 <CCol xs={3}>Total</CCol>
                 <CCol xs={4}>
                     <Controller
-                        name={`total`}
+                        name={`totalPayment`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => (
                             <CFormInput
