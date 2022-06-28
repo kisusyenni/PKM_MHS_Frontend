@@ -38,7 +38,6 @@
     "chart.js": "^3.7.1",
     "classnames": "^2.3.1",
     "core-js": "^3.21.1",
-    "currency.js": "^2.0.4",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
@@ -46,16 +45,15 @@
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-app-polyfill": "^3.0.0",
-    "react-data-export": "^0.6.0",
     "react-dom": "^17.0.2",
-    "react-export-excel": "^0.5.3",
     "react-hook-form": "^7.30.0",
     "react-number-format": "^4.9.3",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.2",
     "redux": "4.1.2",
     "simplebar-react": "^2.3.6",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "xlsx-js-style": "^1.2.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
