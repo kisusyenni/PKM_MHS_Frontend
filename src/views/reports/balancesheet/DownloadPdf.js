@@ -5,7 +5,6 @@ import autoTable from "jspdf-autotable";
 import { CButton, CImage } from "@coreui/react";
 import pdfIcon from "src/assets/images/pdf.png";
 import NumberFormat from "react-number-format";
-import currency from "currency.js";
 
 const DownloadPdf = ({ filename, data }) => {
     const doc = new jsPDF();
@@ -28,7 +27,7 @@ const DownloadPdf = ({ filename, data }) => {
         return nominal;
     };
 
-    const IDR = (value) => currency(value, { symbol: "Rp", decimal: ",", separator: "." });
+    // const IDR = (value) => currency(value, { symbol: "Rp", decimal: ",", separator: "." });
 
     console.log(renderCurrency(1000000));
 
@@ -47,7 +46,7 @@ const DownloadPdf = ({ filename, data }) => {
                     styles: { halign: "center", fontStyle: "bold" },
                 },
                 {
-                    content: IDR(data?.previousBalance),
+                    content: 0,
                 },
             ],
         ],
