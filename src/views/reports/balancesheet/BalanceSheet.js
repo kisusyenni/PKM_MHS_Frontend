@@ -8,15 +8,12 @@ import {
     CCol,
     CForm,
     CFormInput,
-    CFormLabel,
     CInputGroup,
     CInputGroupText,
     CRow,
     CTable,
     CTableBody,
-    CTableCaption,
     CTableDataCell,
-    CTableHead,
     CTableHeaderCell,
     CTableRow,
 } from "@coreui/react";
@@ -24,13 +21,11 @@ import { cilSearch } from "@coreui/icons";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
-import { useNavigate } from "react-router-dom";
 import BalanceSheetExcel from "./BalanceSheetExcel";
 import DownloadPdf from "./DownloadPdf";
 
 const BalanceSheet = () => {
     const date = new Date();
-    const navigate = useNavigate();
 
     const [state, setState] = useState({
         data: null,
@@ -38,11 +33,7 @@ const BalanceSheet = () => {
         filename: "Neraca Keuangan",
     });
 
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
+    const { control, handleSubmit } = useForm({
         defaultValues: {
             startDate: date.toJSON().slice(0, 10),
             endDate: date.toJSON().slice(0, 10),
@@ -95,11 +86,11 @@ const BalanceSheet = () => {
         <>
             <CCard className="my-3">
                 <CCardHeader>
-                    <CRow className="align-items-center justify-content-between">
-                        <CCol md={6}>
+                    <CRow className="align-items-center justify-content-around">
+                        <CCol>
                             <h1>Neraca</h1>
                         </CCol>
-                        <CCol>
+                        <CCol className="text-end">
                             <BalanceSheetExcel data={state.data} filename={state.filename} />
                             <DownloadPdf filename={state.filename} data={state.data} />
                         </CCol>
