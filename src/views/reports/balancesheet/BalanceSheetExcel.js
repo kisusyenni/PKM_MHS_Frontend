@@ -1,127 +1,172 @@
 /* eslint-disable react/prop-types */
 import { CButton, CImage } from "@coreui/react";
-import React from "react";
-// import ReactExport from "react-export-excel";
-// import excel from "./../../assets/images/excel.png";
-
-// const ExcelFile = ReactExport.ExcelFile;
-// const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+import React, { useCallback } from "react";
+import * as XLSX from "xlsx-js-style";
+import excelIcon from "./../../../assets/images/excel.png";
 
 const BalanceSheetExcel = ({ data, filename }) => {
-    // const multiDataSet = [
-    //     {
-    //         columns: ["Name", "Salary", "Sex"],
-    //         data: [
-    //             ["Johnson", 30000, "Male"],
-    //             ["Monika", 355000, "Female"],
-    //             ["Konstantina", 20000, "Female"],
-    //             ["John", 250000, "Male"],
-    //             ["Josef", 450500, "Male"],
-    //         ],
-    //     },
-    //     {
-    //         xSteps: 1, // Will start putting cell with 1 empty cell on left most
-    //         ySteps: 5, //will put space of 5 rows,
-    //         columns: ["Name", "Department"],
-    //         data: [
-    //             ["Johnson", "Finance"],
-    //             ["Monika", "IT"],
-    //             ["Konstantina", "IT Billing"],
-    //             ["John", "HR"],
-    //             ["Josef", "Testing"],
-    //         ],
-    //     },
-    // ];
+    const xport = useCallback(async () => {
+        const income = data.income.list.map((value) => [value.name, "", value.nominal]);
+        const expense = data.expense.list.map((value) => [value.name, "", value.nominal]);
 
-    // const styledMultiDataSet = [
-    //     {
-    //         columns: [
-    //             {
-    //                 value: "Headings",
-    //                 widthPx: 160,
-    //                 style: { font: { sz: "24", bold: true } },
-    //             },
-    //             {
-    //                 value: "Text Style",
-    //                 widthPx: 180,
-    //                 style: { font: { sz: "24", bold: true } },
-    //             },
-    //             {
-    //                 value: "Colors",
-    //                 widthPx: 64,
-    //                 style: { font: { sz: "24", bold: true } }, // if no width set, default excel column width will be used ( 64px )
-    //             },
-    //         ],
-    //         data: [
-    //             [
-    //                 { value: "H1", style: { font: { sz: "24", bold: true } } },
-    //                 { value: "Bold", style: { font: { bold: true } } },
-    //                 {
-    //                     value: "Red",
-    //                     style: {
-    //                         fill: { patternType: "solid", fgColor: { rgb: "FFFF0000" } },
-    //                     },
-    //                 },
-    //             ],
-    //             [
-    //                 { value: "H2", style: { font: { sz: "18", bold: true } } },
-    //                 { value: "underline", style: { font: { underline: true } } },
-    //                 {
-    //                     value: "Blue",
-    //                     style: {
-    //                         fill: { patternType: "solid", fgColor: { rgb: "FF0000FF" } },
-    //                     },
-    //                 },
-    //             ],
-    //             [
-    //                 { value: "H3", style: { font: { sz: "14", bold: true } } },
-    //                 { value: "italic", style: { font: { italic: true } } },
-    //                 {
-    //                     value: "Green",
-    //                     style: {
-    //                         fill: { patternType: "solid", fgColor: { rgb: "FF00FF00" } },
-    //                     },
-    //                 },
-    //             ],
-    //             [
-    //                 { value: "H4", style: { font: { sz: "12", bold: true } } },
-    //                 { value: "strike", style: { font: { strike: true } } },
-    //                 {
-    //                     value: "Orange",
-    //                     style: {
-    //                         fill: { patternType: "solid", fgColor: { rgb: "FFF86B00" } },
-    //                     },
-    //                 },
-    //             ],
-    //             [
-    //                 { value: "H5", style: { font: { sz: "10.5", bold: true } } },
-    //                 { value: "outline", style: { font: { outline: true } } },
-    //                 {
-    //                     value: "Yellow",
-    //                     style: {
-    //                         fill: { patternType: "solid", fgColor: { rgb: "FFFFFF00" } },
-    //                     },
-    //                 },
-    //             ],
-    //             [
-    //                 { value: "H6", style: { font: { sz: "7.5", bold: true } } },
-    //                 { value: "shadow", style: { font: { shadow: true } } },
-    //                 {
-    //                     value: "Light Blue",
-    //                     style: {
-    //                         fill: { patternType: "solid", fgColor: { rgb: "FFCCEEFF" } },
-    //                     },
-    //                 },
-    //             ],
-    //         ],
-    //     },
-    // ];
+        const format = [
+            [
+                {
+                    v: filename,
+                    t: "s",
+                    s: {
+                        alignment: { horizontal: "center" },
+                        font: { sz: "18", bold: true },
+                        fill: {
+                            patternType: "solid",
+                            fgColor: { rgb: "d8dbe0" },
+                            bgColor: { rgb: "d8dbe0" },
+                        },
+                    },
+                },
+            ],
+            ["Periode", data.startDate, data.endDate],
+            ["Saldo Sebelumnya", "", data.previousBalance],
+            [
+                {
+                    v: "Pendapatan",
+                    t: "s",
+                    s: {
+                        alignment: { horizontal: "center" },
+                        font: { sz: "12", bold: true },
+                        fill: {
+                            patternType: "solid",
+                            fgColor: { rgb: "d8dbe0" },
+                            bgColor: { rgb: "d8dbe0" },
+                        },
+                    },
+                },
+            ],
+        ]
+            .concat(income)
+            .concat([
+                [
+                    {
+                        v: "Total",
+                        t: "s",
+                        s: {
+                            font: { bold: true },
+                        },
+                    },
+                    "",
+                    {
+                        v: data.income.total,
+                        t: "s",
+                        s: {
+                            font: { bold: true, color: { rgb: "20c997" } },
+                        },
+                    },
+                ],
+                [
+                    {
+                        v: "Pengeluaran",
+                        t: "s",
+                        s: {
+                            alignment: { horizontal: "center" },
+                            font: { sz: "12", bold: true },
+                            fill: {
+                                patternType: "solid",
+                                fgColor: { rgb: "d8dbe0" },
+                                bgColor: { rgb: "d8dbe0" },
+                            },
+                        },
+                    },
+                ],
+            ])
+            .concat(expense)
+            .concat([
+                [
+                    {
+                        v: "Total",
+                        t: "s",
+                        s: {
+                            font: { bold: true },
+                        },
+                    },
+                    "",
+                    {
+                        v: data.expense.total,
+                        t: "s",
+                        s: {
+                            font: { bold: true, color: { rgb: "ed000a" } },
+                        },
+                    },
+                ],
+                [
+                    {
+                        v: "Laba Rugi",
+                        t: "s",
+                        s: {
+                            font: { sz: "16", bold: true },
+                            fill: {
+                                patternType: "solid",
+                                fgColor: { rgb: "d8dbe0" },
+                                bgColor: { rgb: "d8dbe0" },
+                            },
+                        },
+                    },
+                    {
+                        v: "",
+                        t: "s",
+                        s: {
+                            fill: {
+                                patternType: "solid",
+                                fgColor: { rgb: "d8dbe0" },
+                                bgColor: { rgb: "d8dbe0" },
+                            },
+                        },
+                    },
+                    {
+                        v: data.profitLoss,
+                        t: "s",
+                        s: {
+                            font: {
+                                sz: "16",
+                                bold: true,
+                                color: { rgb: data.profitLoss > 0 ? "20c997" : "ed000a" },
+                            },
+                            fill: {
+                                patternType: "solid",
+                                fgColor: { rgb: "d8dbe0" },
+                                bgColor: { rgb: "d8dbe0" },
+                            },
+                        },
+                    },
+                ],
+            ]);
+        const ws = XLSX.utils.aoa_to_sheet(format);
+        ws["!cols"] = [{ wch: 40 }, { wch: 20 }, { wch: 20 }];
+        const merge = [
+            { s: { c: 0, r: 0 }, e: { c: 2, r: 0 } }, // filename
+            { s: { c: 0, r: 3 }, e: { c: 2, r: 3 } }, // pendapatan
+            { s: { c: 0, r: 6 }, e: { c: 2, r: 6 } }, // pengeluaran
+        ];
+        ws["!merges"] = merge;
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Dates");
+
+        XLSX.writeFile(wb, `${filename}.xlsx`);
+    }, [data, filename]);
 
     return (
-        // <ExcelFile element={<button>Download Data With Styles</button>}>
-        //     <ExcelSheet dataSet={styledMultiDataSet} name="Organization" />
-        // </ExcelFile>
-        <></>
+        <>
+            {/* <ExcelFile
+                element={
+                }
+                >
+                <ExcelSheet dataSet={styledMultiDataSet} name="Organization" />
+            </ExcelFile> */}
+            <CButton className="me-4" onClick={xport}>
+                <CImage className="me-2" src={excelIcon} />
+                Download Excel
+            </CButton>
+        </>
     );
 };
 
