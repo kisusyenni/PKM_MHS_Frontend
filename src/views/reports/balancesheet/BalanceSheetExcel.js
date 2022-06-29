@@ -156,12 +156,6 @@ const BalanceSheetExcel = ({ data, filename }) => {
 
     return (
         <>
-            {/* <ExcelFile
-                element={
-                }
-                >
-                <ExcelSheet dataSet={styledMultiDataSet} name="Organization" />
-            </ExcelFile> */}
             <CButton className="me-4" onClick={xport}>
                 <CImage className="me-2" src={excelIcon} />
                 Download Excel
