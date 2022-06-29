@@ -4,66 +4,137 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { CButton, CImage } from "@coreui/react";
 import pdfIcon from "src/assets/images/pdf.png";
-import NumberFormat from "react-number-format";
 
 const DownloadPdf = ({ filename, data }) => {
     const doc = new jsPDF();
-    const renderCurrency = (value) => {
-        console.log(value);
-        let nominal = value;
-        <NumberFormat
-            value={value}
-            displayType="text"
-            allowLeadingZeros={false}
-            thousandSeparator={true}
-            prefix={"Rp"}
-            onValueChange={(values) => {
-                const { formattedValue } = values;
-                console.log(formattedValue);
-                nominal = formattedValue;
-            }}
-        />;
-        console.log(nominal);
-        return nominal;
-    };
+    if (data) {
+        const renderCurrency = (value) => {
+            let rupiahIDLocale = Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                maximumFractionDigits: 20,
+            });
 
-    // const IDR = (value) => currency(value, { symbol: "Rp", decimal: ",", separator: "." });
+            return rupiahIDLocale.format(value);
+        };
 
-    console.log(renderCurrency(1000000));
+        const income = data.income?.list.map((value) => [
+            {
+                content: value.name,
+            },
+            {
+                content: renderCurrency(value.nominal),
+                colSpan: 2,
+            },
+        ]);
+        const expense = data.expense?.list.map((value) => [
+            {
+                content: value.name,
+            },
+            {
+                content: renderCurrency(value.nominal),
+                colSpan: 2,
+            },
+        ]);
 
-    autoTable(doc, {
-        body: [
-            [
-                {
-                    content: filename,
-                    colSpan: 2,
-                    styles: { halign: "center", fontStyle: "bold" },
-                },
-            ],
-            [
-                {
-                    content: "Saldo Periode Sebelum",
-                    styles: { halign: "center", fontStyle: "bold" },
-                },
-                {
-                    content: 0,
-                },
-            ],
-        ],
-    });
+        const formattedBody = () => {
+            const body = [
+                [
+                    {
+                        content: filename,
+                        colSpan: 3,
+                        styles: { halign: "center", fontStyle: "bold", fontSize: 18 },
+                    },
+                ],
+                [
+                    {
+                        content: "Periode",
+                        styles: { fontStyle: "bold" },
+                    },
+                    {
+                        content: data?.startDate,
+                    },
+                    {
+                        content: data?.endDate,
+                    },
+                ],
+                [
+                    {
+                        content: "Saldo Sebelumnya",
+                        styles: { fontStyle: "bold" },
+                    },
+                    {
+                        content: renderCurrency(data?.previousBalance),
+                        colSpan: 2,
+                    },
+                ],
+                [
+                    {
+                        content: "Pendapatan",
+                        colSpan: 3,
+                        styles: { fontStyle: "bold", fontSize: 14 },
+                    },
+                ],
+            ];
+            const formatBody = body.concat(
+                income,
+                [
+                    [
+                        {
+                            content: "Total",
+                            styles: { fontStyle: "bold" },
+                        },
+                        {
+                            content: renderCurrency(data?.income?.total),
+                            colSpan: 2,
+                            styles: { fontStyle: "bold", textColor: [32, 201, 151] },
+                        },
+                    ],
+                    [
+                        {
+                            content: "Pengeluaran",
+                            colSpan: 3,
+                            styles: { fontStyle: "bold", fontSize: 14 },
+                        },
+                    ],
+                ],
+                expense,
+                [
+                    [
+                        {
+                            content: "Total",
+                            styles: { fontStyle: "bold" },
+                        },
+                        {
+                            content: renderCurrency(data?.expense?.total),
+                            colSpan: 2,
+                            styles: { fontStyle: "bold", textColor: [237, 0, 10] },
+                        },
+                    ],
+                    [
+                        {
+                            content: "Laba Rugi",
+                            styles: { fontStyle: "bold", fontSize: 16 },
+                        },
+                        {
+                            content: renderCurrency(data?.profitLoss),
+                            colSpan: 2,
+                            styles: {
+                                fontStyle: "bold",
+                                fontSize: 16,
+                                textColor: data?.profitLoss > 0 ? [32, 201, 151] : [237, 0, 10],
+                            },
+                        },
+                    ],
+                ],
+            );
+            return formatBody;
+        };
+        autoTable(doc, {
+            body: formattedBody(),
+        });
+    }
     const savePdf = () => {
-        // autoTable(doc, { html: "#balance-sheet" });
-        // autoTable(doc, {
-        //     columnStyles: { europe: { halign: "center" } }, // European countries centered
-        //     body: [
-        //         { europe: "Sweden", america: "Canada", asia: "China" },
-        //         { europe: "Norway", america: "Mexico", asia: "Japan" },
-        //     ],
-        //     columns: [
-        //         { header: "Europe", dataKey: "europe" },
-        //         { header: "Asia", dataKey: "asia" },
-        //     ],
-        // });
         doc.save(`${filename}.pdf`);
     };
     return (
