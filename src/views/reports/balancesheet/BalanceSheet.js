@@ -49,7 +49,7 @@ const BalanceSheet = () => {
             data: {
                 startDate: "20/05/2022",
                 endDate: "20/06/2022",
-                previousBalance: 1000000.9999,
+                previousBalance: 1000000,
                 profitLoss: 500000,
                 income: {
                     total: 500000,
@@ -92,7 +92,7 @@ const BalanceSheet = () => {
                         </CCol>
                         <CCol className="text-end">
                             <BalanceSheetExcel data={state.data} filename={state.filename} />
-                            <DownloadPdf filename={state.filename} data={state.data} />
+                            <DownloadPdf data={state.data} filename={state.filename} />
                         </CCol>
                     </CRow>
                 </CCardHeader>
