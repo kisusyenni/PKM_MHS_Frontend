@@ -4,7 +4,6 @@ import {
     CButton,
     CModal,
     CModalBody,
-    CModalFooter,
     CModalHeader,
     CModalTitle,
     CProgress,
@@ -45,7 +44,7 @@ const PayableTable = ({ data }) => {
     };
     return (
         <>
-            {data && data.length > 0 && (
+            {data && data.length > 0 ? (
                 <>
                     <CTable align="middle" className="mb-0 border" hover responsive>
                         <CTableHead color="light">
@@ -69,7 +68,7 @@ const PayableTable = ({ data }) => {
                             {data.map((item, index) => (
                                 <CTableRow v-for="item in tableItems" key={index}>
                                     <CTableDataCell className="text-center">
-                                        {item.tbl_supplier.name}
+                                        {item.supplierData?.name || "-"}
                                     </CTableDataCell>
                                     <CTableDataCell className="text-center">
                                         {item.dueDate}
@@ -154,6 +153,10 @@ const PayableTable = ({ data }) => {
                         </CModal>
                     )}
                 </>
+            ) : (
+                <div className="text-center">
+                    <p>Toko Anda tidak memiliki piutang</p>
+                </div>
             )}
         </>
     );

@@ -1,17 +1,29 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-import { CWidgetStatsA } from "@coreui/react";
+import React, { useEffect, useState } from "react";
+import { CButton, CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartLine } from "@coreui/react-chartjs";
-import { cilArrowBottom } from "@coreui/icons";
-import CIcon from "@coreui/icons-react";
 import { MONTHS } from "src/constants/enums";
 import NumberFormat from "react-number-format";
 
 const ExpenseWidget = ({ data }) => {
+    // let datasets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const initialVal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const formatDataset = data?.list.map((item, index) => {
+        // initialVal[item.transMonth] = parseInt(item.totalPayment);
+        // console.log(initialVal);
+        return item.totalPayment;
+    });
+    const [dataset, setDataset] = useState(formatDataset);
+
+    useEffect(() => {
+        console.log(formatDataset);
+        setDataset(formatDataset);
+    }, [data]);
+
     return (
         <>
-            {data && (
+            {data?.total > 0 ? (
                 <CWidgetStatsA
                     className="mb-4"
                     color="primary"
@@ -22,10 +34,7 @@ const ExpenseWidget = ({ data }) => {
                                 displayType={"text"}
                                 thousandSeparator={true}
                                 prefix={"Rp"}
-                            />{" "}
-                            <span className="fs-6 fw-normal">
-                                (-12.4% <CIcon icon={cilArrowBottom} />)
-                            </span>
+                            />
                         </>
                     }
                     title="Pengeluaran"
@@ -41,7 +50,7 @@ const ExpenseWidget = ({ data }) => {
                                         backgroundColor: "transparent",
                                         borderColor: "rgba(255,255,255,0.55)",
                                         pointBackgroundColor: getStyle("--cui-primary"),
-                                        data: data.list,
+                                        data: dataset,
                                     },
                                 ],
                             }}
@@ -87,6 +96,10 @@ const ExpenseWidget = ({ data }) => {
                         />
                     }
                 />
+            ) : (
+                <>
+                    <CButton href="pengeluaran/tambah">Tambah Pengeluaran</CButton>
+                </>
             )}
         </>
     );

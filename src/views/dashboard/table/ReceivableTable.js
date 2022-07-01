@@ -44,7 +44,7 @@ const ReceivableTable = ({ data }) => {
     };
     return (
         <>
-            {data && data.length > 0 && (
+            {data && data.length > 0 ? (
                 <>
                     <CTable align="middle" className="mb-0 border" hover responsive>
                         <CTableHead color="light">
@@ -147,6 +147,10 @@ const ReceivableTable = ({ data }) => {
                         </CModal>
                     )}
                 </>
+            ) : (
+                <div className="text-center">
+                    <p>Toko Anda tidak memiliki hutang</p>
+                </div>
             )}
         </>
     );

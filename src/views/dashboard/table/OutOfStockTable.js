@@ -2,7 +2,6 @@
 import { cilPlus } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import {
-    CButton,
     CCard,
     CCardBody,
     CCardHeader,
@@ -19,6 +18,7 @@ import {
 import React from "react";
 
 const OutOfStockTable = ({ data }) => {
+    console.log(data);
     return (
         <>
             {data && data.length > 0 && (
@@ -45,7 +45,7 @@ const OutOfStockTable = ({ data }) => {
                                         <CTableDataCell>
                                             <div className="clearfix">
                                                 <div className="float-start">
-                                                    <strong>{item.total}</strong>
+                                                    <strong>{item.quantity}</strong>
                                                     <small>/10</small>
                                                 </div>
                                             </div>
