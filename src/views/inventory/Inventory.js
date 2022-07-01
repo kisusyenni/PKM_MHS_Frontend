@@ -6,7 +6,7 @@ import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import NumberFormat from "react-number-format";
-import { deleteData, get } from "src/network/api/network";
+import { get, put } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
 import ConfirmationModal from "src/helper/ConfirmationModal";
 import emptyGraphic from "./../../assets/images/empty.svg";
@@ -97,7 +97,7 @@ const Inventory = () => {
                             >
                                 <CIcon icon={cilPen}></CIcon>
                             </CButton>
-                            {/* <CButton
+                            <CButton
                                 color="primary"
                                 variant="outline"
                                 onClick={() => {
@@ -105,7 +105,7 @@ const Inventory = () => {
                                 }}
                             >
                                 <CIcon icon={cilTrash}></CIcon>
-                            </CButton> */}
+                            </CButton>
                         </>
                     );
                 },
@@ -162,7 +162,11 @@ const Inventory = () => {
     // Delete
 
     const deleteInventory = async (id) => {
-        const response = await deleteData("/inventory", id);
+        const data = {
+            storeId: localStorage.getItem("storeId"),
+            is_deleted: 1,
+        };
+        const response = await put("/inventory", id, data);
         if (response.status === 200) {
             setState((prevState) => ({
                 ...prevState,
