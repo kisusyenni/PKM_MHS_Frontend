@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CButton, CButtonGroup, CCard, CCardBody, CCol, CRow } from "@coreui/react";
 import { CChartLine } from "@coreui/react-chartjs";
 import { getStyle, hexToRgba } from "@coreui/utils";
@@ -8,34 +8,42 @@ import { cilCloudDownload } from "@coreui/icons";
 import { MONTHS } from "src/constants/enums";
 
 const OverviewChart = ({ data }) => {
+    const [state, setState] = useState({
+        sales: [],
+        purchase: [],
+        expense: [],
+    });
+
+    useEffect(() => {
+        setState((prevState) => ({
+            ...prevState,
+            sales: modifyChartData(data?.sales?.list),
+            purchase: modifyChartData(data?.purchase?.list),
+            expense: modifyChartData(data?.expense?.list),
+        }));
+    }, [data]);
+
+    const modifyChartData = (data) => {
+        const chartData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        if (data) {
+            data.forEach((item) => {
+                chartData[item.transMonth] = parseInt(item.totalPayment);
+            });
+        }
+
+        return chartData;
+    };
     return (
         <>
             {data && (
                 <CCard className="mb-4">
                     <CCardBody>
                         <CRow>
-                            <CCol sm={5}>
+                            <CCol sm={12}>
                                 <h5 id="traffic" className="card-title mb-0">
-                                    Penjualan, Pembelian, Pengeluaran
+                                    Penjualan, Pembelian, Pengeluaran {data?.yearPeriod}
                                 </h5>
                                 <div className="small text-medium-emphasis">{data.period}</div>
-                            </CCol>
-                            <CCol sm={7} className="d-none d-md-block">
-                                <CButton color="primary" className="float-end">
-                                    <CIcon icon={cilCloudDownload} />
-                                </CButton>
-                                <CButtonGroup className="float-end me-3">
-                                    {["Day", "Month", "Year"].map((value) => (
-                                        <CButton
-                                            color="outline-secondary"
-                                            key={value}
-                                            className="mx-0"
-                                            active={value === "Month"}
-                                        >
-                                            {value}
-                                        </CButton>
-                                    ))}
-                                </CButtonGroup>
                             </CCol>
                         </CRow>
                         <CChartLine
@@ -49,7 +57,7 @@ const OverviewChart = ({ data }) => {
                                         borderColor: getStyle("--cui-info"),
                                         pointHoverBackgroundColor: getStyle("--cui-info"),
                                         borderWidth: 2,
-                                        data: data.sales.list,
+                                        data: state.sales,
                                         fill: true,
                                     },
                                     {
@@ -58,7 +66,7 @@ const OverviewChart = ({ data }) => {
                                         borderColor: getStyle("--cui-success"),
                                         pointHoverBackgroundColor: getStyle("--cui-success"),
                                         borderWidth: 2,
-                                        data: data.purchase.list,
+                                        data: state.purchase,
                                     },
                                     {
                                         label: "Expense",
@@ -67,7 +75,7 @@ const OverviewChart = ({ data }) => {
                                         pointHoverBackgroundColor: getStyle("--cui-danger"),
                                         borderWidth: 1,
                                         borderDash: [8, 5],
-                                        data: data.expense.list,
+                                        data: state.expense,
                                     },
                                 ],
                             }}
