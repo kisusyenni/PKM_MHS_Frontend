@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartLine } from "@coreui/react-chartjs";
-import { cilArrowBottom } from "@coreui/icons";
-import CIcon from "@coreui/icons-react";
 import { MONTHS } from "src/constants/enums";
 import NumberFormat from "react-number-format";
 
