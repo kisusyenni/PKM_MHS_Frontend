@@ -44,7 +44,7 @@ const InventoryForm = ({ title, editMode }) => {
             name: "",
             quantity: 0,
             sellingPrice: 0,
-            isService: false,
+            isService: 0,
         },
         mode: "all",
     });
