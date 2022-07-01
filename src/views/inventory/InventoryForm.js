@@ -14,13 +14,12 @@ import {
 } from "@coreui/react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { get, post, put } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
 
 const InventoryForm = ({ title, editMode }) => {
     let { id } = useParams();
-    const navigate = useNavigate();
 
     const [state, setState] = useState({
         sellingPrice: 0,

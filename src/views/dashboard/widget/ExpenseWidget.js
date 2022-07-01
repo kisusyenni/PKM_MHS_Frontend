@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CButton, CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartLine } from "@coreui/react-chartjs";
@@ -8,7 +8,7 @@ import NumberFormat from "react-number-format";
 
 const ExpenseWidget = ({ data }) => {
     // let datasets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    const initialVal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    // const initialVal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     const formatDataset = data?.list.map((item, index) => {
         // initialVal[item.transMonth] = parseInt(item.totalPayment);
         // console.log(initialVal);
@@ -16,10 +16,10 @@ const ExpenseWidget = ({ data }) => {
     });
     const [dataset, setDataset] = useState(formatDataset);
 
-    useEffect(() => {
-        console.log(formatDataset);
-        setDataset(formatDataset);
-    }, [data]);
+    // useEffect(() => {
+    //     console.log(formatDataset);
+    //     setDataset(formatDataset);
+    // }, [data]);
 
     return (
         <>
