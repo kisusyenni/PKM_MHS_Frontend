@@ -57,6 +57,9 @@ const Dashboard = () => {
     return (
         <>
             <CRow>
+                <CCol xs={12}>
+                    <h1 className="h4 mb-3">Periode {state?.data?.yearPeriod}</h1>
+                </CCol>
                 <CCol sm={6} lg={4}>
                     <SalesWidget data={state?.data?.sales} />
                 </CCol>
@@ -68,7 +71,7 @@ const Dashboard = () => {
                 </CCol>
             </CRow>
 
-            <OverviewChart />
+            <OverviewChart data={state?.data} />
 
             <CCard className="mb-4">
                 {state?.table && <CCardHeader>Hutang {" & "} Piutang Usaha</CCardHeader>}
