@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartLine } from "@coreui/react-chartjs";
@@ -9,6 +9,15 @@ import { MONTHS } from "src/constants/enums";
 import NumberFormat from "react-number-format";
 
 const PurchaseWidget = ({ data }) => {
+    const [dataset, setDataset] = useState([]);
+
+    useEffect(() => {
+        const widgetData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        data?.list.forEach((item) => {
+            widgetData[item.transMonth] = parseInt(item.totalPayment);
+        });
+        setDataset(widgetData);
+    }, [data]);
     return (
         <>
             {data && (
@@ -22,10 +31,7 @@ const PurchaseWidget = ({ data }) => {
                                 displayType={"text"}
                                 thousandSeparator={true}
                                 prefix={"Rp"}
-                            />{" "}
-                            <span className="fs-6 fw-normal">
-                                (-12.4% <CIcon icon={cilArrowBottom} />)
-                            </span>
+                            />
                         </>
                     }
                     title="Pembelian"
@@ -41,7 +47,7 @@ const PurchaseWidget = ({ data }) => {
                                         backgroundColor: "transparent",
                                         borderColor: "rgba(255,255,255,0.55)",
                                         pointBackgroundColor: getStyle("--cui-info"),
-                                        data: data.list,
+                                        data: dataset,
                                     },
                                 ],
                             }}

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CButton, CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartLine } from "@coreui/react-chartjs";
@@ -7,19 +7,15 @@ import { MONTHS } from "src/constants/enums";
 import NumberFormat from "react-number-format";
 
 const ExpenseWidget = ({ data }) => {
-    // let datasets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // const initialVal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    const formatDataset = data?.list.map((item, index) => {
-        // initialVal[item.transMonth] = parseInt(item.totalPayment);
-        // console.log(initialVal);
-        return item.totalPayment;
-    });
-    const [dataset, setDataset] = useState(formatDataset);
+    const [dataset, setDataset] = useState([]);
 
-    // useEffect(() => {
-    //     console.log(formatDataset);
-    //     setDataset(formatDataset);
-    // }, [data]);
+    useEffect(() => {
+        const widgetData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        data?.list.forEach((item) => {
+            widgetData[item.transMonth] = parseInt(item.totalPayment);
+        });
+        setDataset(widgetData);
+    }, [data]);
 
     return (
         <>
