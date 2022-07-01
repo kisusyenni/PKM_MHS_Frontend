@@ -14,3 +14,28 @@
     background: url("../assets/images/bg.jpg") no-repeat center;
     background-size: cover;
 }
+
+// 03 SIDEBAR
+
+.sidebar-nav {
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #600002;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    & ::-webkit-scrollbar-thumb {
+        background: #982127;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+}
