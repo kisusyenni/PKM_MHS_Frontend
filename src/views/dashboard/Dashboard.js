@@ -67,7 +67,7 @@ const Dashboard = () => {
                             <CCol sm={6} lg={4} className="mb-2">
                                 <CCard>
                                     <CCardBody className="text-center">
-                                        <h1 className="h6">Belum ada inventory</h1>
+                                        <h1 className="h6">Belum ada inventaris</h1>
                                         <div className="mb-3">
                                             <CImage src={emptyGraphic} height={100} />
                                         </div>
