@@ -26,7 +26,7 @@ const InventoryChart = ({ data }) => {
     // });
     return (
         <>
-            {data && (
+            {data?.length > 0 && (
                 <CCard className="mb-4">
                     <CCardHeader>Inventaris Terjual Terbanyak</CCardHeader>
                     <CCardBody>

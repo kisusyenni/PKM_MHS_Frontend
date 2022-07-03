@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { CButton, CWidgetStatsA } from "@coreui/react";
+import { CButton, CCard, CCardBody, CImage, CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartLine } from "@coreui/react-chartjs";
 import { MONTHS } from "src/constants/enums";
 import NumberFormat from "react-number-format";
+import emptyGraphic from "src/assets/images/emptyExpense.svg";
 
 const ExpenseWidget = ({ data }) => {
     const [dataset, setDataset] = useState([]);
@@ -94,7 +95,17 @@ const ExpenseWidget = ({ data }) => {
                 />
             ) : (
                 <>
-                    <CButton href="pengeluaran/tambah">Tambah Pengeluaran</CButton>
+                    <CCard>
+                        <CCardBody className="text-center">
+                            <h1 className="h6">Tidak ada data pengeluaran</h1>
+                            <div className="mb-3">
+                                <CImage src={emptyGraphic} height={100} />
+                            </div>
+                            <CButton size="sm" href="pengeluaran/tambah">
+                                Tambah
+                            </CButton>
+                        </CCardBody>
+                    </CCard>
                 </>
             )}
         </>

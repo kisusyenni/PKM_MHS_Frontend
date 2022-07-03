@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { CWidgetStatsA } from "@coreui/react";
+import { CButton, CCard, CCardBody, CImage, CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartLine } from "@coreui/react-chartjs";
 import { MONTHS } from "src/constants/enums";
 import NumberFormat from "react-number-format";
+import emptyGraphic from "src/assets/images/emptyPurchase.svg";
 
 const PurchaseWidget = ({ data }) => {
     const [dataset, setDataset] = useState([]);
@@ -18,7 +19,7 @@ const PurchaseWidget = ({ data }) => {
     }, [data]);
     return (
         <>
-            {data && (
+            {data?.total > 0 ? (
                 <CWidgetStatsA
                     className="mb-4"
                     color="info"
@@ -91,6 +92,20 @@ const PurchaseWidget = ({ data }) => {
                         />
                     }
                 />
+            ) : (
+                <>
+                    <CCard>
+                        <CCardBody className="text-center">
+                            <h1 className="h6">Tidak ada data pembelian</h1>
+                            <div className="mb-3">
+                                <CImage src={emptyGraphic} height={100} />
+                            </div>
+                            <CButton size="sm" href="pembelian/tambah">
+                                Tambah
+                            </CButton>
+                        </CCardBody>
+                    </CCard>
+                </>
             )}
         </>
     );

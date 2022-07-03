@@ -18,7 +18,6 @@ import {
 import React from "react";
 
 const OutOfStockTable = ({ data }) => {
-    console.log(data);
     return (
         <>
             {data && data.length > 0 && (

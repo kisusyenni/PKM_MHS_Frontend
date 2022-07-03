@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import {
     CButton,
+    CImage,
     CModal,
     CModalBody,
     CModalHeader,
@@ -19,6 +20,7 @@ import CIcon from "@coreui/icons-react";
 import { cilUser, cilCalendar, cilCash } from "@coreui/icons";
 import NumberFormat from "react-number-format";
 import PaymentForm from "src/components/payment/PaymentForm";
+import completeGraphic from "src/assets/images/complete.svg";
 
 const PayableTable = ({ data }) => {
     // Handle payment form modal
@@ -154,9 +156,14 @@ const PayableTable = ({ data }) => {
                     )}
                 </>
             ) : (
-                <div className="text-center">
-                    <p>Toko Anda tidak memiliki piutang</p>
-                </div>
+                <>
+                    <div className="text-center">
+                        <div className="mb-3">
+                            <CImage src={completeGraphic} height={100} />
+                        </div>
+                        <p>Toko Anda tidak memiliki piutang</p>
+                    </div>
+                </>
             )}
         </>
     );
