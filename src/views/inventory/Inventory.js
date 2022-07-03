@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { CButton, CCol, CContainer, CImage, CRow } from "@coreui/react";
+import { CButton, CCol, CImage, CRow } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
@@ -240,25 +240,23 @@ const Inventory = () => {
                     options={tableOptions}
                 />
             ) : (
-                <CContainer>
-                    <CRow className="align-items-center justify-content-center">
-                        <CCol md={7} className="text-center">
-                            <h1 className="h3">Inventory Tidak Ditemukan</h1>
-                            <div>
-                                <CButton
-                                    className="mb-5 mt-3"
-                                    onClick={() => {
-                                        navigate("/inventaris/tambah");
-                                    }}
-                                >
-                                    <CIcon className="me-2" icon={cilPlus} /> Tambah Inventaris
-                                </CButton>
-                            </div>
+                <CRow className="align-items-center justify-content-center">
+                    <CCol md={7} className="text-center">
+                        <h1 className="h3">Belum ada data inventaris</h1>
+                        <div>
+                            <CButton
+                                className="mb-5 mt-3"
+                                onClick={() => {
+                                    navigate("/inventaris/tambah");
+                                }}
+                            >
+                                <CIcon className="me-2" icon={cilPlus} /> Tambah Inventaris
+                            </CButton>
+                        </div>
 
-                            <CImage src={emptyGraphic} width={400} />
-                        </CCol>
-                    </CRow>
-                </CContainer>
+                        <CImage className="w-100" src={emptyGraphic} height={200} />
+                    </CCol>
+                </CRow>
             )}
 
             {state.openModal && (

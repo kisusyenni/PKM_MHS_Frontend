@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { CButton } from "@coreui/react";
+import { CButton, CCol, CImage, CRow } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus } from "@coreui/icons";
 import SupplierForm from "./SupplierForm";
 import { get } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
+import { useNavigate } from "react-router-dom";
+import emptyGraphic from "src/assets/images/empty.svg";
 
 const Supplier = () => {
+    const navigate = useNavigate();
+
     const tableCols = [
         {
             name: "supplierId",
@@ -147,8 +151,6 @@ const Supplier = () => {
         }));
     };
 
-    const handleDelete = (id) => {};
-
     const handleClose = () => {
         setState((prevState) => ({
             ...prevState,
@@ -193,12 +195,33 @@ const Supplier = () => {
             ) : (
                 <></>
             )}
-            <MUIDataTable
-                title={"Daftar Supplier"}
-                data={state.data}
-                columns={state.tableCols}
-                options={state.tableOptions}
-            />
+
+            {state.data.length > 0 ? (
+                <MUIDataTable
+                    title={"Daftar Supplier"}
+                    data={state.data}
+                    columns={state.tableCols}
+                    options={state.tableOptions}
+                />
+            ) : (
+                <CRow className="align-items-center justify-content-center">
+                    <CCol md={7} className="text-center">
+                        <h1 className="h3">Belum ada data supplier</h1>
+                        <div>
+                            <CButton
+                                className="mb-5 mt-3"
+                                onClick={() => {
+                                    navigate("/supplier/tambah");
+                                }}
+                            >
+                                <CIcon className="me-2" icon={cilPlus} /> Tambah Supplier
+                            </CButton>
+                        </div>
+
+                        <CImage className="w-100" src={emptyGraphic} height={200} />
+                    </CCol>
+                </CRow>
+            )}
 
             {state.openForm && (
                 <SupplierForm

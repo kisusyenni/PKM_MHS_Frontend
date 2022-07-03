@@ -229,7 +229,7 @@ const StockOpname = () => {
                 <CContainer>
                     <CRow className="align-items-center justify-content-center">
                         <CCol md={7} className="text-center">
-                            <h1 className="h3">StockOpname Tidak Ditemukan</h1>
+                            <h1 className="h3">Belum ada data stock opname</h1>
                             <div>
                                 <CButton
                                     className="mb-5 mt-3"
@@ -241,7 +241,7 @@ const StockOpname = () => {
                                 </CButton>
                             </div>
 
-                            <CImage src={emptyGraphic} width={400} />
+                            <CImage src={emptyGraphic} height={200} />
                         </CCol>
                     </CRow>
                 </CContainer>

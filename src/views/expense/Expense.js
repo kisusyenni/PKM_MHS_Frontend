@@ -239,7 +239,7 @@ const Expense = () => {
                 <CContainer>
                     <CRow className="align-items-center justify-content-center">
                         <CCol md={7} className="text-center">
-                            <h1 className="h3">Data Pengeluaran Tidak Ditemukan</h1>
+                            <h1 className="h3">Belum ada data pengeluaran</h1>
                             <div>
                                 <CButton
                                     className="mb-5 mt-3"
@@ -251,7 +251,7 @@ const Expense = () => {
                                 </CButton>
                             </div>
 
-                            <CImage src={emptyGraphic} width={400} />
+                            <CImage src={emptyGraphic} height={200} />
                         </CCol>
                     </CRow>
                 </CContainer>
