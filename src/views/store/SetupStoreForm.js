@@ -5,7 +5,6 @@ import {
     CCard,
     CCardBody,
     CCol,
-    CContainer,
     CForm,
     CFormInput,
     CFormLabel,
@@ -14,37 +13,46 @@ import {
     CInputGroupText,
     CRow,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import countriesData from "../../assets/json/countries.json";
 import { put } from "src/network/api/network";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import StatusAlert from "src/helper/StatusAlert";
 import useAuth from "src/hooks/useAuth";
 
 const SetupStoreForm = () => {
+    const navigate = useNavigate();
+
+    const { setAuth } = useAuth();
+
     const [state, setState] = useState({
         loading: false,
         showAlert: false,
         alertType: null,
         alertContent: "",
-    });
-    const { setAuth } = useAuth();
-
-    const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
-
-    const countries = countriesData.map((country) => {
-        return country.name;
+        countries: [],
+        currency: [],
+        isReload: null,
     });
 
-    const currency = countriesData.map((country) => {
-        return {
-            label: `${country.currency.code} - ${country.name} ${country.currency.name}`,
-            value: country.currency.symbol,
-        };
-    });
+    useEffect(() => {
+        const countries = countriesData.map((country) => {
+            return country.name;
+        });
+
+        const currency = countriesData.map((country) => {
+            return {
+                label: `${country.currency.code} - ${country.name} ${country.currency.name}`,
+                value: country.currency.symbol,
+            };
+        });
+        setState((prevState) => ({
+            ...prevState,
+            countries: countries,
+            currency: currency,
+        }));
+    }, [state.isReload]);
 
     const {
         control,
@@ -78,7 +86,8 @@ const SetupStoreForm = () => {
             loading: true,
         }));
         const storeId = localStorage.getItem("storeId");
-        const response = await put("/store/", storeId, data);
+        const accessToken = localStorage.getItem("token");
+        const response = await put("/store", storeId, data);
         if (response.status === 200) {
             setState((prevState) => ({
                 ...prevState,
@@ -106,11 +115,11 @@ const SetupStoreForm = () => {
                     keepSubmitCount: false,
                 },
             );
-            setAuth({ isSetup: 1 });
             localStorage.setItem("isSetup", 1);
+            setAuth({ accessToken: accessToken, storeId: storeId, isSetup: 1 });
             setTimeout(() => {
-                navigate(from, { replace: true });
                 closeAlert();
+                navigate("/dashboard", { replace: true });
             }, 3000);
         } else {
             setState((prevState) => ({
@@ -132,12 +141,14 @@ const SetupStoreForm = () => {
                         <h3>Atur UMKM Anda</h3>
                         <p className="text-medium-emphasis">Silahkan masukkan data UMKM Anda.</p>
 
-                        <StatusAlert
-                            showAlert={state.showAlert}
-                            type={state.alertType}
-                            content={state.alertContent}
-                            closeAlert={closeAlert}
-                        />
+                        {state.showAlert && (
+                            <StatusAlert
+                                showAlert={state.showAlert}
+                                type={state.alertType}
+                                content={state.alertContent}
+                                closeAlert={closeAlert}
+                            />
+                        )}
 
                         <CRow>
                             <CCol xl={12} md={6}>
@@ -188,8 +199,8 @@ const SetupStoreForm = () => {
                                                 invalid={errors.hasOwnProperty("type")}
                                                 options={[
                                                     "Jenis UMKM",
-                                                    { label: "Dagang", value: "0" },
-                                                    { label: "Jasa", value: "1" },
+                                                    { label: "Dagang", value: "1" },
+                                                    { label: "Jasa", value: "2" },
                                                 ]}
                                             />
                                         )}
@@ -217,7 +228,7 @@ const SetupStoreForm = () => {
                                                 value={value}
                                                 ref={ref}
                                                 invalid={errors.hasOwnProperty("region")}
-                                                options={countries}
+                                                options={state.countries}
                                             />
                                         )}
                                     />
@@ -246,7 +257,7 @@ const SetupStoreForm = () => {
                                                 value={value}
                                                 ref={ref}
                                                 invalid={errors.hasOwnProperty("currency")}
-                                                options={currency}
+                                                options={state.currency}
                                             />
                                         )}
                                     />
