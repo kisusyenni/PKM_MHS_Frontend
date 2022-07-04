@@ -1,19 +1,25 @@
-import { CCol, CContainer, CRow } from "@coreui/react";
+import { CButton, CCol, CRow } from "@coreui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import SetupStoreForm from "./SetupStoreForm";
 
 const EditStore = () => {
+    const navigate = useNavigate();
     return (
         <>
-            <main className="bg-light min-vh-100 d-flex flex-row align-items-center">
-                <CContainer>
-                    <CRow className="justify-content-center">
-                        <CCol md={9} lg={7} xl={6}>
-                            <SetupStoreForm />
-                        </CCol>
-                    </CRow>
-                </CContainer>
-            </main>
+            <CRow className="justify-content-center">
+                <CCol md={12}>
+                    <CButton
+                        className="mb-3"
+                        onClick={() => {
+                            navigate(-1);
+                        }}
+                    >
+                        Kembali
+                    </CButton>
+                    <SetupStoreForm />
+                </CCol>
+            </CRow>
         </>
     );
 };
