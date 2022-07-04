@@ -13,7 +13,7 @@ const SetupStore = () => {
                                 <h1>Pengaturan UMKM</h1>
                                 <p>Silahkan isi identitas UMKM Anda terlebih dahulu</p>
                             </div>
-                            <SetupStoreForm />
+                            <SetupStoreForm setup={true} />
                         </CCol>
                     </CRow>
                 </CContainer>

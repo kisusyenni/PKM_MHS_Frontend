@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { cilBuilding, cilDollar, cilGlobeAlt, cilList, cilMap, cilPhone } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import {
@@ -16,12 +17,12 @@ import {
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import countriesData from "../../assets/json/countries.json";
-import { put } from "src/network/api/network";
+import { get, put } from "src/network/api/network";
 import { useNavigate } from "react-router-dom";
 import StatusAlert from "src/helper/StatusAlert";
 import useAuth from "src/hooks/useAuth";
 
-const SetupStoreForm = () => {
+const SetupStoreForm = ({ setup = false }) => {
     const navigate = useNavigate();
 
     const { setAuth } = useAuth();
@@ -33,8 +34,20 @@ const SetupStoreForm = () => {
         alertContent: "",
         countries: [],
         currency: [],
+        data: {},
         isReload: null,
     });
+
+    const getStoreData = async () => {
+        const id = localStorage.getItem("storeId");
+        const response = await get(`/store/${id}`);
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+            }));
+        }
+    };
 
     useEffect(() => {
         const countries = countriesData.map((country) => {
@@ -52,6 +65,8 @@ const SetupStoreForm = () => {
             countries: countries,
             currency: currency,
         }));
+
+        getStoreData();
     }, [state.isReload]);
 
     const {
@@ -59,6 +74,7 @@ const SetupStoreForm = () => {
         handleSubmit,
         formState: { errors },
         reset,
+        setValue,
     } = useForm({
         defaultValues: {
             name: "",
@@ -72,6 +88,14 @@ const SetupStoreForm = () => {
         },
         mode: "all",
     });
+
+    useEffect(() => {
+        const inputs = ["name", "address", "telephone", "email", "region", "currency", "type"];
+
+        inputs.forEach((value) => {
+            setValue(value, state.data[value]);
+        });
+    }, [setValue, state.data]);
 
     const closeAlert = () => {
         setState((prevState) => ({
@@ -96,30 +120,31 @@ const SetupStoreForm = () => {
                 alertType: "success",
                 alertContent: response.data,
             }));
-            reset(
-                {
-                    name: "",
-                    address: "",
-                    telephone: "",
-                    email: "",
-                    region: "Indonesia",
-                    currency: "Rp",
-                    type: "",
-                },
-                {
-                    keepErrors: false,
-                    keepDirty: true,
-                    keepIsSubmitted: false,
-                    keepTouched: false,
-                    keepIsValid: false,
-                    keepSubmitCount: false,
-                },
-            );
+            if (setup)
+                reset(
+                    {
+                        name: "",
+                        address: "",
+                        telephone: "",
+                        email: "",
+                        region: "Indonesia",
+                        currency: "Rp",
+                        type: "",
+                    },
+                    {
+                        keepErrors: false,
+                        keepDirty: true,
+                        keepIsSubmitted: false,
+                        keepTouched: false,
+                        keepIsValid: false,
+                        keepSubmitCount: false,
+                    },
+                );
             localStorage.setItem("isSetup", 1);
             setAuth({ accessToken: accessToken, storeId: storeId, isSetup: 1 });
             setTimeout(() => {
                 closeAlert();
-                navigate("/dashboard", { replace: true });
+                if (setup) navigate("/dashboard", { replace: true });
             }, 3000);
         } else {
             setState((prevState) => ({
@@ -328,7 +353,7 @@ const SetupStoreForm = () => {
                                         control={control}
                                         rules={{
                                             pattern: {
-                                                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                                                value: /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/,
                                                 message: "Format email salah",
                                             },
                                         }}
@@ -351,9 +376,7 @@ const SetupStoreForm = () => {
                         </CRow>
 
                         <div className="text-end">
-                            <CButton color="success" type="submit">
-                                Simpan
-                            </CButton>
+                            <CButton type="submit">Simpan</CButton>
                         </div>
                     </CForm>
                 </CCardBody>
