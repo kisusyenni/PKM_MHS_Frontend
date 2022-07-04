@@ -12,7 +12,7 @@ const EditStore = () => {
                     <CButton
                         className="mb-3"
                         onClick={() => {
-                            navigate(-1);
+                            navigate("/dashboard");
                         }}
                     >
                         Kembali
