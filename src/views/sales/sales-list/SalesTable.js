@@ -149,6 +149,11 @@ const SalesTable = ({ data }) => {
         viewColumns: false,
         sort: true,
         filter: false,
+        textLabels: {
+            body: {
+                noMatch: "Maaf, tidak ada data yang cocok ditemukan",
+            },
+        },
         customToolbar: () => (
             <>
                 <CButton

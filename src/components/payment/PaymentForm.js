@@ -10,7 +10,7 @@ const PaymentForm = ({ type, id, total }) => {
     const date = new Date();
 
     const [state, setState] = useState({
-        nominal: 0,
+        nominal: total,
         loading: false,
         disabled: false,
         showAlert: false,

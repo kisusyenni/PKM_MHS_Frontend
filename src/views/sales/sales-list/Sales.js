@@ -12,6 +12,8 @@ const Sales = () => {
 
     const [state, setState] = useState({
         data: [],
+        originalData: [],
+        total: 0,
         activeKey: 1,
     });
 
@@ -21,6 +23,8 @@ const Sales = () => {
             setState((prevState) => ({
                 ...prevState,
                 data: response.data,
+                originalData: response.data,
+                total: response.data.length,
             }));
         }
     };
@@ -28,23 +32,48 @@ const Sales = () => {
     useEffect(() => {
         switch (state.activeKey) {
             case 1:
-                console.log("semua");
-                getSalesList();
+                const allData = state.originalData;
+                setState((prevState) => ({
+                    ...prevState,
+                    data: allData,
+                }));
                 break;
 
             case 2:
+                const unpaidSales = state.originalData.filter((item) => item.status === 1);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: unpaidSales,
+                }));
                 console.log("belum dibayar");
                 break;
 
             case 3:
+                const halfPaidSales = state.originalData.filter((item) => item.status === 2);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: halfPaidSales,
+                }));
                 console.log("dibayar sebagian");
                 break;
 
             case 4:
+                const dueDateSales = state.originalData.filter(
+                    (item) => item.status === 1 || item.status === 2,
+                );
+                setState((prevState) => ({
+                    ...prevState,
+                    data: dueDateSales,
+                }));
                 console.log("jatuh tempo");
                 break;
 
             case 5:
+                const paidSales = state.originalData.filter((item) => item.status === 3);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: paidSales,
+                }));
                 console.log("lunas");
                 break;
 
@@ -53,13 +82,19 @@ const Sales = () => {
         }
     }, [state.activeKey, state.isReload]);
 
+    useEffect(() => {
+        getSalesList();
+    }, [state.isReload]);
+
     return (
         <>
-            {state.data.length > 0 ? (
+            {state.total > 0 ? (
                 <>
                     <CNav variant="pills" role="tablist">
                         <CNavItem>
                             <CNavLink
+                                type="button"
+                                className="pointer"
                                 href={undefined}
                                 active={state.activeKey === 1}
                                 onClick={() =>
@@ -74,6 +109,7 @@ const Sales = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 2}
                                 onClick={() =>
@@ -88,6 +124,7 @@ const Sales = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 3}
                                 onClick={() =>
@@ -102,6 +139,7 @@ const Sales = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 4}
                                 onClick={() =>
@@ -116,6 +154,7 @@ const Sales = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 5}
                                 onClick={() =>

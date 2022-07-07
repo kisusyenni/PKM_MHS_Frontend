@@ -16,6 +16,11 @@ import {
 import NumberFormat from "react-number-format";
 import PaymentStatus from "src/helper/PaymentStatus";
 const SalesContent = ({ data }) => {
+    const subtotal = data?.tbl_sales_details.reduce((prev, curr) => {
+        const currValue = (curr.pricePerUnit - curr.discount) * curr.quantityBuy;
+        console.log(currValue);
+        return prev + currValue;
+    }, 0);
     return (
         <>
             {data && (
@@ -112,7 +117,7 @@ const SalesContent = ({ data }) => {
                                     </CTableHeaderCell>
                                     <CTableDataCell>
                                         <NumberFormat
-                                            value={data?.subtotal}
+                                            value={subtotal}
                                             displayType="text"
                                             allowLeadingZeros={false}
                                             thousandSeparator={true}
@@ -126,7 +131,7 @@ const SalesContent = ({ data }) => {
                                     </CTableHeaderCell>
                                     <CTableDataCell>
                                         <NumberFormat
-                                            value={data?.discount}
+                                            value={subtotal - data?.totalPayment}
                                             displayType="text"
                                             allowLeadingZeros={false}
                                             thousandSeparator={true}
