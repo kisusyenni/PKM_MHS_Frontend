@@ -3,10 +3,14 @@ import { CButton, CCol, CForm, CFormInput, CFormLabel, CFormSelect, CRow } from 
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
+import { useLocation, useNavigate } from "react-router-dom";
+import { purchasePaymenCode, salesPaymentCode } from "src/helper/RefNumber";
 import StatusAlert from "src/helper/StatusAlert";
 import { post } from "src/network/api/network";
 
 const PaymentForm = ({ type, id, total }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const date = new Date();
 
     const [state, setState] = useState({
@@ -19,6 +23,16 @@ const PaymentForm = ({ type, id, total }) => {
         isReload: null,
     });
 
+    const generateCode = () => {
+        if (location?.pathname.includes("pembelian")) {
+            return purchasePaymenCode;
+        } else if (location?.pathname.includes("penjualan")) {
+            return salesPaymentCode;
+        } else {
+            return "PY0001";
+        }
+    };
+
     const {
         control,
         handleSubmit,
@@ -29,7 +43,7 @@ const PaymentForm = ({ type, id, total }) => {
             methodId: "1",
             date: date.toJSON().slice(0, 10),
             nominal: total,
-            code: "PY001",
+            code: generateCode(),
         },
         mode: "all",
     });
@@ -64,6 +78,11 @@ const PaymentForm = ({ type, id, total }) => {
             setTimeout(() => {
                 closeAlert();
                 reset();
+                if (location?.pathname.includes("pembelian")) {
+                    navigate("/pembelian");
+                } else if (location?.pathname.includes("penjualan")) {
+                    navigate("/penjualan");
+                }
             }, 2000);
         } else {
             // show error
