@@ -74,7 +74,9 @@ const PurchaseContent = ({ data }) => {
                             <CTableBody>
                                 {data.tbl_purchase_details.map((detail, index) => (
                                     <CTableRow key={index}>
-                                        <CTableDataCell>{detail.tbl_inventory.name}</CTableDataCell>
+                                        <CTableDataCell>
+                                            {detail.tbl_inventory?.name}
+                                        </CTableDataCell>
                                         <CTableDataCell scope="row">
                                             {detail.quantityBuy}
                                         </CTableDataCell>
