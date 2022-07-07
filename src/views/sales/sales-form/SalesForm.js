@@ -12,6 +12,7 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { salesRefNumber } from "src/helper/RefNumber";
 import StatusAlert from "src/helper/StatusAlert";
 import { post } from "src/network/api/network";
 import SalesDetailForm from "./SalesDetailForm";
@@ -37,7 +38,7 @@ const SalesForm = () => {
     } = useForm({
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
-            refNumber: "PU0001",
+            refNumber: salesRefNumber,
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
             dueNominal: 0,
@@ -118,6 +119,7 @@ const SalesForm = () => {
                                             value={value}
                                             ref={ref}
                                             invalid={errors.hasOwnProperty("refNumber")}
+                                            disabled
                                         />
                                     )}
                                 />

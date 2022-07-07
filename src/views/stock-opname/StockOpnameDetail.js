@@ -61,7 +61,7 @@ const StockOpnameDetail = () => {
                         <CCol md={3}>
                             <h6>ID</h6>
                             {/* <p>{state?.data?.stockOpnameId}</p> */}
-                            <p>SOP0001</p>
+                            <p>SOP/1657204586000</p>
                         </CCol>
                         <CCol md={3}>
                             <h6>Dibuat oleh</h6>
