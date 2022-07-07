@@ -1,19 +1,30 @@
 /* eslint-disable react/prop-types */
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import { CButton, CCol, CFormInput, CFormSelect, CInputGroup, CRow } from "@coreui/react";
+import {
+    CButton,
+    CCol,
+    CDropdown,
+    CDropdownItem,
+    CDropdownMenu,
+    CDropdownToggle,
+    CFormInput,
+    CRow,
+} from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { Controller, useFieldArray, useWatch } from "react-hook-form";
+import NumberFormat from "react-number-format";
 import { get } from "src/network/api/network";
 import CalcSalesDetail from "./CalcSalesDetail";
 
 const SalesDetailForm = ({ control, watch, errors, setValue }) => {
     const [state, setState] = useState({
         openModal: false,
-        selectedInventory: null,
         total: 0,
         inventory: [],
     });
+
+    const [selectedInventory, setInventory] = useState(["Pilih Inventaris"]);
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -37,7 +48,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
     const results = useWatch({ control, name: "itemDetail" });
 
     const checkData = (id) => {
-        const check = results.some((value, index) => {
+        const check = results.some((value) => {
             return value.inventoryId === id;
         });
         return check;
@@ -84,41 +95,53 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                 return (
                     <CRow key={item.id} className="align-items-start">
                         <CCol md={3} className="mb-3">
-                            <CInputGroup>
-                                <Controller
-                                    name={`itemDetail.${index}.inventoryId`}
-                                    control={control}
-                                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                                        <CFormSelect
-                                            size="sm"
-                                            onChange={onChange}
-                                            onBlur={(e) => {
-                                                onBlur(e);
-                                                setValue(
-                                                    `itemDetail.${index}.pricePerUnit`,
-                                                    setPrice(value),
-                                                );
-                                            }}
-                                            value={value}
-                                            ref={ref}
-                                            aria-label="Inventaris"
-                                        >
-                                            <option>Pilih Inventory</option>
-                                            {state.inventory.map((inventory, index) => {
-                                                return (
-                                                    <option
-                                                        key={index}
-                                                        value={inventory.inventoryId}
-                                                        disabled={checkData(inventory.inventoryId)}
+                            <CDropdown className="w-100">
+                                <CDropdownToggle
+                                    color="white"
+                                    className="text-start border border-secondary"
+                                >
+                                    {selectedInventory[index + 1]
+                                        ? selectedInventory[index + 1]
+                                        : selectedInventory[0]}
+                                </CDropdownToggle>
+                                <CDropdownMenu>
+                                    {state.inventory.map((inventory, idx) => {
+                                        return (
+                                            <CDropdownItem
+                                                key={idx}
+                                                type="button"
+                                                onClick={() => {
+                                                    const inventoryData = [...selectedInventory];
+                                                    inventoryData[index + 1] = inventory.name;
+                                                    setInventory(inventoryData);
+                                                    setValue(
+                                                        `itemDetail.${index}.inventoryId`,
+                                                        inventory.inventoryId,
+                                                    );
+                                                    setValue(
+                                                        `itemDetail.${index}.pricePerUnit`,
+                                                        setPrice(inventory.inventoryId),
+                                                    );
+                                                }}
+                                                disabled={
+                                                    inventory.quantity <= 0 ||
+                                                    checkData(inventory.inventoryId)
+                                                }
+                                            >
+                                                {inventory.name}{" "}
+                                                {inventory.quantity <= 0 && (
+                                                    <i
+                                                        className="text-danger"
+                                                        style={{ fontSize: 14 }}
                                                     >
-                                                        {inventory.name}
-                                                    </option>
-                                                );
-                                            })}
-                                        </CFormSelect>
-                                    )}
-                                />
-                            </CInputGroup>
+                                                        Stok Habis
+                                                    </i>
+                                                )}
+                                            </CDropdownItem>
+                                        );
+                                    })}
+                                </CDropdownMenu>
+                            </CDropdown>
                         </CCol>
                         <CCol md={2} className="mb-3">
                             <Controller
@@ -142,12 +165,16 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                 name={`itemDetail.${index}.pricePerUnit`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
+                                    <NumberFormat
+                                        customInput={CFormInput}
                                         size="sm"
-                                        onChange={onChange}
+                                        ref={ref}
                                         onBlur={onBlur}
                                         value={value}
-                                        ref={ref}
+                                        onChange={onChange}
+                                        allowLeadingZeros={false}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
                                         disabled
                                     />
                                 )}
@@ -158,12 +185,19 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                 name={`itemDetail.${index}.discount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
+                                    <NumberFormat
+                                        customInput={CFormInput}
                                         size="sm"
-                                        onChange={onChange}
+                                        ref={ref}
                                         onBlur={onBlur}
                                         value={value}
-                                        ref={ref}
+                                        allowLeadingZeros={false}
+                                        onValueChange={(values) => {
+                                            const { formattedValue, value } = values;
+                                            setValue(`itemDetail.${index}.discount`, value);
+                                        }}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
                                     />
                                 )}
                             />
@@ -173,12 +207,16 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                 name={`itemDetail.${index}.amount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
+                                    <NumberFormat
+                                        customInput={CFormInput}
                                         size="sm"
-                                        onChange={onChange}
+                                        ref={ref}
                                         onBlur={onBlur}
                                         value={setAmount(index)}
-                                        ref={ref}
+                                        onChange={onChange}
+                                        allowLeadingZeros={false}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
                                         disabled
                                     />
                                 )}
@@ -199,7 +237,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                 type="button"
                 color="secondary"
                 onClick={() => {
-                    append({ name: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 });
+                    append({ quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 });
                 }}
             >
                 Tambah
@@ -212,12 +250,16 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                         name={`subtotal`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => (
-                            <CFormInput
+                            <NumberFormat
+                                customInput={CFormInput}
                                 size="sm"
-                                onChange={onChange}
+                                ref={ref}
                                 onBlur={onBlur}
                                 value={value}
-                                ref={ref}
+                                onChange={onChange}
+                                allowLeadingZeros={false}
+                                thousandSeparator={true}
+                                prefix={"Rp"}
                                 disabled
                             />
                         )}
@@ -233,12 +275,19 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                         name={`discount`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => (
-                            <CFormInput
+                            <NumberFormat
+                                customInput={CFormInput}
                                 size="sm"
-                                onChange={onChange}
+                                ref={ref}
                                 onBlur={onBlur}
                                 value={value}
-                                ref={ref}
+                                allowLeadingZeros={false}
+                                onValueChange={(values) => {
+                                    const { formattedValue, value } = values;
+                                    setValue("discount", value);
+                                }}
+                                thousandSeparator={true}
+                                prefix={"Rp"}
                             />
                         )}
                     />
@@ -251,12 +300,16 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                         name={`totalPayment`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => (
-                            <CFormInput
+                            <NumberFormat
+                                customInput={CFormInput}
                                 size="sm"
-                                onChange={onChange}
+                                ref={ref}
                                 onBlur={onBlur}
                                 value={value}
-                                ref={ref}
+                                onChange={onChange}
+                                allowLeadingZeros={false}
+                                thousandSeparator={true}
+                                prefix={"Rp"}
                                 disabled
                             />
                         )}
