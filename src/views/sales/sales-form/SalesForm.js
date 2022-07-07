@@ -44,7 +44,7 @@ const SalesForm = () => {
             totalPayment: 0,
             discount: 0,
             subtotal: 0,
-            itemDetail: [{ name: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 }],
+            itemDetail: [{ inventoryId: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 }],
             status: 1,
         },
         mode: "all",

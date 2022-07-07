@@ -237,7 +237,13 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                 type="button"
                 color="secondary"
                 onClick={() => {
-                    append({ quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 });
+                    append({
+                        inventoryId: "",
+                        quantity: 1,
+                        pricePerUnit: 0,
+                        discount: 0,
+                        amount: 0,
+                    });
                 }}
             >
                 Tambah
