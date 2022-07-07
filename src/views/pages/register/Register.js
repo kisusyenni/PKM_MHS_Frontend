@@ -14,8 +14,10 @@ import {
 import { post } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const navigate = useNavigate();
     const [state, setState] = useState({
         loading: false,
         showAlert: false,
@@ -75,6 +77,10 @@ const Register = () => {
                     keepSubmitCount: false,
                 },
             );
+            setTimeout(() => {
+                closeAlert();
+                navigate("/login", { replace: true });
+            }, 2500);
         } else {
             setState((prevState) => ({
                 ...prevState,
@@ -83,8 +89,8 @@ const Register = () => {
                 alertType: "danger",
                 alertContent: response.data,
             }));
+            setTimeout(() => closeAlert(), 2500);
         }
-        setTimeout(() => closeAlert(), 2500);
     };
 
     const closeAlert = () => {
@@ -174,7 +180,7 @@ const Register = () => {
                                             rules={{
                                                 required: "Email tidak boleh kosong",
                                                 pattern: {
-                                                    value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                                                    value: /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/,
                                                     message: "Format email salah",
                                                 },
                                             }}
