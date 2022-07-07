@@ -112,6 +112,7 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                         <CCol md={3} className="mb-3">
                             <CDropdown className="w-100">
                                 <CDropdownToggle
+                                    size="sm"
                                     color="white"
                                     className="text-start border border-secondary"
                                 >
@@ -198,7 +199,6 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                                         allowLeadingZeros={false}
                                         onValueChange={(values) => {
                                             const { formattedValue, value } = values;
-                                            console.log(value);
                                             setValue(`itemDetail.${index}.discount`, value);
                                         }}
                                         thousandSeparator={true}
@@ -261,15 +261,6 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                         name={`totalPayment`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => (
-                            // <CFormInput
-                            //     size="sm"
-                            //     onChange={onChange}
-                            //     onBlur={onBlur}
-                            //     value={value}
-                            //     ref={ref}
-                            //     disabled
-                            // />
-
                             <NumberFormat
                                 customInput={CFormInput}
                                 size="sm"
