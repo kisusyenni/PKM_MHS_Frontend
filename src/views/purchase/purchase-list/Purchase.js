@@ -12,6 +12,8 @@ const Purchase = () => {
     const [state, setState] = useState({
         activeKey: 1,
         data: [],
+        originalData: [],
+        total: 0,
     });
 
     const getPurchaseList = async () => {
@@ -20,6 +22,8 @@ const Purchase = () => {
             setState((prevState) => ({
                 ...prevState,
                 data: response.data,
+                originalData: response.data,
+                total: response.data.length,
             }));
         }
     };
@@ -27,24 +31,45 @@ const Purchase = () => {
     useEffect(() => {
         switch (state.activeKey) {
             case 1:
-                console.log("semua");
-                getPurchaseList();
+                const allData = state.originalData;
+                setState((prevState) => ({
+                    ...prevState,
+                    data: allData,
+                }));
                 break;
 
             case 2:
-                console.log("belum dibayar");
+                const unpaidPurchasement = state.originalData.filter((item) => item.status === 1);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: unpaidPurchasement,
+                }));
                 break;
 
             case 3:
-                console.log("dibayar sebagian");
+                const halfPaidPurchasement = state.originalData.filter((item) => item.status === 2);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: halfPaidPurchasement,
+                }));
                 break;
 
             case 4:
-                console.log("jatuh tempo");
+                const dueDatePurchasement = state.originalData.filter(
+                    (item) => item.status === 1 || item.status === 2,
+                );
+                setState((prevState) => ({
+                    ...prevState,
+                    data: dueDatePurchasement,
+                }));
                 break;
 
             case 5:
-                console.log("lunas");
+                const paidPurchasement = state.originalData.filter((item) => item.status === 3);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: paidPurchasement,
+                }));
                 break;
 
             default:
@@ -52,13 +77,18 @@ const Purchase = () => {
         }
     }, [state.activeKey, state.isReload]);
 
+    useEffect(() => {
+        getPurchaseList();
+    }, [state.isReload]);
+
     return (
         <>
-            {state.data.length > 0 ? (
+            {state.total > 0 ? (
                 <>
                     <CNav variant="pills" role="tablist">
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 1}
                                 onClick={() =>
@@ -73,6 +103,7 @@ const Purchase = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 2}
                                 onClick={() =>
@@ -87,6 +118,7 @@ const Purchase = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 3}
                                 onClick={() =>
@@ -101,6 +133,7 @@ const Purchase = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 4}
                                 onClick={() =>
@@ -115,6 +148,7 @@ const Purchase = () => {
                         </CNavItem>
                         <CNavItem>
                             <CNavLink
+                                type="button"
                                 href={undefined}
                                 active={state.activeKey === 5}
                                 onClick={() =>
