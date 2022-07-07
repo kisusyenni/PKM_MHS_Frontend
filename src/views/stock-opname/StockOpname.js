@@ -87,7 +87,7 @@ const StockOpname = () => {
                             >
                                 <CIcon icon={cilPen}></CIcon>
                             </CButton>
-                            <CButton
+                            {/* <CButton
                                 color="primary"
                                 variant="outline"
                                 onClick={() => {
@@ -95,7 +95,7 @@ const StockOpname = () => {
                                 }}
                             >
                                 <CIcon icon={cilTrash}></CIcon>
-                            </CButton>
+                            </CButton> */}
                         </>
                     );
                 },
