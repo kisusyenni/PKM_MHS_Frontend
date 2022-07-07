@@ -84,21 +84,6 @@ const OverviewChart = ({ data }) => {
                                         display: false,
                                     },
                                 },
-                                scales: {
-                                    x: {
-                                        grid: {
-                                            drawOnChartArea: false,
-                                        },
-                                    },
-                                    y: {
-                                        ticks: {
-                                            beginAtZero: true,
-                                            maxTicksLimit: 5,
-                                            stepSize: Math.ceil(250 / 5),
-                                            max: 250,
-                                        },
-                                    },
-                                },
                                 elements: {
                                     line: {
                                         tension: 0.4,
