@@ -2,7 +2,17 @@
 /* eslint-disable react/prop-types */
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import { CButton, CCol, CFormInput, CFormSelect, CRow } from "@coreui/react";
+import {
+    CButton,
+    CCol,
+    CDropdown,
+    CDropdownItem,
+    CDropdownMenu,
+    CDropdownToggle,
+    CFormInput,
+    CFormSelect,
+    CRow,
+} from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { Controller, useFieldArray, useWatch } from "react-hook-form";
 import { get } from "src/network/api/network";
@@ -13,6 +23,8 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
         isReload: null,
         currentIdx: 0,
     });
+
+    const [selectedInventory, setInventory] = useState(["Pilih Inventaris"]);
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -43,23 +55,46 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
     };
 
     const setDifference = (idx) => {
+        console.log(idx);
         let difference = 0;
         const check = watchItems.some((value, index) => {
             difference = value.qtyStart - value.qtyEnd;
+            console.log(value.qtyStart);
             return index === idx;
         });
 
+        console.log(check);
+
         if (check) setValue(`itemDetail.${idx}.difference`, difference);
+
+        console.log(difference);
     };
 
-    const setQtyStart = (id) => {
-        let qty = 0;
-        const check = state.inventory.some((value) => {
-            qty = value.quantity;
-            return value.inventoryId === id;
+    const getDifference = (idx) => {
+        let difference = 0;
+        const check = watchItems.some((value, index) => {
+            difference = value.qtyStart - value.qtyEnd;
+            console.log(value.qtyStart);
+            return index === idx;
         });
-        return check ? qty : 0;
+
+        console.log(check);
+
+        return check ? difference : 0;
     };
+
+    // const setQtyStart = (id) => {
+    //     let qty = 0;
+    //     const check = state.inventory.some((value) => {
+    //         qty = value.quantity;
+    //         return value.inventoryId === id;
+    //     });
+    //     return check ? qty : 0;
+    // };
+
+    useEffect(() => {
+        console.log(watchItems);
+    }, [watchItems]);
 
     return (
         <>
@@ -85,40 +120,48 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                 return (
                     <CRow key={item.id} className="align-items-start">
                         <CCol md={3} className="mb-3">
-                            <Controller
-                                name={`itemDetail.${index}.inventoryId`}
-                                control={control}
-                                render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormSelect
-                                        size="sm"
-                                        onChange={onChange}
-                                        onBlur={(e) => {
-                                            onBlur(e);
-                                            setValue(
-                                                `itemDetail.${index}.qtyStart`,
-                                                setQtyStart(value),
-                                            );
-                                            setDifference(index);
-                                        }}
-                                        value={value}
-                                        ref={ref}
-                                        aria-label="Inventaris"
-                                    >
-                                        <option>Pilih Inventory</option>
-                                        {state.inventory.map((inventory, index) => {
-                                            return (
-                                                <option
-                                                    key={index}
-                                                    value={inventory.inventoryId}
-                                                    disabled={checkData(inventory.inventoryId)}
-                                                >
-                                                    {inventory.name}
-                                                </option>
-                                            );
-                                        })}
-                                    </CFormSelect>
-                                )}
-                            />
+                            <CDropdown className="w-100">
+                                <CDropdownToggle
+                                    size="sm"
+                                    color="white"
+                                    className="text-start border border-secondary"
+                                >
+                                    {selectedInventory[index + 1]
+                                        ? selectedInventory[index + 1]
+                                        : selectedInventory[0]}
+                                </CDropdownToggle>
+                                <CDropdownMenu>
+                                    {state.inventory.map((inventory, idx) => {
+                                        return (
+                                            <CDropdownItem
+                                                key={idx}
+                                                type="button"
+                                                onClick={() => {
+                                                    const inventoryData = [...selectedInventory];
+                                                    inventoryData[index + 1] = inventory.name;
+                                                    setInventory(inventoryData);
+                                                    setValue(
+                                                        `itemDetail.${index}.inventoryId`,
+                                                        inventory.inventoryId,
+                                                    );
+                                                    setValue(
+                                                        `itemDetail.${index}.qtyStart`,
+                                                        inventory.quantity,
+                                                    );
+
+                                                    setValue(
+                                                        `itemDetail.${index}.difference`,
+                                                        getDifference(index),
+                                                    );
+                                                }}
+                                                disabled={checkData(inventory.inventoryId)}
+                                            >
+                                                {inventory.name}
+                                            </CDropdownItem>
+                                        );
+                                    })}
+                                </CDropdownMenu>
+                            </CDropdown>
                         </CCol>
                         <CCol className="mb-3">
                             <Controller
@@ -135,6 +178,7 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
+                                        disabled
                                     />
                                 )}
                             />
@@ -166,12 +210,9 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                                     <CFormInput
                                         size="sm"
                                         type="number"
-                                        onChange={(e) => {
-                                            onChange(e);
-                                            setValue("difference", value);
-                                        }}
+                                        onChange={onChange}
                                         onBlur={onBlur}
-                                        value={value}
+                                        value={getDifference(index)}
                                         ref={ref}
                                         disabled
                                     />
