@@ -11,10 +11,10 @@ const Sales = () => {
     const navigate = useNavigate();
 
     const [state, setState] = useState({
+        activeKey: 1,
         data: [],
         originalData: [],
         total: 0,
-        activeKey: 1,
     });
 
     const getSalesList = async () => {
@@ -45,7 +45,6 @@ const Sales = () => {
                     ...prevState,
                     data: unpaidSales,
                 }));
-                console.log("belum dibayar");
                 break;
 
             case 3:
@@ -54,7 +53,6 @@ const Sales = () => {
                     ...prevState,
                     data: halfPaidSales,
                 }));
-                console.log("dibayar sebagian");
                 break;
 
             case 4:
@@ -65,7 +63,6 @@ const Sales = () => {
                     ...prevState,
                     data: dueDateSales,
                 }));
-                console.log("jatuh tempo");
                 break;
 
             case 5:
@@ -74,7 +71,6 @@ const Sales = () => {
                     ...prevState,
                     data: paidSales,
                 }));
-                console.log("lunas");
                 break;
 
             default:
