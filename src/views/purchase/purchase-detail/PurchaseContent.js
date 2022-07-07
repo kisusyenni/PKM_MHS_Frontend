@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import {
-    CBadge,
     CCard,
     CCardBody,
     CCardHeader,
@@ -15,21 +14,9 @@ import {
     CTableRow,
 } from "@coreui/react";
 import NumberFormat from "react-number-format";
+import PaymentStatus from "src/helper/PaymentStatus";
 
 const PurchaseContent = ({ data }) => {
-    const PaymentStatus = (value) => {
-        switch (value.status) {
-            case 1:
-                return <CBadge color="danger">Belum Dibayar</CBadge>;
-            case 2:
-                return <CBadge color="warning">Dibayar Sebagian</CBadge>;
-            case 3:
-                return <CBadge color="success">Lunas</CBadge>;
-            default:
-                return "-";
-        }
-    };
-
     return (
         <>
             {data && (
@@ -125,7 +112,9 @@ const PurchaseContent = ({ data }) => {
                                 ))}
 
                                 <CTableRow>
-                                    <CTableHeaderCell colSpan={4}>Total</CTableHeaderCell>
+                                    <CTableHeaderCell colSpan={4} className="text-end">
+                                        Total
+                                    </CTableHeaderCell>
                                     <CTableDataCell>
                                         <NumberFormat
                                             value={data?.totalPayment}
@@ -136,6 +125,22 @@ const PurchaseContent = ({ data }) => {
                                         />
                                     </CTableDataCell>
                                 </CTableRow>
+                                {data?.dueNominal > 0 && (
+                                    <CTableRow>
+                                        <CTableHeaderCell colSpan={4} className="text-end">
+                                            Sisa Tagihan
+                                        </CTableHeaderCell>
+                                        <CTableDataCell>
+                                            <NumberFormat
+                                                value={data?.dueNominal}
+                                                displayType="text"
+                                                allowLeadingZeros={false}
+                                                thousandSeparator={true}
+                                                prefix={"Rp"}
+                                            />
+                                        </CTableDataCell>
+                                    </CTableRow>
+                                )}
                             </CTableBody>
                         </CTable>
                     </CCardBody>
