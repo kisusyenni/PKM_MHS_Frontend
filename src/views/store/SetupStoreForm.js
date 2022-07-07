@@ -90,11 +90,19 @@ const SetupStoreForm = ({ setup = false }) => {
     });
 
     useEffect(() => {
-        const inputs = ["name", "address", "telephone", "email", "region", "currency", "type"];
+        const inputs = ["name", "address", "telephone", "email", "type"];
 
         inputs.forEach((value) => {
             setValue(value, state.data[value]);
         });
+
+        if (state.data["region"]) {
+            setValue("region", state.data["region"]);
+        }
+        if (state.data["currency"]) {
+            setValue("currency", state.data["currency"]);
+        }
+        console.log(state.data);
     }, [setValue, state.data]);
 
     const closeAlert = () => {
