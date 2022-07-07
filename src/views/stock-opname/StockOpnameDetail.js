@@ -66,9 +66,7 @@ const StockOpnameDetail = () => {
                         <CCol md={3}>
                             <h6>Dibuat oleh</h6>
                             <p>
-                                {`${state?.data?.tbl_user?.firstName || "Admin"} ${
-                                    state?.data?.user?.lastName || "Admin"
-                                }`}
+                                {`${state?.data?.user?.firstName} ${state?.data?.user?.lastName}`}
                             </p>
                         </CCol>
                         <CCol md={3}>

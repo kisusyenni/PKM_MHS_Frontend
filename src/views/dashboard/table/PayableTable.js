@@ -82,9 +82,11 @@ const PayableTable = ({ data }) => {
                                         <div className="clearfix">
                                             <div className="float-start">
                                                 <strong>
-                                                    {((item.totalPayment - item.dueNominal) /
-                                                        item.totalPayment) *
-                                                        100}
+                                                    {Math.round(
+                                                        ((item.totalPayment - item.dueNominal) /
+                                                            item.totalPayment) *
+                                                            100,
+                                                    )}
                                                     %
                                                 </strong>
                                             </div>

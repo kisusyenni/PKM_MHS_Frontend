@@ -24,9 +24,9 @@ const PaymentForm = ({ type, id, total }) => {
     });
 
     const generateCode = () => {
-        if (location?.pathname.includes("pembelian")) {
+        if (location?.pathname.includes("pembelian") || type === "purchase") {
             return purchasePaymenCode;
-        } else if (location?.pathname.includes("penjualan")) {
+        } else if (location?.pathname.includes("penjualan") || type === "sales") {
             return salesPaymentCode;
         } else {
             return "PY0001";
@@ -82,6 +82,8 @@ const PaymentForm = ({ type, id, total }) => {
                     navigate("/pembelian");
                 } else if (location?.pathname.includes("penjualan")) {
                     navigate("/penjualan");
+                } else {
+                    navigate("/dashboard");
                 }
             }, 2000);
         } else {
