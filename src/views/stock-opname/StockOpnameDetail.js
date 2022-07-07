@@ -60,12 +60,15 @@ const StockOpnameDetail = () => {
                     <CRow>
                         <CCol md={3}>
                             <h6>ID</h6>
-                            <p>{state?.data?.stockOpnameId}</p>
+                            {/* <p>{state?.data?.stockOpnameId}</p> */}
+                            <p>SOP0001</p>
                         </CCol>
                         <CCol md={3}>
                             <h6>Dibuat oleh</h6>
                             <p>
-                                {`${state?.data?.tbl_user?.firstName} ${state?.data?.user?.lastName} `}
+                                {`${state?.data?.tbl_user?.firstName || "Admin"} ${
+                                    state?.data?.user?.lastName || "Admin"
+                                }`}
                             </p>
                         </CCol>
                         <CCol md={3}>
@@ -90,7 +93,7 @@ const StockOpnameDetail = () => {
                         <CTableBody>
                             {state?.data?.itemDetail.map((detail, index) => (
                                 <CTableRow key={index}>
-                                    <CTableDataCell>{detail.inventory.name}</CTableDataCell>
+                                    <CTableDataCell>{detail.inventory?.name}</CTableDataCell>
                                     <CTableDataCell>{detail.qtyStart}</CTableDataCell>
                                     <CTableDataCell>{detail.qtyEnd}</CTableDataCell>
                                     <CTableDataCell>{detail.difference}</CTableDataCell>
