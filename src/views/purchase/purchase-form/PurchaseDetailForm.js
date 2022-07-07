@@ -2,9 +2,19 @@
 /* eslint-disable react/prop-types */
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import { CButton, CCol, CFormInput, CFormSelect, CInputGroup, CRow } from "@coreui/react";
+import {
+    CButton,
+    CCol,
+    CDropdown,
+    CDropdownItem,
+    CDropdownMenu,
+    CDropdownToggle,
+    CFormInput,
+    CRow,
+} from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { Controller, useFieldArray, useWatch } from "react-hook-form";
+import NumberFormat from "react-number-format";
 import { get } from "src/network/api/network";
 
 const PurchaseDetailForm = ({ control, setValue }) => {
@@ -15,6 +25,8 @@ const PurchaseDetailForm = ({ control, setValue }) => {
         inventory: [],
         isReload: null,
     });
+
+    const [selectedInventory, setInventory] = useState(["Pilih Inventaris"]);
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -98,35 +110,39 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                 return (
                     <CRow key={item.id} className="align-items-start">
                         <CCol md={3} className="mb-3">
-                            <CInputGroup>
-                                <Controller
-                                    name={`itemDetail.${index}.inventoryId`}
-                                    control={control}
-                                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                                        <CFormSelect
-                                            size="sm"
-                                            onChange={onChange}
-                                            onBlur={onBlur}
-                                            value={value}
-                                            ref={ref}
-                                            aria-label="Inventaris"
-                                        >
-                                            <option>Pilih Inventory</option>
-                                            {state.inventory.map((inventory, index) => {
-                                                return (
-                                                    <option
-                                                        key={index}
-                                                        value={inventory.inventoryId}
-                                                        disabled={checkData(inventory.inventoryId)}
-                                                    >
-                                                        {inventory.name}
-                                                    </option>
-                                                );
-                                            })}
-                                        </CFormSelect>
-                                    )}
-                                />
-                            </CInputGroup>
+                            <CDropdown className="w-100">
+                                <CDropdownToggle
+                                    color="white"
+                                    className="text-start border border-secondary"
+                                >
+                                    {selectedInventory[index + 1]
+                                        ? selectedInventory[index + 1]
+                                        : selectedInventory[0]}
+                                </CDropdownToggle>
+                                <CDropdownMenu>
+                                    {state.inventory.map((inventory, idx) => {
+                                        return (
+                                            <CDropdownItem
+                                                key={idx}
+                                                type="button"
+                                                onClick={() => {
+                                                    const inventoryData = [...selectedInventory];
+                                                    inventoryData[index + 1] = inventory.name;
+                                                    setInventory(inventoryData);
+                                                    setValue(
+                                                        `itemDetail.${index}.inventoryId`,
+                                                        inventory.inventoryId,
+                                                    );
+                                                    setAmount(index);
+                                                }}
+                                                disabled={checkData(inventory.inventoryId)}
+                                            >
+                                                {inventory.name}
+                                            </CDropdownItem>
+                                        );
+                                    })}
+                                </CDropdownMenu>
+                            </CDropdown>
                         </CCol>
                         <CCol md={2} className="mb-3">
                             <Controller
@@ -150,12 +166,20 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                                 name={`itemDetail.${index}.pricePerUnit`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
+                                    <NumberFormat
+                                        customInput={CFormInput}
                                         size="sm"
-                                        onChange={onChange}
+                                        ref={ref}
                                         onBlur={onBlur}
                                         value={value}
-                                        ref={ref}
+                                        allowLeadingZeros={false}
+                                        onValueChange={(values) => {
+                                            const { formattedValue, value } = values;
+                                            console.log(value);
+                                            setValue(`itemDetail.${index}.pricePerUnit`, value);
+                                        }}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
                                     />
                                 )}
                             />
@@ -165,12 +189,20 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                                 name={`itemDetail.${index}.discount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
+                                    <NumberFormat
+                                        customInput={CFormInput}
                                         size="sm"
-                                        onChange={onChange}
+                                        ref={ref}
                                         onBlur={onBlur}
                                         value={value}
-                                        ref={ref}
+                                        allowLeadingZeros={false}
+                                        onValueChange={(values) => {
+                                            const { formattedValue, value } = values;
+                                            console.log(value);
+                                            setValue(`itemDetail.${index}.discount`, value);
+                                        }}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
                                     />
                                 )}
                             />
@@ -180,12 +212,16 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                                 name={`itemDetail.${index}.amount`}
                                 control={control}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
+                                    <NumberFormat
+                                        customInput={CFormInput}
                                         size="sm"
-                                        onChange={onChange}
+                                        ref={ref}
                                         onBlur={onBlur}
                                         value={setAmount(index)}
-                                        ref={ref}
+                                        onChange={onChange}
+                                        allowLeadingZeros={false}
+                                        thousandSeparator={true}
+                                        prefix={"Rp"}
                                         disabled
                                     />
                                 )}
@@ -225,13 +261,25 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                         name={`totalPayment`}
                         control={control}
                         render={({ field: { onChange, onBlur, value, ref } }) => (
-                            <CFormInput
+                            // <CFormInput
+                            //     size="sm"
+                            //     onChange={onChange}
+                            //     onBlur={onBlur}
+                            //     value={value}
+                            //     ref={ref}
+                            //     disabled
+                            // />
+
+                            <NumberFormat
+                                customInput={CFormInput}
                                 size="sm"
-                                onChange={onChange}
+                                ref={ref}
                                 onBlur={onBlur}
                                 value={value}
-                                ref={ref}
-                                disabled
+                                onChange={onChange}
+                                allowLeadingZeros={false}
+                                thousandSeparator={true}
+                                prefix={"Rp"}
                             />
                         )}
                     />
