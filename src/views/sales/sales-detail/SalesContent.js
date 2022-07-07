@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import {
-    CBadge,
     CCard,
     CCardBody,
     CCardHeader,
@@ -15,20 +14,8 @@ import {
     CTableRow,
 } from "@coreui/react";
 import NumberFormat from "react-number-format";
+import PaymentStatus from "src/helper/PaymentStatus";
 const SalesContent = ({ data }) => {
-    const PaymentStatus = (value) => {
-        switch (value.status) {
-            case 1:
-                return <CBadge color="danger">Belum Dibayar</CBadge>;
-            case 2:
-                return <CBadge color="warning">Dibayar Sebagian</CBadge>;
-            case 3:
-                return <CBadge color="success">Lunas</CBadge>;
-            default:
-                return "-";
-        }
-    };
-
     return (
         <>
             {data && (
