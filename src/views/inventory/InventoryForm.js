@@ -29,6 +29,7 @@ const InventoryForm = ({ title, editMode }) => {
         alertType: null,
         alertContent: "",
         isReload: null,
+        checked: false,
     });
 
     const {
@@ -54,6 +55,7 @@ const InventoryForm = ({ title, editMode }) => {
             setState((prevState) => ({
                 ...prevState,
                 data: result.data,
+                checked: result.data.isService === 1,
             }));
 
             const inputs = ["name", "quantity", "sellingPrice"];
@@ -69,6 +71,10 @@ const InventoryForm = ({ title, editMode }) => {
             getInventoryDetail();
         }
     }, [state.isReload]);
+
+    useEffect(() => {
+        console.log(state.data);
+    }, [state.data]);
 
     useEffect(() => {
         if (isDirty) {
@@ -88,6 +94,7 @@ const InventoryForm = ({ title, editMode }) => {
 
     // After submit button is clicked
     const onSubmit = async (data) => {
+        console.log(data);
         // show loading on button
         setState((prevState) => ({
             ...prevState,
@@ -95,6 +102,7 @@ const InventoryForm = ({ title, editMode }) => {
             disabled: true,
         }));
 
+        data.isService = data.isService ? 1 : 0;
         data.sellingPrice = state.sellingPrice;
 
         // edit or add form
@@ -202,9 +210,11 @@ const InventoryForm = ({ title, editMode }) => {
                                         ref={ref}
                                         id="isService"
                                         label="Inventori jasa"
+                                        checked={state.checked}
                                     />
                                 )}
                             />
+                            {state.data?.isService === 1}
                         </div>
 
                         <div className="mb-3">

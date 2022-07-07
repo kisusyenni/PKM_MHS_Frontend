@@ -70,6 +70,14 @@ const Inventory = () => {
             },
         },
         {
+            name: "isService",
+            options: {
+                display: false,
+                sort: false,
+                filter: false,
+            },
+        },
+        {
             name: "isDeleted",
             options: {
                 display: false,
@@ -161,12 +169,16 @@ const Inventory = () => {
 
     // Delete
 
-    const deleteInventory = async (id) => {
+    const deleteInventory = async (inventory) => {
         const data = {
             storeId: localStorage.getItem("storeId"),
+            name: inventory[2],
+            quantity: inventory[3],
+            sellingPrice: inventory[4],
+            isService: inventory[5],
             is_deleted: 1,
         };
-        const response = await put("/inventory", id, data);
+        const response = await put("/inventory", inventory[0], data);
         if (response.status === 200) {
             setState((prevState) => ({
                 ...prevState,
@@ -268,7 +280,7 @@ const Inventory = () => {
                     buttonLeft={"Batal"}
                     buttonRight={"Hapus"}
                     proceed={() => {
-                        deleteInventory(state.selectedInventory[0]);
+                        deleteInventory(state.selectedInventory);
                     }}
                     handleClose={handleCloseConfirmation}
                 />
