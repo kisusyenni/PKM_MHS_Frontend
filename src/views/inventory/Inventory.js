@@ -47,6 +47,9 @@ const Inventory = () => {
                 sort: true,
                 filter: false,
                 filterList: [],
+                customBodyRender: (value, tablemeta) => {
+                    return tablemeta.rowData[5] === 1 ? "-" : value;
+                },
             },
         },
 
