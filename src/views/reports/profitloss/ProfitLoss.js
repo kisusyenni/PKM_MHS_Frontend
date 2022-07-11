@@ -21,16 +21,16 @@ import { cilSearch } from "@coreui/icons";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
-import BalanceSheetExcel from "./BalanceSheetExcel";
+import DownloadExcel from "./DownloadExcel";
 import DownloadPdf from "./DownloadPdf";
 
-const BalanceSheet = () => {
+const ProfitLoss = () => {
     const date = new Date();
 
     const [state, setState] = useState({
         data: null,
         isReload: null,
-        filename: "Neraca Keuangan",
+        filename: "Laporan Laba Rugi",
     });
 
     const { control, handleSubmit } = useForm({
@@ -74,7 +74,7 @@ const BalanceSheet = () => {
                     ],
                 },
             },
-            filename: "Neraca Keuangan Periode 20/05/2022 - 20/06/2022",
+            filename: "Laporan Laba Rugi Periode 20/05/2022 - 20/06/2022",
         }));
     };
 
@@ -88,10 +88,10 @@ const BalanceSheet = () => {
                 <CCardHeader>
                     <CRow className="align-items-center justify-content-around">
                         <CCol>
-                            <h1>Neraca</h1>
+                            <h1>Laporan Laba Rugi</h1>
                         </CCol>
                         <CCol className="text-end">
-                            <BalanceSheetExcel data={state.data} filename={state.filename} />
+                            <DownloadExcel data={state.data} filename={state.filename} />
                             <DownloadPdf data={state.data} filename={state.filename} />
                         </CCol>
                     </CRow>
@@ -240,4 +240,4 @@ const BalanceSheet = () => {
     );
 };
 
-export default BalanceSheet;
+export default ProfitLoss;

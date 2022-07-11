@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import * as XLSX from "xlsx-js-style";
 import excelIcon from "./../../../assets/images/excel.png";
 
-const BalanceSheetExcel = ({ data, filename }) => {
+const DownloadExcel = ({ data, filename }) => {
     const xport = useCallback(async () => {
         const income = data.income.list.map((value) => [value.name, "", value.nominal]);
         const expense = data.expense.list.map((value) => [value.name, "", value.nominal]);
@@ -164,4 +164,4 @@ const BalanceSheetExcel = ({ data, filename }) => {
     );
 };
 
-export default BalanceSheetExcel;
+export default DownloadExcel;

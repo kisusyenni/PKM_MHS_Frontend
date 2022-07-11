@@ -105,8 +105,8 @@ const _nav = [
 
     {
         component: CNavItem,
-        name: "Laporan",
-        to: "/laporan/neraca",
+        name: "Laporan Laba Rugi",
+        to: "/laporan/laba-rugi",
         icon: <CIcon icon={cilBook} customClassName="nav-icon" />,
     },
     {
