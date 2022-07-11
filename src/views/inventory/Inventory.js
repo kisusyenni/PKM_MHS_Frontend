@@ -277,7 +277,7 @@ const Inventory = () => {
             {state.openModal && (
                 <ConfirmationModal
                     openModal={state.openModal}
-                    title={"Hapus Produk"}
+                    title={"Hapus Inventaris"}
                     content={`Apakah Anda yakin ingin menghapus ${state.selectedInventory[2]} ?`}
                     type={"delete"}
                     buttonLeft={"Batal"}

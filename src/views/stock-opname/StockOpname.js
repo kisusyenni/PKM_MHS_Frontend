@@ -250,7 +250,7 @@ const StockOpname = () => {
             {state.openModal && (
                 <ConfirmationModal
                     openModal={state.openModal}
-                    title={"Hapus Produk"}
+                    title={"Hapus Stock Opname"}
                     content={`Apakah Anda yakin ingin menghapus data stock opname "${state.selectedStockOpname[5]}" ?`}
                     type={"delete"}
                     buttonLeft={"Batal"}
