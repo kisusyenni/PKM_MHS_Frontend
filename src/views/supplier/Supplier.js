@@ -208,12 +208,7 @@ const Supplier = () => {
                     <CCol md={7} className="text-center">
                         <h1 className="h3">Belum ada data supplier</h1>
                         <div>
-                            <CButton
-                                className="mb-5 mt-3"
-                                onClick={() => {
-                                    navigate("/supplier/tambah");
-                                }}
-                            >
+                            <CButton className="mb-5 mt-3" onClick={handleAdd}>
                                 <CIcon className="me-2" icon={cilPlus} /> Tambah Supplier
                             </CButton>
                         </div>
