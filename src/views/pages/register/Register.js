@@ -108,7 +108,7 @@ const Register = () => {
                         <CCard className="p-4">
                             <CCardBody>
                                 <CForm onSubmit={handleSubmit(onSubmit)}>
-                                    <h1 className="text-center h3 fw-bold">Akuntansi MHS</h1>
+                                    <h1 className="text-center h3 fw-bold">Sistem Keuangan</h1>
                                     <p className="text-medium-emphasis text-center mb-5">
                                         Buat akun Anda
                                     </p>
@@ -191,7 +191,7 @@ const Register = () => {
                                                     onChange={onChange}
                                                     onBlur={onBlur}
                                                     value={value}
-                                                    autoComplete="email"
+                                                    autoComplete="newEmail"
                                                     ref={ref}
                                                     invalid={errors.hasOwnProperty("email")}
                                                 />
@@ -222,7 +222,7 @@ const Register = () => {
                                                     onChange={onChange}
                                                     onBlur={onBlur}
                                                     value={value}
-                                                    autoComplete="password"
+                                                    autoComplete="newPassword"
                                                     type="password"
                                                     ref={ref}
                                                     invalid={errors.hasOwnProperty("password")}

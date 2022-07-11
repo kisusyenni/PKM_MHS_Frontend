@@ -108,7 +108,7 @@ const Login = () => {
                         <CCard className="p-4">
                             <CCardBody>
                                 <CForm onSubmit={handleSubmit(onSubmit)}>
-                                    <h1 className="text-center h3 fw-bold">Akuntansi MHS</h1>
+                                    <h1 className="text-center h3 fw-bold">Sistem Keuangan</h1>
                                     <p className="text-medium-emphasis text-center">
                                         Masuk ke Akun Anda
                                     </p>
