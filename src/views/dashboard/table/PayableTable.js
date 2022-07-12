@@ -135,6 +135,7 @@ const PayableTable = ({ data }) => {
                             keyboard={false}
                             portal={false}
                             visible={state.open}
+                            size="lg"
                         >
                             <CModalHeader closeButton={false}>
                                 <CModalTitle>
