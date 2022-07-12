@@ -114,7 +114,7 @@ const Dashboard = () => {
             </CCard>
 
             <CRow className="mb-4">
-                <CCol sm={12} lg={12}>
+                <CCol sm={12} lg={6}>
                     <OutOfStockTable data={state?.inventory?.outOfStock} />
                 </CCol>
                 <CCol sm={12} lg={6}>
