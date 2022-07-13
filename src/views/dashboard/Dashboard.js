@@ -113,12 +113,16 @@ const Dashboard = () => {
                 </CCardBody>
             </CCard>
 
-            <CRow className="mb-4">
-                <CCol sm={12} lg={6}>
-                    <OutOfStockTable data={state?.inventory?.outOfStock} />
+            <CRow className="mb-4 row-cols-md-2">
+                <CCol>
+                    <CCard className="h-100">
+                        <OutOfStockTable data={state?.inventory?.outOfStock} />
+                    </CCard>
                 </CCol>
-                <CCol sm={12} lg={6}>
-                    <InventoryChart data={state?.inventory?.mostSoldStock} />
+                <CCol>
+                    <CCard className="h-100">
+                        <InventoryChart data={state?.inventory?.mostSoldStock} />
+                    </CCard>
                 </CCol>
             </CRow>
         </>

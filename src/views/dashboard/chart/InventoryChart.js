@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { CCard, CCardBody, CCardHeader } from "@coreui/react";
+import { CCardBody, CCardHeader, CImage } from "@coreui/react";
 import { CChart } from "@coreui/react-chartjs";
 import React from "react";
+import emptyGraphic from "src/assets/images/empty.svg";
 
 const InventoryChart = ({ data }) => {
     const bgColors = [
@@ -17,28 +18,12 @@ const InventoryChart = ({ data }) => {
         "#c6c382",
     ];
 
-    // const datasets = data.map((item, index) => {
-    //     return {
-    //         label: item.inventoryData?.name,
-    //         backgroundColor: colors[index],
-    //         data: [item.quantityBuy],
-    //     };
-    // });
     return (
         <>
-            {data?.length > 0 && (
-                <CCard className="mb-4">
-                    <CCardHeader>Inventaris Terjual Terbanyak</CCardHeader>
+            <CCardHeader>Inventaris Terjual Terbanyak</CCardHeader>
+            {data?.length > 0 ? (
+                <>
                     <CCardBody>
-                        {/* <CChart
-                            type="bar"
-                            style={{ height: "325px" }}
-                            data={{
-                                labels: [""],
-                                datasets: datasets,
-                            }}
-                            options={{ maintainAspectRatio: false }}
-                        /> */}
                         <CChart
                             type="doughnut"
                             style={{ height: "325px" }}
@@ -54,7 +39,16 @@ const InventoryChart = ({ data }) => {
                             options={{ maintainAspectRatio: false }}
                         />
                     </CCardBody>
-                </CCard>
+                </>
+            ) : (
+                <>
+                    <CCardBody className="text-center">
+                        <div className="mb-3">
+                            <CImage src={emptyGraphic} height={100} />
+                        </div>
+                        <p>Inventaris belum terjual</p>
+                    </CCardBody>
+                </>
             )}
         </>
     );

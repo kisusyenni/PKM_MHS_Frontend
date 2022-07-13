@@ -5,6 +5,7 @@ import {
     CCard,
     CCardBody,
     CCardHeader,
+    CImage,
     CLink,
     CProgress,
     CTable,
@@ -16,13 +17,14 @@ import {
     CTooltip,
 } from "@coreui/react";
 import React from "react";
+import awesomeGraphic from "src/assets/images/awesome.svg";
 
 const OutOfStockTable = ({ data }) => {
     return (
         <>
-            {data && data.length > 0 && (
-                <CCard className="mb-4">
-                    <CCardHeader>Persediaan Inventaris akan/telah Habis </CCardHeader>
+            <CCardHeader>Persediaan Inventaris akan/telah Habis </CCardHeader>
+            {data && data.length > 0 ? (
+                <>
                     <CCardBody>
                         <CTable align="middle" className="mb-0 border" hover responsive>
                             <CTableHead color="light">
@@ -72,7 +74,16 @@ const OutOfStockTable = ({ data }) => {
                             </CTableBody>
                         </CTable>
                     </CCardBody>
-                </CCard>
+                </>
+            ) : (
+                <>
+                    <CCardBody className="text-center">
+                        <div className="mb-3">
+                            <CImage src={awesomeGraphic} height={100} />
+                        </div>
+                        <p>Stok inventaris masih tersedia</p>
+                    </CCardBody>
+                </>
             )}
         </>
     );
