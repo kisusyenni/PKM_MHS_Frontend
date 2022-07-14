@@ -100,10 +100,7 @@ const SalesContent = ({ data }) => {
                                         </CTableDataCell>
                                         <CTableDataCell>
                                             <NumberFormat
-                                                value={
-                                                    (detail.pricePerUnit - detail.discount) *
-                                                    detail.quantityBuy
-                                                }
+                                                value={data.discount}
                                                 displayType="text"
                                                 allowLeadingZeros={false}
                                                 thousandSeparator={true}
