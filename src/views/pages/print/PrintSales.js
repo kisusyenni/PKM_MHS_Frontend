@@ -72,7 +72,7 @@ const PrintSales = () => {
                                 </p>
                             </CCol>
                             <CCol>
-                                <h1 className="h6 fw-bold text-end mb-0">Purchase Invoice</h1>
+                                <h1 className="h6 fw-bold text-end mb-0">Sales Invoice</h1>
                             </CCol>
                         </CRow>
                     </CCardHeader>
