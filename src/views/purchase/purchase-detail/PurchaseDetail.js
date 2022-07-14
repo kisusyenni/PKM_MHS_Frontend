@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { CButton } from "@coreui/react";
+import { CButton, CCol, CRow } from "@coreui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import PurchaseContent from "./PurchaseContent";
 import PurchasePayment from "./PurchasePayment";
 import { get } from "src/network/api/network";
+import CIcon from "@coreui/icons-react";
+import { cilPrint } from "@coreui/icons";
 
 const PurchaseDetail = () => {
     const { id } = useParams();
@@ -31,13 +33,33 @@ const PurchaseDetail = () => {
 
     return (
         <>
-            <CButton
-                onClick={() => {
-                    navigate(-1);
-                }}
-            >
-                Back
-            </CButton>
+            <CRow className="justify-content-between">
+                <CCol>
+                    <CButton
+                        onClick={() => {
+                            navigate(-1);
+                        }}
+                    >
+                        Back
+                    </CButton>
+                </CCol>
+
+                <CCol className="text-end">
+                    <CButton
+                        className="me-2"
+                        onClick={() => {
+                            window.open(
+                                `/print/pembelian/${state.data?.purchaseId}`,
+                                "_blank",
+                                "noopener,noreferrer",
+                            );
+                        }}
+                    >
+                        <CIcon className="me-2" icon={cilPrint} />
+                        Print
+                    </CButton>
+                </CCol>
+            </CRow>
 
             {state.data && (
                 <>
