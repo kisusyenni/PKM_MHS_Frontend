@@ -19,6 +19,7 @@ const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 const PrintPurchase = React.lazy(() => import("./views/pages/print/PrintPurchase"));
 const PrintSales = React.lazy(() => import("./views/pages/print/PrintSales"));
+const PrintProfitLoss = React.lazy(() => import("./views/pages/print/PrintProfitLoss"));
 const SetupStore = React.lazy(() => import("./views/store/SetupStore"));
 
 class App extends Component {
@@ -47,14 +48,14 @@ class App extends Component {
                             exact
                             path="/print/laba-rugi"
                             name="Print Laporan Laba Rugi"
-                            element={<PrintSales />}
+                            element={<PrintProfitLoss />}
                         />
-                        <Route
+                        {/* <Route
                             exact
                             path="/print/stock-opname"
                             name="Print Stock Opname"
-                            element={<PrintSales />}
-                        />
+                            element={<PrintProfitLoss />}
+                        /> */}
                         <Route exact path="/atur-toko" name="Atur Toko" element={<SetupStore />} />
                         <Route path="*" element={<RequireAuth />}>
                             <Route path="*" name="Home" element={<DefaultLayout />} />
