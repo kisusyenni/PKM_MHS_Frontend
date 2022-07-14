@@ -2,7 +2,7 @@
 import React from "react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { CButton, CImage } from "@coreui/react";
+import { CButton, CImage, CTooltip } from "@coreui/react";
 import pdfIcon from "src/assets/images/pdf.png";
 
 const DownloadPdf = ({ filename, data }) => {
@@ -139,10 +139,11 @@ const DownloadPdf = ({ filename, data }) => {
     };
     return (
         <>
-            <CButton className="text-center" onClick={savePdf}>
-                <CImage width={20} src={pdfIcon} />
-                <small className="ms-2">Download PDF</small>
-            </CButton>
+            <CTooltip content="Unduh ke PDF">
+                <CButton onClick={savePdf}>
+                    <CImage width={20} src={pdfIcon} />
+                </CButton>
+            </CTooltip>
         </>
     );
 };

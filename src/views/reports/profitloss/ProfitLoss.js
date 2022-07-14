@@ -16,8 +16,9 @@ import {
     CTableDataCell,
     CTableHeaderCell,
     CTableRow,
+    CTooltip,
 } from "@coreui/react";
-import { cilSearch } from "@coreui/icons";
+import { cilPrint, cilSearch } from "@coreui/icons";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
@@ -91,6 +92,20 @@ const ProfitLoss = () => {
                             <h1>Laporan Laba Rugi</h1>
                         </CCol>
                         <CCol className="text-end">
+                            <CTooltip content="Print">
+                                <CButton
+                                    className="me-2"
+                                    onClick={() => {
+                                        window.open(
+                                            `/print/laba-rugi?startDate=${state.data?.startDate}&endDate=${state.data?.endDate}`,
+                                            "_blank",
+                                            "noopener,noreferrer",
+                                        );
+                                    }}
+                                >
+                                    <CIcon icon={cilPrint} />
+                                </CButton>
+                            </CTooltip>
                             <DownloadExcel data={state.data} filename={state.filename} />
                             <DownloadPdf data={state.data} filename={state.filename} />
                         </CCol>
@@ -135,7 +150,7 @@ const ProfitLoss = () => {
                             </CForm>
                         </CCol>
                     </CRow>
-                    <CTable bordered id="balance-sheet">
+                    <CTable bordered id="profit-loss">
                         <CTableBody>
                             <CTableRow>
                                 <CTableHeaderCell colSpan={2} className="h3 text-center">

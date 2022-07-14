@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { CButton, CImage } from "@coreui/react";
+import { CButton, CImage, CTooltip } from "@coreui/react";
 import React, { useCallback } from "react";
 import * as XLSX from "xlsx-js-style";
 import excelIcon from "./../../../assets/images/excel.png";
@@ -156,10 +156,11 @@ const DownloadExcel = ({ data, filename }) => {
 
     return (
         <>
-            <CButton className="me-4" onClick={xport}>
-                <CImage className="me-2" src={excelIcon} />
-                Download Excel
-            </CButton>
+            <CTooltip content="Unduh ke Excel">
+                <CButton className="me-2" onClick={xport}>
+                    <CImage width={20} src={excelIcon} />
+                </CButton>
+            </CTooltip>
         </>
     );
 };
