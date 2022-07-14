@@ -86,22 +86,6 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                 </CModalHeader>
                 <CForm onSubmit={handleSubmit(onSubmit)}>
                     <CModalBody>
-                        <Controller
-                            name="storeId"
-                            control={control}
-                            render={({ field: { onChange, onBlur, value, ref } }) => (
-                                <CFormInput
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}
-                                    disabled
-                                    hidden
-                                />
-                            )}
-                        />
-                        <span className="invalid-feedback">{errors.storeId?.message}</span>
-
                         <div className="mb-3">
                             <CFormLabel>Nama</CFormLabel>
                             <Controller
@@ -128,20 +112,15 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                             <Controller
                                 name="address"
                                 control={control}
-                                rules={{
-                                    required: "Alamat tidak boleh kosong",
-                                }}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <CFormInput
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
-                                        invalid={errors.hasOwnProperty("address")}
                                     />
                                 )}
                             />
-                            <span className="invalid-feedback">{errors.address?.message}</span>
                         </div>
 
                         <div className="mb-3">
@@ -150,7 +129,7 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                                 name="telephone"
                                 control={control}
                                 rules={{
-                                    required: "Telepon tidak boleh kosong",
+                                    required: "Nomor telepon tidak boleh kosong",
                                 }}
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <NumberFormat
@@ -159,11 +138,9 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                                         onBlur={onBlur}
                                         value={value}
                                         ref={ref}
-                                        invalid={errors.hasOwnProperty("telephone")}
                                     />
                                 )}
                             />
-                            <span className="invalid-feedback">{errors.telephone?.message}</span>
                         </div>
 
                         <div className="mb-3">
@@ -172,9 +149,8 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                                 name="email"
                                 control={control}
                                 rules={{
-                                    required: "Email tidak boleh kosong",
                                     pattern: {
-                                        value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                                        value: /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/,
                                         message: "Format email salah",
                                     },
                                 }}
