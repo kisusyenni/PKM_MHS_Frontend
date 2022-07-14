@@ -119,7 +119,7 @@ const PrintPurchase = () => {
                                 </CTable>
                             </CCol>
                         </CRow>
-                        <CTable bordered style={{ fontSize: 12 }}>
+                        <CTable bordered small style={{ fontSize: 12 }}>
                             <CTableHead color="dark">
                                 <CTableRow>
                                     <CTableHeaderCell scope="col">Inventaris</CTableHeaderCell>
