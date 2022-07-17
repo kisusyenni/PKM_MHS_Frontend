@@ -106,23 +106,6 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                             />
                             <span className="invalid-feedback">{errors.name?.message}</span>
                         </div>
-
-                        <div className="mb-3">
-                            <CFormLabel>Alamat</CFormLabel>
-                            <Controller
-                                name="address"
-                                control={control}
-                                render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        ref={ref}
-                                    />
-                                )}
-                            />
-                        </div>
-
                         <div className="mb-3">
                             <CFormLabel>Nomor Telepon</CFormLabel>
                             <Controller
@@ -134,6 +117,24 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                                 render={({ field: { onChange, onBlur, value, ref } }) => (
                                     <NumberFormat
                                         customInput={CFormInput}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        value={value}
+                                        ref={ref}
+                                        invalid={errors.hasOwnProperty("telephone")}
+                                    />
+                                )}
+                            />
+                            <span className="invalid-feedback">{errors.telephone?.message}</span>
+                        </div>
+
+                        <div className="mb-3">
+                            <CFormLabel>Alamat</CFormLabel>
+                            <Controller
+                                name="address"
+                                control={control}
+                                render={({ field: { onChange, onBlur, value, ref } }) => (
+                                    <CFormInput
                                         onChange={onChange}
                                         onBlur={onBlur}
                                         value={value}
