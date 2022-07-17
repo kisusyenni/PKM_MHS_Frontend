@@ -6,7 +6,7 @@ import excelIcon from "./../../../assets/images/excel.png";
 
 const DownloadExcel = ({ data, filename }) => {
     const xport = useCallback(async () => {
-        const income = data.income.list.map((value) => [value.name, "", value.nominal]);
+        const income = data.income.list.map((value) => [value.name, "", value.total]);
         const expense = data.expense.list.map((value) => [value.name, "", value.nominal]);
 
         const format = [

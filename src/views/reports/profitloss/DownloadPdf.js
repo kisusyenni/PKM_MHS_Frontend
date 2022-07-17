@@ -23,7 +23,7 @@ const DownloadPdf = ({ filename, data }) => {
                 content: value.name,
             },
             {
-                content: renderCurrency(value.nominal),
+                content: renderCurrency(value.total),
                 colSpan: 2,
             },
         ]);

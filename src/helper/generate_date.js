@@ -20,3 +20,8 @@ export function getPriorYears(year) {
     date.setFullYear(date.getFullYear() - year);
     return date.toJSON().slice(0, 10);
 }
+
+export function localeDate(date) {
+    const convertedDate = new Date(date);
+    return Intl.DateTimeFormat("id-ID", { dateStyle: "medium" }).format(convertedDate);
+}

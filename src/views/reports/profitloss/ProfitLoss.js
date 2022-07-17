@@ -27,7 +27,7 @@ import DownloadExcel from "./DownloadExcel";
 import DownloadPdf from "./DownloadPdf";
 import { post } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
-import { getToday, getPriorMonths } from "src/helper/generate_date";
+import { getToday, getPriorMonths, localeDate } from "src/helper/generate_date";
 
 const ProfitLoss = () => {
     const { control, handleSubmit } = useForm({
@@ -41,7 +41,7 @@ const ProfitLoss = () => {
     const [state, setState] = useState({
         data: null,
         isReload: null,
-        filename: `Laporan Laba Rugi ${getPriorMonths(3)} - ${getToday()}`,
+        filename: `Laporan Laba Rugi ${localeDate(getPriorMonths(3))} - ${localeDate(getToday())}`,
         loading: false,
         disabled: true,
         showAlert: false,
@@ -67,10 +67,10 @@ const ProfitLoss = () => {
                 ...prevState,
                 loading: false,
                 disabled: false,
-                showAlert: true,
-                alertType: "success",
-                alertContent: response.data,
-                filename: `Laporan Laba Rugi ${response.data?.startDate} - ${response.data?.endDate}`,
+                data: response.data,
+                filename: `Laporan Laba Rugi ${localeDate(response.data?.startDate)} - ${localeDate(
+                    response.data?.endDate,
+                )}`,
             }));
             setTimeout(() => {
                 closeAlert();
@@ -201,7 +201,7 @@ const ProfitLoss = () => {
                                             <CTableDataCell>{value.name}</CTableDataCell>
                                             <CTableDataCell>
                                                 <NumberFormat
-                                                    value={value.nominal}
+                                                    value={value.total}
                                                     displayType="text"
                                                     allowLeadingZeros={false}
                                                     thousandSeparator={true}
@@ -259,7 +259,13 @@ const ProfitLoss = () => {
                                 </CTableRow>
                                 <CTableRow color="dark">
                                     <CTableHeaderCell>Total Laba Rugi</CTableHeaderCell>
-                                    <CTableHeaderCell className="text-success">
+                                    <CTableHeaderCell
+                                        className={
+                                            state.data?.profitLoss > 0
+                                                ? "text-success"
+                                                : "text-danger"
+                                        }
+                                    >
                                         <NumberFormat
                                             value={state.data?.profitLoss}
                                             displayType="text"

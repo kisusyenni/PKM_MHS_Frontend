@@ -13,52 +13,47 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
+import { useSearchParams } from "react-router-dom";
+import { getPriorMonths, getToday, localeDate } from "src/helper/generate_date";
+import { post } from "src/network/api/network";
 
 const PrintProfitLoss = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
+
     const [state, setState] = useState({
         data: null,
         isReload: null,
         filename: "Laporan Laba Rugi",
     });
 
-    const getBalanceSheet = () => {
-        setState((prevState) => ({
-            ...prevState,
-            data: {
-                startDate: "20/05/2022",
-                endDate: "20/06/2022",
-                previousBalance: 1000000,
-                profitLoss: 500000,
-                income: {
-                    total: 500000,
-                    list: [
-                        {
-                            name: "Penjualan Inventori",
-                            nominal: 500000,
-                        },
-                    ],
-                },
-                expense: {
-                    total: -1000000,
-                    list: [
-                        {
-                            name: "Pembelian Inventori",
-                            nominal: -500000,
-                        },
-                        {
-                            name: "Pengeluaran lainnya",
-                            nominal: -500000,
-                        },
-                    ],
-                },
-            },
-            filename: "Laporan Laba Rugi Periode 20/05/2022 - 20/06/2022",
-        }));
+    const getProfitLoss = async (data) => {
+        const response = await post("/report/profit-loss", data);
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                data: response.data,
+                filename: `Laporan Laba Rugi ${localeDate(response.data?.startDate)} - ${localeDate(
+                    response.data?.endDate,
+                )}`,
+            }));
+        } else {
+            // show error
+            setState((prevState) => ({
+                ...prevState,
+                errMsg: response.data,
+            }));
+        }
     };
 
     useEffect(() => {
-        getBalanceSheet();
-    }, [state.isReload]);
+        getProfitLoss({
+            startDate: startDate,
+            endDate: endDate,
+        });
+    }, [endDate, startDate, state.isReload]);
 
     useEffect(() => {
         if (state.data) {
@@ -102,7 +97,7 @@ const PrintProfitLoss = () => {
                                     <CTableDataCell>{value.name}</CTableDataCell>
                                     <CTableDataCell>
                                         <NumberFormat
-                                            value={value.nominal}
+                                            value={value.total}
                                             displayType="text"
                                             allowLeadingZeros={false}
                                             thousandSeparator={true}
@@ -160,7 +155,11 @@ const PrintProfitLoss = () => {
                         </CTableRow>
                         <CTableRow color="secondary">
                             <CTableHeaderCell>Total Laba Rugi</CTableHeaderCell>
-                            <CTableHeaderCell className="text-success">
+                            <CTableHeaderCell
+                                className={
+                                    state.data?.profitLoss > 0 ? "text-success" : "text-danger"
+                                }
+                            >
                                 <NumberFormat
                                     value={state.data?.profitLoss}
                                     displayType="text"
