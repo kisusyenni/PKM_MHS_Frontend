@@ -13,13 +13,12 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { getToday } from "src/helper/generate_date";
 import StatusAlert from "src/helper/StatusAlert";
 import { post } from "src/network/api/network";
 import StockOpnameDetailForm from "./StockOpnameDetailForm";
 
 const StockOpnameForm = () => {
-    const date = new Date();
-
     const [state, setState] = useState({
         loading: false,
         disabled: true,
@@ -39,7 +38,7 @@ const StockOpnameForm = () => {
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
             userId: localStorage.getItem("userId"),
-            date: date.toJSON().slice(0, 10),
+            date: getToday(),
             description: "",
             itemDetail: [
                 {

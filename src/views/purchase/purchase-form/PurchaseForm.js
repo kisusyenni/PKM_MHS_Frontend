@@ -14,13 +14,12 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { getLaterDays, getToday } from "src/helper/generate_date";
 import StatusAlert from "src/helper/StatusAlert";
 import { get, post } from "src/network/api/network";
 import PurchaseDetailForm from "./PurchaseDetailForm";
 
 const PurchaseForm = () => {
-    const date = new Date();
-
     const [state, setState] = useState({
         loading: false,
         disabled: true,
@@ -54,8 +53,8 @@ const PurchaseForm = () => {
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
             supplierId: "",
-            transDate: date.toJSON().slice(0, 10),
-            dueDate: date.toJSON().slice(0, 10),
+            transDate: getToday(),
+            dueDate: getLaterDays(7),
             description: "",
             itemDetail: [{ inventoryId: "", quantity: 1, pricePerUnit: 0, discount: 0, amount: 0 }],
             totalPayment: 0,

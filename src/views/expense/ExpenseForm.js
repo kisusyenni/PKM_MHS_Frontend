@@ -16,11 +16,10 @@ import NumberFormat from "react-number-format";
 import { useParams } from "react-router-dom";
 import { get, post, put } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
+import { getToday } from "src/helper/generate_date";
 
 const ExpenseForm = ({ title, editMode }) => {
     let { id } = useParams();
-
-    const date = new Date();
 
     const [state, setState] = useState({
         total: 0,
@@ -42,7 +41,7 @@ const ExpenseForm = ({ title, editMode }) => {
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
             name: "",
-            date: date.toJSON().slice(0, 10),
+            date: getToday(),
             quantity: 0,
             total: 0,
         },

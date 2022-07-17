@@ -12,13 +12,12 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { getLaterDays, getToday } from "src/helper/generate_date";
 import StatusAlert from "src/helper/StatusAlert";
 import { post } from "src/network/api/network";
 import SalesDetailForm from "./SalesDetailForm";
 
 const SalesForm = () => {
-    const date = new Date();
-
     const [state, setState] = useState({
         loading: false,
         disabled: true,
@@ -37,8 +36,8 @@ const SalesForm = () => {
     } = useForm({
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
-            transDate: date.toJSON().slice(0, 10),
-            dueDate: date.toJSON().slice(0, 10),
+            transDate: getToday(),
+            dueDate: getLaterDays(7),
             dueNominal: 0,
             totalPayment: 0,
             discount: 0,

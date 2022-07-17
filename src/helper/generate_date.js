@@ -3,6 +3,12 @@ export function getToday() {
     return date.toJSON().slice(0, 10);
 }
 
+export function getLaterDays(day) {
+    const date = new Date();
+    date.setDate(date.getDate() + day);
+    return date.toJSON().slice(0, 10);
+}
+
 export function getLaterMonths(month) {
     const date = new Date();
     date.setMonth(date.getMonth() + month);

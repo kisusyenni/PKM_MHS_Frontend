@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getToday } from "src/helper/generate_date";
 import StatusAlert from "src/helper/StatusAlert";
 import { post } from "src/network/api/network";
 
 const PaymentForm = ({ type, id, total }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const date = new Date();
 
     const [state, setState] = useState({
         nominal: total,
@@ -30,7 +30,7 @@ const PaymentForm = ({ type, id, total }) => {
     } = useForm({
         defaultValues: {
             methodId: "1",
-            date: date.toJSON().slice(0, 10),
+            date: getToday(),
             nominal: total,
         },
         mode: "all",
@@ -103,28 +103,6 @@ const PaymentForm = ({ type, id, total }) => {
                 )}
                 <CRow>
                     <CCol md={6} className="mb-3">
-                        <CFormLabel htmlFor="name">Nomor Pembayaran</CFormLabel>
-                        <Controller
-                            name="code"
-                            control={control}
-                            rules={{
-                                required: "Kode tidak boleh kosong",
-                            }}
-                            render={({ field: { onChange, onBlur, value, ref } }) => (
-                                <CFormInput
-                                    size="sm"
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}
-                                    invalid={errors.hasOwnProperty("code")}
-                                />
-                            )}
-                        />
-                        <span className="invalid-feedback">{errors.code?.message}</span>
-                    </CCol>
-
-                    <CCol md={6} className="mb-3">
                         <CFormLabel>Tanggal</CFormLabel>
                         <Controller
                             name="date"
@@ -143,8 +121,37 @@ const PaymentForm = ({ type, id, total }) => {
                         />
                         <span className="invalid-feedback">{errors.date?.message}</span>
                     </CCol>
-
                     <CCol md={6} className="mb-3">
+                        <CFormLabel>Metode Pembayaran</CFormLabel>
+                        <Controller
+                            name="methodId"
+                            control={control}
+                            rules={{
+                                required: "Wajib memilih metode pembayaran",
+                            }}
+                            render={({ field: { onChange, onBlur, value, ref } }) => (
+                                <CFormSelect
+                                    size="sm"
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    value={value}
+                                    ref={ref}
+                                    aria-label="Metode Pembayaran"
+                                    invalid={errors.hasOwnProperty("methodId")}
+                                    options={[
+                                        "Metode",
+                                        { label: "Cash", value: "1" },
+                                        { label: "Kartu Debit", value: "2" },
+                                        { label: "Kartu Kredit", value: "3" },
+                                        { label: "QRIS/E-Money", value: "4" },
+                                    ]}
+                                />
+                            )}
+                        />
+                        <span className="invalid-feedback">{errors.methodId?.message}</span>
+                    </CCol>
+
+                    <CCol md={12} className="mb-3">
                         <CFormLabel>Total Dibayar</CFormLabel>
                         <Controller
                             name="nominal"
@@ -175,35 +182,6 @@ const PaymentForm = ({ type, id, total }) => {
                         <span className="invalid-feedback">{errors.nominal?.message}</span>
                     </CCol>
 
-                    <CCol md={6} className="mb-3">
-                        <CFormLabel>Metode Pembayaran</CFormLabel>
-                        <Controller
-                            name="methodId"
-                            control={control}
-                            rules={{
-                                required: "Wajib memilih metode pembayaran",
-                            }}
-                            render={({ field: { onChange, onBlur, value, ref } }) => (
-                                <CFormSelect
-                                    size="sm"
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    value={value}
-                                    ref={ref}
-                                    aria-label="Metode Pembayaran"
-                                    invalid={errors.hasOwnProperty("methodId")}
-                                    options={[
-                                        "Metode",
-                                        { label: "Cash", value: "1" },
-                                        { label: "Kartu Debit", value: "2" },
-                                        { label: "Kartu Kredit", value: "3" },
-                                        { label: "QRIS/E-Money", value: "4" },
-                                    ]}
-                                />
-                            )}
-                        />
-                        <span className="invalid-feedback">{errors.methodId?.message}</span>
-                    </CCol>
                     <CCol className="text-end">
                         <CButton type="submit">Submit</CButton>
                     </CCol>
