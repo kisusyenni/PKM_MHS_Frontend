@@ -14,7 +14,6 @@ import {
     CTableRow,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import NumberFormat from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
 import { get } from "src/network/api/network";
 
