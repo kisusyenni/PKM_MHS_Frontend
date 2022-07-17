@@ -14,9 +14,12 @@ import useAuth from "src/hooks/useAuth";
 
 const AppHeaderDropdown = () => {
     const { logout } = useAuth();
+    // const [userName, setUserName] = useState()
+    const userName = localStorage.getItem("userName");
     return (
         <CDropdown variant="nav-item">
             <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
+                <span className="me-2">{userName}</span>
                 <CIcon icon={cilSettings} />
             </CDropdownToggle>
             <CDropdownMenu className="pt-0" placement="bottom-end">

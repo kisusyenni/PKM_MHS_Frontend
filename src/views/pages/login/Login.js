@@ -54,6 +54,7 @@ const Login = () => {
         // send login data to api
         const response = await post("/auth/login", data);
         if (response.status === 200) {
+            console.log(response.data);
             setState((prevState) => ({
                 ...prevState,
                 loading: false,
@@ -66,10 +67,12 @@ const Login = () => {
             const storeId = response?.data?.user.storeId;
             const isSetup = response?.data?.user.is_setup;
             const userId = response?.data?.user.userId;
+            const userName = response?.data?.user.name;
             localStorage.setItem("token", accessToken);
             localStorage.setItem("storeId", storeId);
             localStorage.setItem("isSetup", isSetup);
             localStorage.setItem("userId", userId);
+            localStorage.setItem("userName", userName);
             setAuth({ accessToken: accessToken, storeId: storeId, isSetup: isSetup });
 
             // hide loading on button

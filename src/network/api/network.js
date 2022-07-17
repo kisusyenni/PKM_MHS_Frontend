@@ -47,7 +47,7 @@ const getData = async (path) => {
         if (error.response) {
             if (error.response.status === 403 || error.response.status === 401) {
                 window.location.href = "/";
-                localStorage.removeItem("token");
+                localStorage.clear();
                 return {
                     status: error.response.status,
                     data: error.response.data.error,
@@ -71,7 +71,7 @@ const postData = async (path, data) => {
         if (error.response) {
             if (error.response.status === 403 || error.response.status === 401) {
                 window.location.href = "/";
-                localStorage.removeItem("token");
+                localStorage.clear();
                 return {
                     status: error.response.status,
                     data: error.response.data.error,
@@ -95,7 +95,7 @@ const putData = async (path, id, data) => {
         if (error.response) {
             if (error.response.status === 403 || error.response.status === 401) {
                 window.location.href = "/";
-                localStorage.removeItem("token");
+                localStorage.clear();
                 return {
                     status: error.response.status,
                     data: error.response.data.error,
@@ -119,7 +119,7 @@ const deleteData = async (path, id) => {
         if (error.response) {
             if (error.response.status === 403 || error.response.status === 401) {
                 window.location.href = "/";
-                localStorage.removeItem("token");
+                localStorage.clear();
                 return {
                     status: error.response.status,
                     data: error.response.data.error,

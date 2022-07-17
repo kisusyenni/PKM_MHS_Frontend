@@ -18,10 +18,7 @@ export const AuthProvider = ({ children }) => {
             isSetup: null,
             userId: null,
         });
-        localStorage.removeItem("token");
-        localStorage.removeItem("storeId");
-        localStorage.removeItem("isSetup");
-        localStorage.removeItem("userId");
+        localStorage.clear();
     };
 
     return (
