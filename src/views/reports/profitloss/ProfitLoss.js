@@ -11,6 +11,7 @@ import {
     CInputGroup,
     CInputGroupText,
     CRow,
+    CSpinner,
     CTable,
     CTableBody,
     CTableDataCell,
@@ -24,63 +25,77 @@ import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import DownloadExcel from "./DownloadExcel";
 import DownloadPdf from "./DownloadPdf";
+import { post } from "src/network/api/network";
+import StatusAlert from "src/helper/StatusAlert";
+import { getToday, getPriorMonths } from "src/helper/generate_date";
 
 const ProfitLoss = () => {
-    const date = new Date();
-
-    const [state, setState] = useState({
-        data: null,
-        isReload: null,
-        filename: "Laporan Laba Rugi",
-    });
-
     const { control, handleSubmit } = useForm({
         defaultValues: {
-            startDate: date.toJSON().slice(0, 10),
-            endDate: date.toJSON().slice(0, 10),
+            startDate: getPriorMonths(1),
+            endDate: getToday(),
         },
         mode: "all",
     });
 
-    const onSubmit = () => {};
+    const [state, setState] = useState({
+        data: null,
+        isReload: null,
+        filename: `Laporan Laba Rugi ${getPriorMonths(3)} - ${getToday()}`,
+        loading: false,
+        disabled: true,
+        showAlert: false,
+        alertType: null,
+        alertContent: "",
+    });
 
-    const getBalanceSheet = () => {
+    const closeAlert = () => {
         setState((prevState) => ({
             ...prevState,
-            data: {
-                startDate: "20/05/2022",
-                endDate: "20/06/2022",
-                previousBalance: 1000000,
-                profitLoss: 500000,
-                income: {
-                    total: 500000,
-                    list: [
-                        {
-                            name: "Penjualan Inventori",
-                            nominal: 500000,
-                        },
-                    ],
-                },
-                expense: {
-                    total: -1000000,
-                    list: [
-                        {
-                            name: "Pembelian Inventori",
-                            nominal: -500000,
-                        },
-                        {
-                            name: "Pengeluaran lainnya",
-                            nominal: -500000,
-                        },
-                    ],
-                },
-            },
-            filename: "Laporan Laba Rugi Periode 20/05/2022 - 20/06/2022",
+            showAlert: false,
         }));
     };
 
+    const onSubmit = async ({ data }) => {
+        getProfitLoss(data);
+    };
+
+    const getProfitLoss = async (data) => {
+        const response = await post("/report/profit-loss", data);
+        if (response.status === 200) {
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "success",
+                alertContent: response.data,
+                filename: `Laporan Laba Rugi ${response.data?.startDate} - ${response.data?.endDate}`,
+            }));
+            setTimeout(() => {
+                closeAlert();
+            }, 2000);
+        } else {
+            // show error
+            setState((prevState) => ({
+                ...prevState,
+                loading: false,
+                disabled: false,
+                showAlert: true,
+                alertType: "danger",
+                alertContent: response.data,
+            }));
+            setTimeout(() => {
+                closeAlert();
+            }, 2000);
+        }
+    };
+
     useEffect(() => {
-        getBalanceSheet();
+        getProfitLoss({
+            startDate: getPriorMonths(1),
+            endDate: getToday(),
+        });
     }, [state.isReload]);
 
     return (
@@ -150,105 +165,115 @@ const ProfitLoss = () => {
                             </CForm>
                         </CCol>
                     </CRow>
-                    <CTable bordered id="profit-loss">
-                        <CTableBody>
-                            <CTableRow>
-                                <CTableHeaderCell colSpan={2} className="h3 text-center">
-                                    {state.filename}
-                                </CTableHeaderCell>
-                            </CTableRow>
-                            <CTableRow color="secondary">
-                                <CTableHeaderCell>Saldo Periode Sebelum</CTableHeaderCell>
-                                <CTableDataCell>
-                                    <NumberFormat
-                                        value={state?.data?.previousBalance}
-                                        displayType="text"
-                                        allowLeadingZeros={false}
-                                        thousandSeparator={true}
-                                        prefix={"Rp"}
-                                    />
-                                </CTableDataCell>
-                            </CTableRow>
+                    <StatusAlert
+                        showAlert={state.showAlert}
+                        type={state.alertType}
+                        content={state.alertContent}
+                        closeAlert={closeAlert}
+                    />
+                    {state.data ? (
+                        <CTable bordered id="profit-loss">
+                            <CTableBody>
+                                <CTableRow>
+                                    <CTableHeaderCell colSpan={2} className="h3 text-center">
+                                        {state.filename}
+                                    </CTableHeaderCell>
+                                </CTableRow>
+                                <CTableRow color="secondary">
+                                    <CTableHeaderCell>Saldo Periode Sebelum</CTableHeaderCell>
+                                    <CTableDataCell>
+                                        <NumberFormat
+                                            value={state?.data?.previousBalance}
+                                            displayType="text"
+                                            allowLeadingZeros={false}
+                                            thousandSeparator={true}
+                                            prefix={"Rp"}
+                                        />
+                                    </CTableDataCell>
+                                </CTableRow>
 
-                            <CTableRow color="secondary">
-                                <CTableHeaderCell colSpan={2}>Pendapatan</CTableHeaderCell>
-                            </CTableRow>
-                            {state.data?.income?.list.map((value, index) => {
-                                return (
-                                    <CTableRow key={index}>
-                                        <CTableDataCell>{value.name}</CTableDataCell>
-                                        <CTableDataCell>
-                                            <NumberFormat
-                                                value={value.nominal}
-                                                displayType="text"
-                                                allowLeadingZeros={false}
-                                                thousandSeparator={true}
-                                                prefix={"Rp"}
-                                            />
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                );
-                            })}
-                            <CTableRow>
-                                <CTableHeaderCell>Total</CTableHeaderCell>
-                                <CTableDataCell className="text-success">
-                                    <NumberFormat
-                                        value={state.data?.income?.total}
-                                        displayType="text"
-                                        allowLeadingZeros={false}
-                                        thousandSeparator={true}
-                                        prefix={"Rp"}
-                                    />
-                                </CTableDataCell>
-                            </CTableRow>
+                                <CTableRow color="secondary">
+                                    <CTableHeaderCell colSpan={2}>Pendapatan</CTableHeaderCell>
+                                </CTableRow>
+                                {state.data?.income?.list.map((value, index) => {
+                                    return (
+                                        <CTableRow key={index}>
+                                            <CTableDataCell>{value.name}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <NumberFormat
+                                                    value={value.nominal}
+                                                    displayType="text"
+                                                    allowLeadingZeros={false}
+                                                    thousandSeparator={true}
+                                                    prefix={"Rp"}
+                                                />
+                                            </CTableDataCell>
+                                        </CTableRow>
+                                    );
+                                })}
+                                <CTableRow>
+                                    <CTableHeaderCell>Total</CTableHeaderCell>
+                                    <CTableDataCell className="text-success">
+                                        <NumberFormat
+                                            value={state.data?.income?.total}
+                                            displayType="text"
+                                            allowLeadingZeros={false}
+                                            thousandSeparator={true}
+                                            prefix={"Rp"}
+                                        />
+                                    </CTableDataCell>
+                                </CTableRow>
 
-                            <CTableRow color="secondary">
-                                <CTableHeaderCell colSpan={2}>Pengeluaran</CTableHeaderCell>
-                            </CTableRow>
+                                <CTableRow color="secondary">
+                                    <CTableHeaderCell colSpan={2}>Pengeluaran</CTableHeaderCell>
+                                </CTableRow>
 
-                            {state.data?.expense?.list.map((value, index) => {
-                                return (
-                                    <CTableRow key={index}>
-                                        <CTableDataCell>{value.name}</CTableDataCell>
-                                        <CTableDataCell>
-                                            <NumberFormat
-                                                value={value.nominal}
-                                                displayType="text"
-                                                allowLeadingZeros={false}
-                                                thousandSeparator={true}
-                                                prefix={"Rp"}
-                                            />
-                                        </CTableDataCell>
-                                    </CTableRow>
-                                );
-                            })}
+                                {state.data?.expense?.list.map((value, index) => {
+                                    return (
+                                        <CTableRow key={index}>
+                                            <CTableDataCell>{value.name}</CTableDataCell>
+                                            <CTableDataCell>
+                                                <NumberFormat
+                                                    value={value.nominal}
+                                                    displayType="text"
+                                                    allowLeadingZeros={false}
+                                                    thousandSeparator={true}
+                                                    prefix={"Rp"}
+                                                />
+                                            </CTableDataCell>
+                                        </CTableRow>
+                                    );
+                                })}
 
-                            <CTableRow>
-                                <CTableHeaderCell>Total</CTableHeaderCell>
-                                <CTableDataCell className="text-danger">
-                                    <NumberFormat
-                                        value={state.data?.expense?.total}
-                                        displayType="text"
-                                        allowLeadingZeros={false}
-                                        thousandSeparator={true}
-                                        prefix={"Rp"}
-                                    />
-                                </CTableDataCell>
-                            </CTableRow>
-                            <CTableRow color="dark">
-                                <CTableHeaderCell>Total Laba Rugi</CTableHeaderCell>
-                                <CTableHeaderCell className="text-success">
-                                    <NumberFormat
-                                        value={state.data?.profitLoss}
-                                        displayType="text"
-                                        allowLeadingZeros={false}
-                                        thousandSeparator={true}
-                                        prefix={"Rp"}
-                                    />
-                                </CTableHeaderCell>
-                            </CTableRow>
-                        </CTableBody>
-                    </CTable>
+                                <CTableRow>
+                                    <CTableHeaderCell>Total</CTableHeaderCell>
+                                    <CTableDataCell className="text-danger">
+                                        <NumberFormat
+                                            value={state.data?.expense?.total}
+                                            displayType="text"
+                                            allowLeadingZeros={false}
+                                            thousandSeparator={true}
+                                            prefix={"Rp"}
+                                        />
+                                    </CTableDataCell>
+                                </CTableRow>
+                                <CTableRow color="dark">
+                                    <CTableHeaderCell>Total Laba Rugi</CTableHeaderCell>
+                                    <CTableHeaderCell className="text-success">
+                                        <NumberFormat
+                                            value={state.data?.profitLoss}
+                                            displayType="text"
+                                            allowLeadingZeros={false}
+                                            thousandSeparator={true}
+                                            prefix={"Rp"}
+                                        />
+                                    </CTableHeaderCell>
+                                </CTableRow>
+                            </CTableBody>
+                        </CTable>
+                    ) : (
+                        <CSpinner className="me-2" size="sm" hidden={!state.loading}></CSpinner>
+                    )}
                 </CCardBody>
             </CCard>
         </>
