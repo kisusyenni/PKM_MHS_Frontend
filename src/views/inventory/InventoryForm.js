@@ -246,10 +246,16 @@ const InventoryForm = ({ title, editMode }) => {
                             />
                             <span className="invalid-feedback">{errors.sellingPrice?.message}</span>
                         </div>
-                        <CButton type="submit" color="primary" disabled={state.disabled}>
-                            <CSpinner className="me-2" size="sm" hidden={!state.loading}></CSpinner>
-                            {editMode ? "Simpan Perubahan" : "Tambah Inventaris"}
-                        </CButton>
+                        <div className="text-end">
+                            <CButton type="submit" color="primary" disabled={state.disabled}>
+                                <CSpinner
+                                    className="me-2"
+                                    size="sm"
+                                    hidden={!state.loading}
+                                ></CSpinner>
+                                {editMode ? "Simpan Perubahan" : "Tambah Inventaris"}
+                            </CButton>
+                        </div>
                     </CCardBody>
                 </CCard>
             </CForm>

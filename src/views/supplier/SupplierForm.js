@@ -172,10 +172,10 @@ const SupplierForm = ({ action, openForm, handleClose, supplier, handleAlert }) 
                     </CModalBody>
                     <CModalFooter>
                         <CButton onClick={closeForm} color="secondary">
-                            Close
+                            Tutup
                         </CButton>
                         <CButton type="submit" color="primary">
-                            Save changes
+                            Submit
                         </CButton>
                     </CModalFooter>
                 </CForm>

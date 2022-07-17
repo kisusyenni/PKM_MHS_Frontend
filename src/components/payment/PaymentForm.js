@@ -204,7 +204,7 @@ const PaymentForm = ({ type, id, total }) => {
                         />
                         <span className="invalid-feedback">{errors.methodId?.message}</span>
                     </CCol>
-                    <CCol>
+                    <CCol className="text-end">
                         <CButton type="submit">Submit</CButton>
                     </CCol>
                 </CRow>

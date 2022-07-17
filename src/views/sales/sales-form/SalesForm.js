@@ -149,7 +149,7 @@ const SalesForm = () => {
                             setValue={setValue}
                         />
                     </CCardBody>
-                    <CCardFooter>
+                    <CCardFooter className="text-end">
                         <CButton type="submit">Submit</CButton>
                     </CCardFooter>
                 </CForm>

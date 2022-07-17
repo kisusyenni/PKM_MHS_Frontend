@@ -241,10 +241,16 @@ const ExpenseForm = ({ title, editMode }) => {
                             />
                             <span className="invalid-feedback">{errors.total?.message}</span>
                         </div>
-                        <CButton type="submit" color="primary" disabled={state.disabled}>
-                            <CSpinner className="me-2" size="sm" hidden={!state.loading}></CSpinner>
-                            {editMode ? "Simpan Perubahan" : "Tambah Pengeluaran"}
-                        </CButton>
+                        <div className="text-end">
+                            <CButton type="submit" color="primary" disabled={state.disabled}>
+                                <CSpinner
+                                    className="me-2"
+                                    size="sm"
+                                    hidden={!state.loading}
+                                ></CSpinner>
+                                {editMode ? "Simpan Perubahan" : "Tambah Pengeluaran"}
+                            </CButton>
+                        </div>
                     </CCardBody>
                 </CCard>
             </CForm>
