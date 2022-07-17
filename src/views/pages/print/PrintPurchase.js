@@ -31,7 +31,6 @@ const PrintPurchase = () => {
     const getPurchaseDetail = async () => {
         const response = await get(`/purchase/${id}`);
         if (response.status === 200) {
-            console.log(response.data);
             setState((prevState) => ({
                 ...prevState,
                 data: response.data,
@@ -45,7 +44,6 @@ const PrintPurchase = () => {
 
     useEffect(() => {
         if (state.data) {
-            console.log("print");
             window.print();
         }
     }, [state.data]);

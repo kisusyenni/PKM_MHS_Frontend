@@ -18,7 +18,6 @@ import PaymentStatus from "src/helper/PaymentStatus";
 const SalesContent = ({ data }) => {
     const subtotal = data?.tbl_sales_details.reduce((prev, curr) => {
         const currValue = (curr.pricePerUnit - curr.discount) * curr.quantityBuy;
-        console.log(currValue);
         return prev + currValue;
     }, 0);
     return (

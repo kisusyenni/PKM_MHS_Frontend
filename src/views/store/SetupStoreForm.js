@@ -102,7 +102,6 @@ const SetupStoreForm = ({ setup = false }) => {
         if (state.data["currency"]) {
             setValue("currency", state.data["currency"]);
         }
-        console.log(state.data);
     }, [setValue, state.data]);
 
     const closeAlert = () => {

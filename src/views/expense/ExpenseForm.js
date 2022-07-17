@@ -144,7 +144,6 @@ const ExpenseForm = ({ title, editMode }) => {
                     reset();
                 }, 2000);
             } else {
-                console.log(response);
                 // show error
                 setState((prevState) => ({
                     ...prevState,

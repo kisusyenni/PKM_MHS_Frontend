@@ -29,7 +29,6 @@ const StockOpnameDetail = () => {
     const getStockOpnameDetail = async () => {
         const response = await get(`/stock-opname/${id}`);
         if (response.status === 200) {
-            console.log(response.data);
             setState((prevState) => ({
                 ...prevState,
                 data: response.data,

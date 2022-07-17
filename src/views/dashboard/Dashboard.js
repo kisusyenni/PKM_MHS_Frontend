@@ -22,7 +22,6 @@ const Dashboard = () => {
     const getDashboard = async () => {
         const response = await get("/dashboard");
         if (response.status === 200) {
-            console.log("data", response.data);
             setState((prevState) => ({
                 ...prevState,
                 data: response.data,
@@ -33,7 +32,6 @@ const Dashboard = () => {
     const getDashboardTable = async () => {
         const response = await get("/dashboard/table");
         if (response.status === 200) {
-            console.log("table", response.data);
             setState((prevState) => ({
                 ...prevState,
                 table: response.data,
@@ -43,7 +41,6 @@ const Dashboard = () => {
 
     const getDashboardInventory = async () => {
         const response = await get("/dashboard/inventory");
-        console.log("inventory", response.data);
         if (response.status === 200) {
             setState((prevState) => ({
                 ...prevState,

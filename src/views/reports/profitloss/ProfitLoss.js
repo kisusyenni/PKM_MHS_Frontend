@@ -56,7 +56,7 @@ const ProfitLoss = () => {
         }));
     };
 
-    const onSubmit = async ({ data }) => {
+    const onSubmit = async (data) => {
         getProfitLoss(data);
     };
 

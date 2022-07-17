@@ -176,7 +176,6 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                                         allowLeadingZeros={false}
                                         onValueChange={(values) => {
                                             const { formattedValue, value } = values;
-                                            console.log(value);
                                             setValue(`itemDetail.${index}.pricePerUnit`, value);
                                         }}
                                         thousandSeparator={true}

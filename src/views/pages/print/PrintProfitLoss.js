@@ -1,10 +1,5 @@
 import {
-    CCard,
-    CCardBody,
-    CCardHeader,
-    CCol,
     CContainer,
-    CRow,
     CTable,
     CTableBody,
     CTableDataCell,
@@ -14,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import NumberFormat from "react-number-format";
 import { useSearchParams } from "react-router-dom";
-import { getPriorMonths, getToday, localeDate } from "src/helper/generate_date";
+import { localeDate } from "src/helper/generate_date";
 import { post } from "src/network/api/network";
 
 const PrintProfitLoss = () => {
@@ -57,7 +52,6 @@ const PrintProfitLoss = () => {
 
     useEffect(() => {
         if (state.data) {
-            console.log("print");
             window.print();
         }
     }, [state.data]);

@@ -73,10 +73,6 @@ const InventoryForm = ({ title, editMode }) => {
     }, [state.isReload]);
 
     useEffect(() => {
-        console.log(state.data);
-    }, [state.data]);
-
-    useEffect(() => {
         if (isDirty) {
             setState((prevState) => ({
                 ...prevState,
@@ -94,7 +90,6 @@ const InventoryForm = ({ title, editMode }) => {
 
     // After submit button is clicked
     const onSubmit = async (data) => {
-        console.log(data);
         // show loading on button
         setState((prevState) => ({
             ...prevState,

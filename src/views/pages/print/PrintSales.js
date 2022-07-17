@@ -42,13 +42,11 @@ const PrintSales = () => {
 
     const subtotal = state.data?.tbl_sales_details.reduce((prev, curr) => {
         const currValue = (curr.pricePerUnit - curr.discount) * curr.quantityBuy;
-        console.log(currValue);
         return prev + currValue;
     }, 0);
 
     useEffect(() => {
         if (state.data) {
-            console.log("print");
             window.print();
         }
     }, [state.data]);

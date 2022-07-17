@@ -10,7 +10,6 @@ import {
     CDropdownMenu,
     CDropdownToggle,
     CFormInput,
-    CFormSelect,
     CRow,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
@@ -55,46 +54,24 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
     };
 
     const setDifference = (idx) => {
-        console.log(idx);
         let difference = 0;
         const check = watchItems.some((value, index) => {
             difference = value.qtyStart - value.qtyEnd;
-            console.log(value.qtyStart);
             return index === idx;
         });
 
-        console.log(check);
-
         if (check) setValue(`itemDetail.${idx}.difference`, difference);
-
-        console.log(difference);
     };
 
     const getDifference = (idx) => {
         let difference = 0;
         const check = watchItems.some((value, index) => {
             difference = value.qtyStart - value.qtyEnd;
-            console.log(value.qtyStart);
             return index === idx;
         });
 
-        console.log(check);
-
         return check ? difference : 0;
     };
-
-    // const setQtyStart = (id) => {
-    //     let qty = 0;
-    //     const check = state.inventory.some((value) => {
-    //         qty = value.quantity;
-    //         return value.inventoryId === id;
-    //     });
-    //     return check ? qty : 0;
-    // };
-
-    useEffect(() => {
-        console.log(watchItems);
-    }, [watchItems]);
 
     return (
         <>
