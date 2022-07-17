@@ -48,7 +48,7 @@ const StockOpnameDetail = () => {
                     navigate(-1);
                 }}
             >
-                Back
+                Kembali
             </CButton>
 
             <CCard className="my-3">

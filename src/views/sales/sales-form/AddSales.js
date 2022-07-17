@@ -14,7 +14,7 @@ const AddSales = () => {
                         navigate(-1);
                     }}
                 >
-                    Back
+                    Kembali
                 </CButton>
                 <SalesForm />
             </CContainer>

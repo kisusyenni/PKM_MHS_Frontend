@@ -40,7 +40,7 @@ const PurchaseDetail = () => {
                             navigate(-1);
                         }}
                     >
-                        Back
+                        Kembali
                     </CButton>
                 </CCol>
 

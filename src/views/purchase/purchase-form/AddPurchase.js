@@ -13,7 +13,7 @@ const AddPurchase = () => {
                     navigate(-1);
                 }}
             >
-                Back
+                Kembali
             </CButton>
             <PurchaseForm />
         </>
