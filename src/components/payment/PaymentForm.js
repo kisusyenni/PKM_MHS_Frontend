@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import { useLocation, useNavigate } from "react-router-dom";
-import { purchasePaymenCode, salesPaymentCode } from "src/helper/RefNumber";
 import StatusAlert from "src/helper/StatusAlert";
 import { post } from "src/network/api/network";
 
@@ -23,16 +22,6 @@ const PaymentForm = ({ type, id, total }) => {
         isReload: null,
     });
 
-    const generateCode = () => {
-        if (location?.pathname.includes("pembelian") || type === "purchase") {
-            return purchasePaymenCode;
-        } else if (location?.pathname.includes("penjualan") || type === "sales") {
-            return salesPaymentCode;
-        } else {
-            return "PY0001";
-        }
-    };
-
     const {
         control,
         handleSubmit,
@@ -43,7 +32,6 @@ const PaymentForm = ({ type, id, total }) => {
             methodId: "1",
             date: date.toJSON().slice(0, 10),
             nominal: total,
-            code: generateCode(),
         },
         mode: "all",
     });

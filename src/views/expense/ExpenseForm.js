@@ -13,14 +13,12 @@ import {
 } from "@coreui/react";
 import { Controller, useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { get, post, put } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
-import { expenseRefNumber } from "src/helper/RefNumber";
 
 const ExpenseForm = ({ title, editMode }) => {
     let { id } = useParams();
-    const navigate = useNavigate();
 
     const date = new Date();
 
@@ -43,7 +41,6 @@ const ExpenseForm = ({ title, editMode }) => {
     } = useForm({
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
-            refNumber: expenseRefNumber,
             name: "",
             date: date.toJSON().slice(0, 10),
             quantity: 0,
@@ -177,26 +174,6 @@ const ExpenseForm = ({ title, editMode }) => {
                 <CCard>
                     <CCardHeader>{title}</CCardHeader>
                     <CCardBody>
-                        {/* <div className="mb-3">
-                            <CFormLabel htmlFor="name">Nomor</CFormLabel>
-                            <Controller
-                                name="refNumber"
-                                control={control}
-                                rules={{
-                                    required: "Nomor tidak boleh kosong",
-                                }}
-                                render={({ field: { onChange, onBlur, value, ref } }) => (
-                                    <CFormInput
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        ref={ref}
-                                        invalid={errors.hasOwnProperty("refNumber")}
-                                    />
-                                )}
-                            />
-                            <span className="invalid-feedback">{errors.refNumber?.message}</span>
-                        </div> */}
                         <div className="mb-3">
                             <CFormLabel htmlFor="name">Nama</CFormLabel>
                             <Controller

@@ -12,7 +12,6 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { salesRefNumber } from "src/helper/RefNumber";
 import StatusAlert from "src/helper/StatusAlert";
 import { post } from "src/network/api/network";
 import SalesDetailForm from "./SalesDetailForm";
@@ -38,7 +37,6 @@ const SalesForm = () => {
     } = useForm({
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
-            refNumber: salesRefNumber,
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
             dueNominal: 0,
@@ -104,29 +102,6 @@ const SalesForm = () => {
                 <CForm onSubmit={handleSubmit(onSubmit)}>
                     <CCardBody>
                         <CRow>
-                            <CCol md={4} className="mb-3">
-                                <CFormLabel>Nomor Pembelian</CFormLabel>
-                                <Controller
-                                    name="refNumber"
-                                    control={control}
-                                    rules={{
-                                        required: "Nomor transaksi tidak boleh kosong",
-                                    }}
-                                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                                        <CFormInput
-                                            onChange={onChange}
-                                            onBlur={onBlur}
-                                            value={value}
-                                            ref={ref}
-                                            invalid={errors.hasOwnProperty("refNumber")}
-                                            disabled
-                                        />
-                                    )}
-                                />
-                                <span className="invalid-feedback">
-                                    {errors.refNumber?.message}
-                                </span>
-                            </CCol>
                             <CCol md={4} className="mb-3">
                                 <CFormLabel>Tanggal</CFormLabel>
                                 <Controller

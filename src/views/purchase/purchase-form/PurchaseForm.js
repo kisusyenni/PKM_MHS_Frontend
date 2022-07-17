@@ -14,7 +14,6 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { purchaseRefNumber } from "src/helper/RefNumber";
 import StatusAlert from "src/helper/StatusAlert";
 import { get, post } from "src/network/api/network";
 import PurchaseDetailForm from "./PurchaseDetailForm";
@@ -54,7 +53,6 @@ const PurchaseForm = () => {
     } = useForm({
         defaultValues: {
             storeId: localStorage.getItem("storeId"),
-            refNumber: purchaseRefNumber,
             supplierId: "",
             transDate: date.toJSON().slice(0, 10),
             dueDate: date.toJSON().slice(0, 10),
@@ -122,32 +120,6 @@ const PurchaseForm = () => {
                         <CRow>
                             <CCol md={4} className="mb-3">
                                 <CFormLabel className="fw-bold text-grey">
-                                    <small>Nomor Pembelian</small>
-                                </CFormLabel>
-                                <Controller
-                                    name="refNumber"
-                                    control={control}
-                                    rules={{
-                                        required: "Nomor transaksi tidak boleh kosong",
-                                    }}
-                                    render={({ field: { onChange, onBlur, value, ref } }) => (
-                                        <CFormInput
-                                            onChange={onChange}
-                                            onBlur={onBlur}
-                                            value={value}
-                                            ref={ref}
-                                            invalid={errors.hasOwnProperty("refNumber")}
-                                            disabled
-                                        />
-                                    )}
-                                />
-                                <span className="invalid-feedback">
-                                    {errors.refNumber?.message}
-                                </span>
-                            </CCol>
-
-                            <CCol md={4} className="mb-3">
-                                <CFormLabel className="fw-bold text-grey">
                                     <small>Supplier</small>
                                 </CFormLabel>
                                 <Controller
@@ -180,8 +152,6 @@ const PurchaseForm = () => {
                                     {errors.supplierId?.message}
                                 </span>
                             </CCol>
-
-                            <CCol md={4}></CCol>
                             <CCol md={4} className="mb-3">
                                 <CFormLabel className="fw-bold text-grey">
                                     <small>Tanggal</small>
