@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { CButton, CCol, CImage, CRow } from "@coreui/react";
+import { CButton, CCol, CImage, CNav, CNavItem, CNavLink, CRow, CTabContent } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
@@ -147,18 +147,48 @@ const Inventory = () => {
     };
 
     const [state, setState] = useState({
+        activeKey: 1,
         data: [],
+        originalData: [],
+        total: 0,
         isReload: null,
-        columns: tableCols,
-        options: tableOptions,
         selectedInventory: null,
         openModal: false,
         showAlert: false,
     });
 
     useEffect(() => {
-        getInventoryList();
-    }, [state.isReload]);
+        // getInventoryList();
+
+        switch (state.activeKey) {
+            case 1:
+                const allData = state.originalData;
+                setState((prevState) => ({
+                    ...prevState,
+                    data: allData,
+                }));
+                break;
+
+            case 2:
+                const nonService = state.originalData.filter((item) => item.isService === 0);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: nonService,
+                }));
+                break;
+
+            case 3:
+                const service = state.originalData.filter((item) => item.isService === 1);
+                setState((prevState) => ({
+                    ...prevState,
+                    data: service,
+                }));
+                break;
+
+            default:
+                break;
+        }
+    }, [state.activeKey, state.isReload]);
 
     const getInventoryList = async () => {
         const response = await get("/inventory");
@@ -166,9 +196,15 @@ const Inventory = () => {
             setState((prevState) => ({
                 ...prevState,
                 data: response.data,
+                originalData: response.data,
+                total: response.data.length,
             }));
         }
     };
+
+    useEffect(() => {
+        getInventoryList();
+    }, [state.isReload]);
 
     // Delete
 
@@ -247,13 +283,64 @@ const Inventory = () => {
                     closeAlert={handleCloseAlert}
                 />
             )}
-            {state.data?.length > 0 ? (
-                <MUIDataTable
-                    title={"Daftar Inventaris"}
-                    data={state.data}
-                    columns={tableCols}
-                    options={tableOptions}
-                />
+            {state.total > 0 ? (
+                <>
+                    <CNav variant="pills" role="tablist">
+                        <CNavItem>
+                            <CNavLink
+                                type="button"
+                                href={undefined}
+                                active={state.activeKey === 1}
+                                onClick={() =>
+                                    setState((prevState) => ({
+                                        ...prevState,
+                                        activeKey: 1,
+                                    }))
+                                }
+                            >
+                                Semua
+                            </CNavLink>
+                        </CNavItem>
+                        <CNavItem>
+                            <CNavLink
+                                type="button"
+                                href={undefined}
+                                active={state.activeKey === 2}
+                                onClick={() =>
+                                    setState((prevState) => ({
+                                        ...prevState,
+                                        activeKey: 2,
+                                    }))
+                                }
+                            >
+                                Barang
+                            </CNavLink>
+                        </CNavItem>
+                        <CNavItem>
+                            <CNavLink
+                                type="button"
+                                href={undefined}
+                                active={state.activeKey === 3}
+                                onClick={() =>
+                                    setState((prevState) => ({
+                                        ...prevState,
+                                        activeKey: 3,
+                                    }))
+                                }
+                            >
+                                Jasa
+                            </CNavLink>
+                        </CNavItem>
+                    </CNav>
+                    <CTabContent>
+                        <MUIDataTable
+                            title={"Daftar Inventaris"}
+                            data={state.data}
+                            columns={tableCols}
+                            options={tableOptions}
+                        />
+                    </CTabContent>
+                </>
             ) : (
                 <CRow className="align-items-center justify-content-center">
                     <CCol md={7} className="text-center">
