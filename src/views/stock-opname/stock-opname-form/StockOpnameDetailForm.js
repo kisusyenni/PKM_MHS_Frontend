@@ -35,7 +35,7 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
     }, [state.isReload]);
 
     const getInventoryList = async () => {
-        const response = await get("/inventory");
+        const response = await get("/inventory/product");
         if (response.status === 200) {
             setState((prevState) => ({
                 ...prevState,
