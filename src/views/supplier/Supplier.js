@@ -98,6 +98,7 @@ const Supplier = () => {
         print: false,
         viewColumns: false,
         sort: true,
+        filter: false,
         customToolbar: () => (
             <>
                 <CButton onClick={handleAdd}>

@@ -231,8 +231,8 @@ const SetupStoreForm = ({ setup = false }) => {
                                                 invalid={errors.hasOwnProperty("type")}
                                                 options={[
                                                     "Jenis UMKM",
-                                                    { label: "Dagang", value: "1" },
-                                                    { label: "Jasa", value: "2" },
+                                                    { label: "Dagang", value: "0" },
+                                                    { label: "Jasa", value: "1" },
                                                 ]}
                                             />
                                         )}
