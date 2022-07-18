@@ -47,7 +47,7 @@ const PrintSales = () => {
 
     useEffect(() => {
         if (state.data) {
-            window.print();
+            setTimeout(() => window.print(), 300);
         }
     }, [state.data]);
 
