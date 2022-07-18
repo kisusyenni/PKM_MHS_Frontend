@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
 import { CButton, CCol, CContainer, CImage, CRow } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
+import { cilPlus } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import NumberFormat from "react-number-format";
 import { deleteData, get } from "src/network/api/network";
@@ -201,13 +201,13 @@ const Expense = () => {
 
     // Handle confirmation
 
-    const handleShowConfirmation = (expense) => {
-        setState((prevState) => ({
-            ...prevState,
-            openModal: true,
-            selectedExpense: expense,
-        }));
-    };
+    // const handleShowConfirmation = (expense) => {
+    //     setState((prevState) => ({
+    //         ...prevState,
+    //         openModal: true,
+    //         selectedExpense: expense,
+    //     }));
+    // };
 
     const handleCloseConfirmation = () => {
         setState((prevState) => ({

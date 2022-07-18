@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
 import { CButton, CCol, CContainer, CImage, CRow } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { cilPen, cilPlus, cilTrash } from "@coreui/icons";
+import { cilPen, cilPlus } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import { deleteData, get } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
@@ -191,13 +191,13 @@ const StockOpname = () => {
 
     // Handle confirmation
 
-    const handleShowConfirmation = (opname) => {
-        setState((prevState) => ({
-            ...prevState,
-            openModal: true,
-            selectedStockOpname: opname,
-        }));
-    };
+    // const handleShowConfirmation = (opname) => {
+    //     setState((prevState) => ({
+    //         ...prevState,
+    //         openModal: true,
+    //         selectedStockOpname: opname,
+    //     }));
+    // };
 
     const handleCloseConfirmation = () => {
         setState((prevState) => ({
