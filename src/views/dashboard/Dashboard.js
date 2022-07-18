@@ -10,6 +10,7 @@ import InventoryChart from "./chart/InventoryChart";
 import OutOfStockTable from "./table/OutOfStockTable";
 import { get } from "src/network/api/network";
 import emptyGraphic from "src/assets/images/empty.svg";
+import emptySupplier from "src/assets/images/emptySupplier.svg";
 
 const Dashboard = () => {
     const [state, setState] = useState({
@@ -22,6 +23,7 @@ const Dashboard = () => {
     const getDashboard = async () => {
         const response = await get("/dashboard");
         if (response.status === 200) {
+            console.log(response.data);
             setState((prevState) => ({
                 ...prevState,
                 data: response.data,
@@ -42,6 +44,7 @@ const Dashboard = () => {
     const getDashboardInventory = async () => {
         const response = await get("/dashboard/inventory");
         if (response.status === 200) {
+            console.log(response.data);
             setState((prevState) => ({
                 ...prevState,
                 inventory: response.data,
@@ -58,24 +61,40 @@ const Dashboard = () => {
     return (
         <>
             <CRow className="mb-4">
-                {state.inventory?.mostSoldStock?.length <= 0 &&
-                    state.inventory?.outOfStock?.length <= 0 && (
-                        <>
-                            <CCol sm={6} lg={4} className="mb-2">
-                                <CCard>
-                                    <CCardBody className="text-center">
-                                        <h1 className="h6">Belum ada inventaris</h1>
-                                        <div className="mb-3">
-                                            <CImage src={emptyGraphic} height={100} />
-                                        </div>
-                                        <CButton size="sm" href="inventaris/tambah">
-                                            Tambah
-                                        </CButton>
-                                    </CCardBody>
-                                </CCard>
-                            </CCol>
-                        </>
-                    )}
+                {state.inventory?.totalInventory <= 0 && (
+                    <>
+                        <CCol md={6} className="mb-2">
+                            <CCard>
+                                <CCardBody className="text-center">
+                                    <h1 className="h6">Belum ada inventaris</h1>
+                                    <div className="mb-3">
+                                        <CImage src={emptyGraphic} height={100} />
+                                    </div>
+                                    <CButton size="sm" href="inventaris/tambah">
+                                        Tambah
+                                    </CButton>
+                                </CCardBody>
+                            </CCard>
+                        </CCol>
+                    </>
+                )}
+                {state.inventory?.totalSupplier <= 0 && (
+                    <>
+                        <CCol md={6} className="mb-2">
+                            <CCard>
+                                <CCardBody className="text-center">
+                                    <h1 className="h6">Belum ada supplier</h1>
+                                    <div className="mb-3">
+                                        <CImage src={emptySupplier} height={100} />
+                                    </div>
+                                    <CButton size="sm" href="supplier">
+                                        Tambah
+                                    </CButton>
+                                </CCardBody>
+                            </CCard>
+                        </CCol>
+                    </>
+                )}
                 {state.data?.sales?.total > 0 &&
                     state.data?.purchase?.total > 0 &&
                     state.data?.expense?.total > 0 && (
@@ -83,15 +102,20 @@ const Dashboard = () => {
                             <h1 className="h4 mb-3">Periode {state?.data?.yearPeriod}</h1>
                         </CCol>
                     )}
-                <CCol sm={6} lg={4} className="mb-2">
-                    <SalesWidget data={state?.data?.sales} />
-                </CCol>
-                <CCol sm={6} lg={4} className="mb-2">
-                    <PurchaseWidget data={state?.data?.purchase} />
-                </CCol>
-                <CCol sm={6} lg={4} className="mb-2">
-                    <ExpenseWidget data={state?.data?.expense} />
-                </CCol>
+
+                {state.inventory?.totalInventory > 0 && state.inventory?.totalSupplier > 0 && (
+                    <>
+                        <CCol sm={6} lg={4} className="mb-2">
+                            <SalesWidget data={state?.data?.sales} />
+                        </CCol>
+                        <CCol sm={6} lg={4} className="mb-2">
+                            <PurchaseWidget data={state?.data?.purchase} />
+                        </CCol>
+                        <CCol sm={6} lg={4} className="mb-2">
+                            <ExpenseWidget data={state?.data?.expense} />
+                        </CCol>
+                    </>
+                )}
             </CRow>
 
             <OverviewChart data={state?.data} />
