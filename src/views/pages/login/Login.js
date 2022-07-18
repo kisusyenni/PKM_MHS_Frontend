@@ -54,7 +54,6 @@ const Login = () => {
         // send login data to api
         const response = await post("/auth/login", data);
         if (response.status === 200) {
-            console.log(response.data);
             setState((prevState) => ({
                 ...prevState,
                 loading: false,
