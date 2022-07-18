@@ -29,7 +29,6 @@ const InventoryForm = ({ title, editMode }) => {
         alertType: null,
         alertContent: "",
         isReload: null,
-        checked: false,
     });
 
     const {
@@ -44,7 +43,7 @@ const InventoryForm = ({ title, editMode }) => {
             name: "",
             quantity: 0,
             sellingPrice: 0,
-            isService: 0,
+            isService: false,
         },
         mode: "all",
     });
@@ -55,7 +54,6 @@ const InventoryForm = ({ title, editMode }) => {
             setState((prevState) => ({
                 ...prevState,
                 data: result.data,
-                checked: result.data.isService === 1,
             }));
 
             const inputs = ["name", "quantity", "sellingPrice"];
@@ -63,6 +61,7 @@ const InventoryForm = ({ title, editMode }) => {
             inputs.forEach((value) => {
                 setValue(value, result.data[value]);
             });
+            setValue("isService", result.data.isService === 1);
         }
     };
 
@@ -133,6 +132,7 @@ const InventoryForm = ({ title, editMode }) => {
         } else {
             // add form
             const response = await post("/inventory", data);
+
             if (response.status === 200) {
                 setState((prevState) => ({
                     ...prevState,
@@ -205,7 +205,7 @@ const InventoryForm = ({ title, editMode }) => {
                                         ref={ref}
                                         id="isService"
                                         label="Inventori jasa"
-                                        checked={state.checked}
+                                        checked={value}
                                     />
                                 )}
                             />
