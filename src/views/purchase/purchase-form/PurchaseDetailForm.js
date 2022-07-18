@@ -90,11 +90,11 @@ const PurchaseDetailForm = ({ control, setValue }) => {
     return (
         <>
             <CRow className="mb-3">
-                <CCol md={3}>
+                <CCol md={4}>
                     <small className="fw-bold">Inventaris</small>
                 </CCol>
-                <CCol md={2}>
-                    <small className="fw-bold">Kuantitas</small>
+                <CCol md={1}>
+                    <small className="fw-bold">Qty</small>
                 </CCol>
                 <CCol md={2}>
                     <small className="fw-bold">Harga Per Unit</small>
@@ -109,7 +109,7 @@ const PurchaseDetailForm = ({ control, setValue }) => {
             {fields.map((item, index) => {
                 return (
                     <CRow key={item.id} className="align-items-start">
-                        <CCol md={3} className="mb-3">
+                        <CCol md={4} className="mb-3">
                             <CDropdown className="w-100">
                                 <CDropdownToggle
                                     size="sm"
@@ -145,7 +145,7 @@ const PurchaseDetailForm = ({ control, setValue }) => {
                                 </CDropdownMenu>
                             </CDropdown>
                         </CCol>
-                        <CCol md={2} className="mb-3">
+                        <CCol md={1} className="mb-3">
                             <Controller
                                 name={`itemDetail.${index}.quantity`}
                                 control={control}

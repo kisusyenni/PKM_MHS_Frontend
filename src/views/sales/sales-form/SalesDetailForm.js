@@ -75,11 +75,11 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
     return (
         <>
             <CRow className="mb-3">
-                <CCol md={3}>
+                <CCol md={4}>
                     <h6 className="fw-bold">Inventaris</h6>
                 </CCol>
-                <CCol md={2}>
-                    <h6 className="fw-bold">Kuantitas</h6>
+                <CCol md={1}>
+                    <h6 className="fw-bold">Qty</h6>
                 </CCol>
                 <CCol md={2}>
                     <h6 className="fw-bold">Harga Per Unit</h6>
@@ -94,7 +94,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
             {fields.map((item, index) => {
                 return (
                     <CRow key={item.id} className="align-items-start">
-                        <CCol md={3} className="mb-3">
+                        <CCol md={4} className="mb-3">
                             <CDropdown className="w-100">
                                 <CDropdownToggle
                                     color="white"
@@ -143,7 +143,7 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                 </CDropdownMenu>
                             </CDropdown>
                         </CCol>
-                        <CCol md={2} className="mb-3">
+                        <CCol md={1} className="mb-3">
                             <Controller
                                 name={`itemDetail.${index}.quantity`}
                                 control={control}
