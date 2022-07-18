@@ -65,7 +65,11 @@ const PaymentForm = ({ type, id, total }) => {
             }));
             setTimeout(() => {
                 closeAlert();
-                reset();
+                reset({
+                    methodId: "1",
+                    date: getToday(),
+                    nominal: Math.abs(total - state.nominal),
+                });
                 if (location?.pathname.includes("pembelian")) {
                     navigate("/pembelian");
                 } else if (location?.pathname.includes("penjualan")) {
