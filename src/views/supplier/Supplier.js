@@ -6,12 +6,9 @@ import { cilPen, cilPlus } from "@coreui/icons";
 import SupplierForm from "./SupplierForm";
 import { get } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
-import { useNavigate } from "react-router-dom";
 import emptyGraphic from "src/assets/images/empty.svg";
 
 const Supplier = () => {
-    const navigate = useNavigate();
-
     const tableCols = [
         {
             name: "supplierId",
