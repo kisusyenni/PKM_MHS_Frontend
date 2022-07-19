@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MUIDataTable from "mui-datatables";
-import { CButton, CCol, CContainer, CImage, CRow } from "@coreui/react";
+import { CButton, CCol, CContainer, CImage, CRow, CTooltip } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilPen, cilPlus } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
@@ -77,16 +77,18 @@ const StockOpname = () => {
                 customBodyRender: (value, tablemeta) => {
                     return (
                         <>
-                            <CButton
-                                color="primary"
-                                variant="outline"
-                                className="me-2"
-                                onClick={() => {
-                                    navigate(`/stock-opname/${tablemeta.rowData[0]}`);
-                                }}
-                            >
-                                <CIcon icon={cilPen}></CIcon>
-                            </CButton>
+                            <CTooltip content="Detail Stock Opname">
+                                <CButton
+                                    color="primary"
+                                    variant="outline"
+                                    className="me-2"
+                                    onClick={() => {
+                                        navigate(`/stock-opname/${tablemeta.rowData[0]}`);
+                                    }}
+                                >
+                                    <CIcon icon={cilPen}></CIcon>
+                                </CButton>
+                            </CTooltip>
                             {/* <CButton
                                 color="primary"
                                 variant="outline"

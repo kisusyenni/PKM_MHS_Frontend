@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import MUIDataTable from "mui-datatables";
-import { CBadge, CButton } from "@coreui/react";
+import { CBadge, CButton, CTooltip } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
@@ -143,16 +143,18 @@ const PurchaseTable = ({ data }) => {
                 customBodyRender: (value, tablemeta) => {
                     return (
                         <>
-                            <CButton
-                                color="primary"
-                                variant="outline"
-                                className="me-2"
-                                onClick={() => {
-                                    navigate(`/pembelian/${tablemeta.rowData[0]}`);
-                                }}
-                            >
-                                <CIcon icon={cilPen}></CIcon>
-                            </CButton>
+                            <CTooltip content="Detail Pembelian">
+                                <CButton
+                                    color="primary"
+                                    variant="outline"
+                                    className="me-2"
+                                    onClick={() => {
+                                        navigate(`/pembelian/${tablemeta.rowData[0]}`);
+                                    }}
+                                >
+                                    <CIcon icon={cilPen}></CIcon>
+                                </CButton>
+                            </CTooltip>
                         </>
                     );
                 },
