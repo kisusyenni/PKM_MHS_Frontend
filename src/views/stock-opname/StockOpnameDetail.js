@@ -56,20 +56,20 @@ const StockOpnameDetail = () => {
                 </CCardHeader>
                 <CCardBody>
                     <CRow>
-                        <CCol md={3}>
+                        {/* <CCol md={3}>
                             <h6>ID</h6>
-                            {/* <p>{state?.data?.stockOpnameId}</p> */}
+                            <p>{state?.data?.stockOpnameId}</p>
                             <p>SOP/1657204586000</p>
+                        </CCol> */}
+                        <CCol md={3}>
+                            <h6>Tanggal</h6>
+                            <p>{state?.data?.date}</p>
                         </CCol>
                         <CCol md={3}>
                             <h6>Dibuat oleh</h6>
                             <p>
                                 {`${state?.data?.user?.firstName} ${state?.data?.user?.lastName}`}
                             </p>
-                        </CCol>
-                        <CCol md={3}>
-                            <h6>Tanggal</h6>
-                            <p>{state?.data?.date}</p>
                         </CCol>
                         <CCol>
                             <h6>Keterangan</h6>

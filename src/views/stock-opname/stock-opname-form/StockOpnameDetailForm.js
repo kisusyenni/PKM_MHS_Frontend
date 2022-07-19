@@ -210,6 +210,7 @@ const StockOpnameDetailForm = ({ control, setValue }) => {
                                     />
                                 )}
                             />
+                            <small>*wajib diisi</small>
                         </CCol>
                         <CCol md={1}>
                             {index > 0 && (
