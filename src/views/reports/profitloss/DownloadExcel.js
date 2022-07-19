@@ -149,7 +149,7 @@ const DownloadExcel = ({ data, filename }) => {
         ws["!merges"] = merge;
 
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Dates");
+        XLSX.utils.book_append_sheet(wb, ws, `${data?.startDate} - ${data?.endDate}`);
 
         XLSX.writeFile(wb, `${filename}.xlsx`);
     }, [data, filename]);
