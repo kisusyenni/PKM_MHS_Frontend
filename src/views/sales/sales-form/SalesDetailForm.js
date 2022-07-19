@@ -124,19 +124,21 @@ const SalesDetailForm = ({ control, watch, errors, setValue }) => {
                                                     );
                                                 }}
                                                 disabled={
-                                                    inventory.quantity <= 0 ||
+                                                    (inventory.quantity <= 0 &&
+                                                        inventory.isService === 0) ||
                                                     checkData(inventory.inventoryId)
                                                 }
                                             >
                                                 {inventory.name}{" "}
-                                                {inventory.quantity <= 0 && (
-                                                    <i
-                                                        className="text-danger"
-                                                        style={{ fontSize: 14 }}
-                                                    >
-                                                        Stok Habis
-                                                    </i>
-                                                )}
+                                                {inventory.quantity <= 0 &&
+                                                    inventory.isService === 0 && (
+                                                        <i
+                                                            className="text-danger"
+                                                            style={{ fontSize: 14 }}
+                                                        >
+                                                            Stok Habis
+                                                        </i>
+                                                    )}
                                             </CDropdownItem>
                                         );
                                     })}
