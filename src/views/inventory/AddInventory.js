@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CButton, CCol, CContainer, CRow } from "@coreui/react";
 import InventoryForm from "./InventoryForm";
 import CIcon from "@coreui/icons-react";
@@ -7,6 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 const AddInventory = () => {
     const navigate = useNavigate();
+    const [title, setTitle] = useState("Tambah Inventaris - MHS SOFT");
+
+    useEffect(() => {
+        document.title = title || "";
+    }, [title]);
     return (
         <>
             <CContainer>

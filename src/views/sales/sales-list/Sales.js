@@ -15,6 +15,7 @@ const Sales = () => {
         data: [],
         originalData: [],
         total: 0,
+        title: "Penjualan - MHS SOFT",
     });
 
     const getSalesList = async () => {

@@ -1,8 +1,13 @@
 import { CCol, CContainer, CRow } from "@coreui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SetupStoreForm from "./SetupStoreForm";
 
 const SetupStore = () => {
+    const [title, setTitle] = useState("Atur Toko - MHS SOFT");
+
+    useEffect(() => {
+        document.title = title || "";
+    }, [title]);
     return (
         <>
             <main className="bg-light min-vh-100 d-flex flex-row align-items-center bg-custom">

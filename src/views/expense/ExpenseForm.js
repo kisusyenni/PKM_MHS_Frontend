@@ -29,7 +29,12 @@ const ExpenseForm = ({ title, editMode }) => {
         alertType: null,
         alertContent: "",
         isReload: null,
+        title: "Tambah Pengeluaran - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const {
         control,

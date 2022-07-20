@@ -26,7 +26,12 @@ const PrintPurchase = () => {
         data: null,
         store: null,
         isReload: null,
+        title: "Print Pembelian - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getPurchaseDetail = async () => {
         const response = await get(`/purchase/${id}`);

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     CButton,
     CCard,
@@ -30,7 +30,12 @@ const Register = () => {
         alertContent: "",
         showPassword: false,
         showPasswordConfirmation: false,
+        title: "Registrasi - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const {
         control,

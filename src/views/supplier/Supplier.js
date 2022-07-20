@@ -115,7 +115,12 @@ const Supplier = () => {
         tableCols: tableCols,
         tableOptions: tableOptions,
         isReload: false,
+        title: "Supplier - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     useEffect(() => {
         getSupplierList();

@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     CButton,
     CCard,
@@ -37,7 +37,12 @@ const Login = () => {
         alertType: null,
         alertContent: "",
         showPassword: false,
+        title: "Login - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const {
         control,

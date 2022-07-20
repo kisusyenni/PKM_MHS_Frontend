@@ -24,7 +24,12 @@ const StockOpnameDetail = () => {
     const [state, setState] = useState({
         data: null,
         isReload: null,
+        title: "Detail Stock Opname - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getStockOpnameDetail = async () => {
         const response = await get(`/stock-opname/${id}`);

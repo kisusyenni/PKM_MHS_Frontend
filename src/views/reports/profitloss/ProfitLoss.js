@@ -47,7 +47,12 @@ const ProfitLoss = () => {
         showAlert: false,
         alertType: null,
         alertContent: "",
+        title: "Laporan Laba Rugi - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const closeAlert = () => {
         setState((prevState) => ({

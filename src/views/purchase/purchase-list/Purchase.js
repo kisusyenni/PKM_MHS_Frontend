@@ -14,7 +14,12 @@ const Purchase = () => {
         data: [],
         originalData: [],
         total: 0,
+        title: "Pembelian - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getPurchaseList = async () => {
         const response = await get("/purchase");

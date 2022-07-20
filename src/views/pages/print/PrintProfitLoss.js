@@ -22,7 +22,12 @@ const PrintProfitLoss = () => {
         data: null,
         isReload: null,
         filename: "Laporan Laba Rugi",
+        title: "Print Laba Rugi - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getProfitLoss = async (data) => {
         const response = await post("/report/profit-loss", data);

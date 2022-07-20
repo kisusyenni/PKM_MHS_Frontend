@@ -1,12 +1,18 @@
 import { cilArrowCircleLeft } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CButton, CCol, CContainer, CRow } from "@coreui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InventoryForm from "./InventoryForm";
 
 const EditInventory = () => {
     const navigate = useNavigate();
+
+    const [title, setTitle] = useState("Ubah Inventaris - MHS SOFT");
+
+    useEffect(() => {
+        document.title = title || "";
+    }, [title]);
     return (
         <>
             <CContainer>

@@ -24,7 +24,12 @@ const PrintSales = () => {
     const [state, setState] = useState({
         data: null,
         isReload: null,
+        title: "Print Penjualan - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getSalesDetail = async () => {
         const response = await get(`/sales/${id}`);

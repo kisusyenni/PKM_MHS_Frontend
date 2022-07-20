@@ -143,7 +143,12 @@ const Expense = () => {
         selectedExpense: null,
         openModal: false,
         showAlert: false,
+        title: "Pengeluaran - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     useEffect(() => {
         getExpenseList();

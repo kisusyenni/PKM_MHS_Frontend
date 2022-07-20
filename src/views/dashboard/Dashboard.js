@@ -18,7 +18,12 @@ const Dashboard = () => {
         table: null,
         inventory: null,
         isReload: null,
+        title: "Dashboard - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getDashboard = async () => {
         const response = await get("/dashboard");

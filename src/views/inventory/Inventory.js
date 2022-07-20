@@ -155,7 +155,12 @@ const Inventory = () => {
         selectedInventory: null,
         openModal: false,
         showAlert: false,
+        title: "Inventaris - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     useEffect(() => {
         // getInventoryList();

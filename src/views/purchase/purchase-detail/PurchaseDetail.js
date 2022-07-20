@@ -15,7 +15,12 @@ const PurchaseDetail = () => {
     const [state, setState] = useState({
         data: null,
         isReload: null,
+        title: "Detail Pembelian - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getPurchaseDetail = async () => {
         const response = await get(`/purchase/${id}`);

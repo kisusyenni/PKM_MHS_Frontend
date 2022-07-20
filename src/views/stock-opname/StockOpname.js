@@ -12,6 +12,12 @@ import emptyGraphic from "./../../assets/images/empty.svg";
 const StockOpname = () => {
     const navigate = useNavigate();
 
+    const [title, setTitle] = useState("Stock Opname - MHS SOFT");
+
+    useEffect(() => {
+        document.title = title || "";
+    }, [title]);
+
     const tableCols = [
         {
             name: "stockOpnameId",

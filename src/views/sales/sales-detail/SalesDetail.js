@@ -15,7 +15,12 @@ const SalesDetail = () => {
     const [state, setState] = useState({
         data: null,
         isReload: null,
+        title: "Detail Penjualan - MHS SOFT",
     });
+
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
 
     const getSalesDetail = async () => {
         const response = await get(`/sales/${id}`);
