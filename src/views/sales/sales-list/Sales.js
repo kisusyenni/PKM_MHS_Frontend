@@ -18,6 +18,10 @@ const Sales = () => {
         title: "Penjualan - MHS SOFT",
     });
 
+    useEffect(() => {
+        document.title = state.title || "";
+    }, [state.title]);
+
     const getSalesList = async () => {
         const response = await get("/sales");
         if (response.status === 200) {
