@@ -10,6 +10,7 @@ import {
     CFormInput,
     CFormLabel,
     CImage,
+    CLink,
     CRow,
     CSpinner,
 } from "@coreui/react";
@@ -19,6 +20,8 @@ import useAuth from "src/hooks/useAuth";
 import StatusAlert from "src/helper/StatusAlert";
 import { Controller, useForm } from "react-hook-form";
 import logo from "src/assets/brand/logo.png";
+import showPassword from "src/assets/images/show.png";
+import hidePassword from "src/assets/images/hide.png";
 
 const Login = () => {
     const { setAuth } = useAuth();
@@ -33,6 +36,7 @@ const Login = () => {
         showAlert: false,
         alertType: null,
         alertContent: "",
+        showPassword: false,
     });
 
     const {
@@ -173,15 +177,71 @@ const Login = () => {
                                                     onBlur={onBlur}
                                                     value={value}
                                                     autoComplete="password"
-                                                    type="password"
+                                                    type={state.showPassword ? "text" : "password"}
                                                     ref={ref}
                                                     invalid={errors.hasOwnProperty("password")}
                                                 />
                                             )}
                                         />
                                         <span className="invalid-feedback">
-                                            {errors.password?.message}
+                                            <CRow>
+                                                <CCol>{errors.password?.message}</CCol>
+                                                <CCol className="text-end">
+                                                    <CLink
+                                                        style={{ cursor: "pointer" }}
+                                                        className="link-dark"
+                                                        onClick={() => {
+                                                            const status = state.showPassword;
+                                                            setState((prevState) => ({
+                                                                ...prevState,
+                                                                showPassword: !status,
+                                                            }));
+                                                        }}
+                                                    >
+                                                        <CImage
+                                                            className="me-1"
+                                                            src={
+                                                                state.showPassword
+                                                                    ? hidePassword
+                                                                    : showPassword
+                                                            }
+                                                            width={20}
+                                                        />
+                                                        Tunjukkan kata sandi
+                                                    </CLink>
+                                                </CCol>
+                                            </CRow>
                                         </span>
+
+                                        {!errors.hasOwnProperty("password") && (
+                                            <CRow>
+                                                <CCol>{errors.password?.message}</CCol>
+                                                <CCol className="text-end">
+                                                    <CLink
+                                                        style={{ cursor: "pointer" }}
+                                                        className="link-dark"
+                                                        onClick={() => {
+                                                            const status = state.showPassword;
+                                                            setState((prevState) => ({
+                                                                ...prevState,
+                                                                showPassword: !status,
+                                                            }));
+                                                        }}
+                                                    >
+                                                        <CImage
+                                                            className="me-1"
+                                                            src={
+                                                                state.showPassword
+                                                                    ? hidePassword
+                                                                    : showPassword
+                                                            }
+                                                            width={20}
+                                                        />
+                                                        <small>Tunjukkan kata sandi</small>
+                                                    </CLink>
+                                                </CCol>
+                                            </CRow>
+                                        )}
                                     </div>
                                     <CRow>
                                         <CCol xs={12} className="text-center py-3">
