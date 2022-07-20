@@ -9,6 +9,7 @@ import {
     CForm,
     CFormInput,
     CFormLabel,
+    CImage,
     CRow,
     CSpinner,
 } from "@coreui/react";
@@ -17,6 +18,7 @@ import { post } from "src/network/api/network";
 import useAuth from "src/hooks/useAuth";
 import StatusAlert from "src/helper/StatusAlert";
 import { Controller, useForm } from "react-hook-form";
+import logo from "src/assets/brand/logo.png";
 
 const Login = () => {
     const { setAuth } = useAuth();
@@ -110,7 +112,11 @@ const Login = () => {
                         <CCard className="p-4">
                             <CCardBody>
                                 <CForm onSubmit={handleSubmit(onSubmit)}>
-                                    <h1 className="text-center h3 fw-bold">Sistem Keuangan</h1>
+                                    <div className="text-center mb-3">
+                                        <CImage src={logo} height={80} />
+                                    </div>
+                                    <hr />
+                                    <h1 className="text-center h3 fw-bold">Login</h1>
                                     <p className="text-medium-emphasis text-center">
                                         Masuk ke Akun Anda
                                     </p>

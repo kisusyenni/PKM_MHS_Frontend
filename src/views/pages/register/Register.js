@@ -8,6 +8,7 @@ import {
     CForm,
     CFormInput,
     CFormLabel,
+    CImage,
     CRow,
     CSpinner,
 } from "@coreui/react";
@@ -15,6 +16,7 @@ import { post } from "src/network/api/network";
 import StatusAlert from "src/helper/StatusAlert";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import logo from "src/assets/brand/logo.png";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -108,8 +110,12 @@ const Register = () => {
                         <CCard className="p-4">
                             <CCardBody>
                                 <CForm onSubmit={handleSubmit(onSubmit)}>
-                                    <h1 className="text-center h3 fw-bold">Sistem Keuangan</h1>
-                                    <p className="text-medium-emphasis text-center mb-5">
+                                    <div className="text-center mb-3">
+                                        <CImage src={logo} height={80} />
+                                    </div>
+                                    <hr />
+                                    <h1 className="text-center h3 fw-bold">Registrasi</h1>
+                                    <p className="text-medium-emphasis text-center">
                                         Buat akun Anda
                                     </p>
                                     <StatusAlert
