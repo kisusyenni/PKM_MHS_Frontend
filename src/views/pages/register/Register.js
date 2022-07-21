@@ -375,17 +375,18 @@ const Register = () => {
                                                         style={{ cursor: "pointer" }}
                                                         className="link-dark"
                                                         onClick={() => {
-                                                            const status = state.showPassword;
+                                                            const status =
+                                                                state.showPasswordConfirmation;
                                                             setState((prevState) => ({
                                                                 ...prevState,
-                                                                showPassword: !status,
+                                                                showPasswordConfirmation: !status,
                                                             }));
                                                         }}
                                                     >
                                                         <CImage
                                                             className="me-1"
                                                             src={
-                                                                state.showPassword
+                                                                state.showPasswordConfirmation
                                                                     ? hidePassword
                                                                     : showPassword
                                                             }
