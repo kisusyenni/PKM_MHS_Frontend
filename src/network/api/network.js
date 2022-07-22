@@ -55,9 +55,11 @@ const getData = async (path) => {
             } else if (error.response.status === 500) {
                 window.location.href = "/500";
                 console.error(error);
+                return { data: error.response.data || error.message };
             } else if (error.response.status === 404) {
                 console.error(error);
                 window.location.href = "/500";
+                return { data: error.response.data || error.message };
             } else {
                 console.error(error);
                 return { data: error.response.data || error.message };
@@ -85,9 +87,11 @@ const postData = async (path, data) => {
             } else if (error.response.status === 500) {
                 window.location.href = "/500";
                 console.error(error);
+                return { data: error.response.data || error.message };
             } else if (error.response.status === 404) {
                 console.error(error);
                 window.location.href = "/500";
+                return { data: error.response.data || error.message };
             } else {
                 console.error(error);
                 return { data: error.response.data || error.message };
@@ -115,9 +119,11 @@ const putData = async (path, id, data) => {
             } else if (error.response.status === 500) {
                 window.location.href = "/500";
                 console.error(error);
+                return { data: error.response.data || error.message };
             } else if (error.response.status === 404) {
                 console.error(error);
                 window.location.href = "/500";
+                return { data: error.response.data || error.message };
             } else {
                 console.error(error);
                 return { data: error.response.data || error.message };
@@ -145,9 +151,11 @@ const deleteData = async (path, id) => {
             } else if (error.response.status === 500) {
                 window.location.href = "/500";
                 console.error(error);
+                return { data: error.response.data || error.message };
             } else if (error.response.status === 404) {
                 console.error(error);
                 window.location.href = "/500";
+                return { data: error.response.data || error.message };
             } else {
                 console.error(error);
                 return { data: error.response.data || error.message };
