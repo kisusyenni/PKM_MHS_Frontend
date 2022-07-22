@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    CButton,
-    CCol,
-    CContainer,
-    CFormInput,
-    CInputGroup,
-    CInputGroupText,
-    CRow,
-} from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-import { cilMagnifyingGlass } from "@coreui/icons";
+import { CCol, CContainer, CRow } from "@coreui/react";
 
 const Page500 = () => {
     const [title, setTitle] = useState("500 - Server Error");
